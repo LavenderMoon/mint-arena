@@ -143,25 +143,19 @@ int BotSortTeamMatesByBaseTravelTime(bot_state_t *bs, int *teammates, int maxtea
 	int traveltimes[MAX_CLIENTS];
 	bot_goal_t *goal = NULL;
 
-#ifdef MISSIONPACK
 	if (gametype == GT_CTF || gametype == GT_1FCTF)
-#else
-	if (gametype == GT_CTF)
-#endif
 	{
 		if (BotTeam(bs) == TEAM_RED)
 			goal = &ctf_redflag;
 		else
 			goal = &ctf_blueflag;
 	}
-#ifdef MISSIONPACK
 	else if (gametype == GT_OBELISK || gametype == GT_HARVESTER) {
 		if (BotTeam(bs) == TEAM_RED)
 			goal = &redobelisk;
 		else
 			goal = &blueobelisk;
 	}
-#endif
 
 	numteammates = 0;
 	for (i = 0; i < level.maxplayers; i++) {
@@ -287,14 +281,15 @@ BotSayTeamOrders
 ==================
 */
 void BotSayTeamOrder(bot_state_t *bs, int toPlayer) {
-#ifdef MISSIONPACK
+//#ifdef MISSIONPACK
 	// voice chats only
 	char buf[MAX_MESSAGE_SIZE];
 
 	BotGetChatMessage(bs->cs, buf, sizeof(buf));
-#else
+	// !TODO: Somehow fallback to text if voice chats are unavailable.
+/*#else
 	BotSayTeamOrderAlways(bs, toPlayer);
-#endif
+#endif*/
 }
 
 /*
@@ -303,14 +298,12 @@ BotVoiceChat
 ==================
 */
 void BotVoiceChat(bot_state_t *bs, int toPlayer, char *voicechat) {
-#ifdef MISSIONPACK
 	if (toPlayer == -1)
 		// voice only say team
 		EA_Command(bs->playernum, va("vsay_team %s", voicechat));
 	else
 		// voice only tell single player
 		EA_Command(bs->playernum, va("vtell %d %s", toPlayer, voicechat));
-#endif
 }
 
 /*
@@ -319,14 +312,12 @@ BotVoiceChatOnly
 ==================
 */
 void BotVoiceChatOnly(bot_state_t *bs, int toPlayer, char *voicechat) {
-#ifdef MISSIONPACK
 	if (toPlayer == -1)
 		// voice only say team
 		EA_Command(bs->playernum, va("vosay_team %s", voicechat));
 	else
 		// voice only tell single player
 		EA_Command(bs->playernum, va("votell %d %s", toPlayer, voicechat));
-#endif
 }
 
 /*
@@ -335,9 +326,7 @@ BotSayVoiceTeamOrder
 ==================
 */
 void BotSayVoiceTeamOrder(bot_state_t *bs, int toPlayer, char *voicechat) {
-#ifdef MISSIONPACK
 	BotVoiceChat(bs, toPlayer, voicechat);
-#endif
 }
 
 /*
@@ -946,8 +935,6 @@ void BotTeamOrders(bot_state_t *bs) {
 		}
 	}
 }
-
-#ifdef MISSIONPACK
 
 /*
 ==================
@@ -1922,7 +1909,6 @@ void BotHarvesterOrders(bot_state_t *bs) {
 		}
 	}
 }
-#endif
 
 /*
 ==================
@@ -2056,7 +2042,6 @@ void BotTeamAI(bot_state_t *bs) {
 			}
 			break;
 		}
-#ifdef MISSIONPACK
 		case GT_1FCTF:
 		{
 			// if the enemy team leads and time limit has expired to 70%, choose aggressive strategy
@@ -2130,7 +2115,6 @@ void BotTeamAI(bot_state_t *bs) {
 			}
 			break;
 		}
-#endif
 	}
 }
 

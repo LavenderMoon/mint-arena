@@ -33,11 +33,7 @@ Suite 120, Rockville, Maryland 20850 USA.
 #include "../qcommon/surfaceflags.h"
 
 #ifndef MODDIR
-  #ifdef MISSIONPACK
-    #define MODDIR "missionpack"
-  #else
-    #define MODDIR "baseq3"
-  #endif
+  #define MODDIR "baseq3"
 #endif
 
 // because games can change separately from the main system version, we need a
@@ -94,9 +90,7 @@ Suite 120, Rockville, Maryland 20850 USA.
 #define	BODY_SINK_DELAY		5000
 #define	BODY_SINK_TIME		1500
 
-#ifdef MISSIONPACK
 #define OBELISK_TARGET_HEIGHT	56
-#endif
 
 
 #define MAX_DLIGHT_CONFIGSTRINGS 128
@@ -155,11 +149,9 @@ typedef enum {
 
 	GT_TEAM,			// team deathmatch
 	GT_CTF,				// capture the flag
-#ifdef MISSIONPACK
 	GT_1FCTF,
 	GT_OBELISK,
 	GT_HARVESTER,
-#endif
 	GT_MAX_GAME_TYPE
 } gametype_t;
 
@@ -524,9 +516,7 @@ typedef enum {
 	STAT_ARMOR,				
 	STAT_DEAD_YAW,					// look this direction when dead (FIXME: get rid of?)
 	STAT_MAX_HEALTH,				// health / armor limit, changable by handicap
-//#ifdef MISSIONPACK
 	STAT_PERSISTANT_POWERUP
-//#endif
 } statIndex_t;
 
 
@@ -556,9 +546,7 @@ typedef enum {
 
 // entityState_t->eFlags
 #define	EF_DEAD				0x00000001		// don't draw a foe marker over players with EF_DEAD
-#ifdef MISSIONPACK
 #define EF_TICKING			0x00000002		// used to make players play the prox mine ticking sound
-#endif
 #define	EF_TELEPORT_BIT		0x00000004		// toggled every time the origin abruptly changes
 #define	EF_AWARD_EXCELLENT	0x00000008		// draw an excellent sprite
 #define EF_PLAYER_EVENT		0x00000010
@@ -632,11 +620,9 @@ typedef enum {
 	WP_PLASMAGUN,
 	WP_BFG,
 	WP_GRAPPLING_HOOK,
-#ifdef MISSIONPACK
 	WP_NAILGUN,
 	WP_PROX_LAUNCHER,
 	WP_CHAINGUN,
-#endif
 
 	WP_NUM_WEAPONS
 } weapon_t;
@@ -744,7 +730,6 @@ typedef enum {
 
 	EV_SCOREPLUM,			// score plum
 
-//#ifdef MISSIONPACK
 	EV_PROXIMITY_MINE_STICK,
 	EV_PROXIMITY_MINE_TRIGGER,
 	EV_KAMIKAZE,			// kamikaze explodes
@@ -753,7 +738,6 @@ typedef enum {
 	EV_INVUL_IMPACT,		// invulnerability sphere impact
 	EV_JUICED,				// invulnerability juiced effect
 	EV_LIGHTNINGBOLT,		// lightning bolt bounced of invulnerability sphere
-//#endif
 
 	EV_DEBUG_LINE,
 	EV_STOPLOOPINGSOUND,
@@ -878,7 +862,6 @@ typedef struct animation_s {
 #define DEFAULT_MODEL_MALE		"sarge"
 #define DEFAULT_MODEL_FEMALE	"major"
 
-#ifdef MISSIONPACK
 // Default team player model names
 #define DEFAULT_TEAM_MODEL		"james"
 #define DEFAULT_TEAM_HEAD		"*james"
@@ -895,25 +878,6 @@ typedef struct animation_s {
 // For team fallback sounds
 #define DEFAULT_TEAM_MODEL_MALE		"james"
 #define DEFAULT_TEAM_MODEL_FEMALE	"janet"
-#else
-// Default team player model names
-#define DEFAULT_TEAM_MODEL		DEFAULT_MODEL
-#define DEFAULT_TEAM_HEAD		DEFAULT_HEAD
-
-#define DEFAULT_TEAM_MODEL2		DEFAULT_MODEL2
-#define DEFAULT_TEAM_HEAD2		DEFAULT_HEAD2
-
-#define DEFAULT_TEAM_MODEL3		DEFAULT_MODEL3
-#define DEFAULT_TEAM_HEAD3		DEFAULT_HEAD3
-
-#define DEFAULT_TEAM_MODEL4		DEFAULT_MODEL4
-#define DEFAULT_TEAM_HEAD4		DEFAULT_HEAD4
-
-// For team fallback sounds
-#define DEFAULT_TEAM_MODEL_MALE		DEFAULT_MODEL_MALE
-#define DEFAULT_TEAM_MODEL_FEMALE	DEFAULT_MODEL_FEMALE
-#endif
-
 
 #define DEFAULT_REDTEAM_NAME		"Pagans"
 #define DEFAULT_BLUETEAM_NAME		"Stroggs"
@@ -980,13 +944,11 @@ typedef enum {
 	MOD_SUICIDE,
 	MOD_TARGET_LASER,
 	MOD_TRIGGER_HURT,
-#ifdef MISSIONPACK
 	MOD_NAIL,
 	MOD_CHAINGUN,
 	MOD_PROXIMITY_MINE,
 	MOD_KAMIKAZE,
 	MOD_JUICED,
-#endif
 	MOD_GRAPPLE,
 	MOD_SUICIDE_TEAM_CHANGE
 } meansOfDeath_t;

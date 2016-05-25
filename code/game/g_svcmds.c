@@ -528,7 +528,6 @@ struct svcmd
   qboolean dedicated;
   void     ( *function )( void );
 } svcmds[ ] = {
-  { "abort_podium", qfalse, Svcmd_AbortPodium_f },
   { "addbot", qfalse, Svcmd_AddBot_f },
   { "addip", qfalse, Svcmd_AddIP_f },
   { "botlist", qfalse, Svcmd_BotList_f },

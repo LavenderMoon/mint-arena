@@ -457,7 +457,6 @@ void BotInitInfoEntities(void)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-#ifdef MISSIONPACK
 void BotUnlinkSolidItems(qboolean unlink) {
 	int i;
 	gentity_t *ent;
@@ -478,7 +477,7 @@ void BotUnlinkSolidItems(qboolean unlink) {
 		}
 	}
 }
-#endif
+
 //===========================================================================
 //
 // Parameter:			-
@@ -509,10 +508,8 @@ void BotInitLevelItems(void)
 	//if there's no AAS file loaded
 	if (!trap_AAS_Loaded()) return;
 
-#ifdef MISSIONPACK
 	//unlink solid items
 	BotUnlinkSolidItems(qtrue);
-#endif
 
 	//validate the modelindexes of the item info
 	for (i = 0; i < ic->numiteminfo; i++)
@@ -623,10 +620,9 @@ void BotInitLevelItems(void)
 		AddLevelItemToList(li);
 	} //end for
 	BotAI_Print(PRT_DEVELOPER, "found %d level items\n", numlevelitems);
-#ifdef MISSIONPACK
+
 	//relink solid items
 	BotUnlinkSolidItems(qfalse);
-#endif
 } //end of the function BotInitLevelItems
 //===========================================================================
 //

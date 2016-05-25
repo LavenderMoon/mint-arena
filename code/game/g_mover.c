@@ -349,7 +349,6 @@ qboolean G_MoverPush( gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **
 			continue;
 		}
 
-#ifdef MISSIONPACK
 		if ( check->s.eType == ET_MISSILE ) {
 			// if it is a prox mine
 			if ( !strcmp(check->classname, "prox mine") ) {
@@ -384,7 +383,7 @@ qboolean G_MoverPush( gentity_t *pusher, vec3_t move, vec3_t amove, gentity_t **
 				continue;
 			}
 		}
-#endif
+
 		// only push items and players
 		if ( check->s.eType != ET_ITEM && check->s.eType != ET_PLAYER && !check->physicsObject ) {
 			continue;

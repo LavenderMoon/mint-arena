@@ -31,7 +31,7 @@ Suite 120, Rockville, Maryland 20850 USA.
 // cg_scoreboard -- draw the scoreboard on top of the game screen
 #include "cg_local.h"
 
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 
 #define	SCOREBOARD_X		(0)
 
@@ -82,7 +82,7 @@ Suite 120, Rockville, Maryland 20850 USA.
 static qboolean localPlayer; // true if local player has been displayed
 
 
-							 /*
+/*
 =================
 CG_DrawPlayerScore
 =================
@@ -169,7 +169,6 @@ static void CG_DrawPlayerScore( int y, score_t *score, float *color, float fade,
 		CG_DrawHead( headx, y, 16, 16, score->playerNum, headAngles );
 	}
 
-#ifdef MISSIONPACK
 	// draw the team task
 	switch ( pi->teamTask ) {
 		case TEAMTASK_OFFENSE:
@@ -196,7 +195,6 @@ static void CG_DrawPlayerScore( int y, score_t *score, float *color, float fade,
 		default:
 			break;
 	}
-#endif
 
 	if (cg.cur_ps) {
 		if (score->playerNum == cg.cur_ps->playerNum) {
@@ -455,7 +453,7 @@ qboolean CG_DrawOldScoreboard( void ) {
 	return qtrue;
 }
 
-#endif // !MISSIONPACK_HUD
+#endif // !TEAMARENA_HUD
 
 //================================================================================
 

@@ -898,10 +898,6 @@ static void G_SpawnBots( char *botList, int baseDelay ) {
 	int			delay;
 	char		bots[MAX_INFO_VALUE];
 
-	podium1 = NULL;
-	podium2 = NULL;
-	podium3 = NULL;
-
 	skill = trap_Cvar_VariableValue( "g_spSkill" );
 	if( skill < 1 ) {
 		skill = 1;

@@ -181,13 +181,10 @@ G_SetPlayerSound
 ===============
 */
 void G_SetPlayerSound( gentity_t *ent ) {
-#ifdef MISSIONPACK
 	if( ent->s.eFlags & EF_TICKING ) {
 		ent->player->ps.loopSound = G_SoundIndex( "sound/weapons/proxmine/wstbtick.wav");
 	}
-	else
-#endif
-	if (ent->waterlevel && (ent->watertype&(CONTENTS_LAVA|CONTENTS_SLIME)) ) {
+	else if (ent->waterlevel && (ent->watertype&(CONTENTS_LAVA|CONTENTS_SLIME)) ) {
 		ent->player->ps.loopSound = level.snd_fry;
 	} else {
 		ent->player->ps.loopSound = 0;
@@ -418,13 +415,10 @@ void PlayerTimerActions( gentity_t *ent, int msec ) {
 		player->timeResidual -= 1000;
 
 		// regenerate
-#ifdef MISSIONPACK
 		if( BG_ItemForItemNum( player->ps.stats[STAT_PERSISTANT_POWERUP] )->giTag == PW_GUARD ) {
 			maxHealth = player->ps.stats[STAT_MAX_HEALTH] / 2;
 		}
-		else
-#endif
-		if ( player->ps.powerups[PW_REGEN] ) {
+		else if ( player->ps.powerups[PW_REGEN] ) {
 			maxHealth = player->ps.stats[STAT_MAX_HEALTH];
 		} else {
 			maxHealth = 0;
@@ -455,44 +449,43 @@ void PlayerTimerActions( gentity_t *ent, int msec ) {
 			player->ps.stats[STAT_ARMOR]--;
 		}
 	}
-#ifdef MISSIONPACK
+
 	if( BG_ItemForItemNum( player->ps.stats[STAT_PERSISTANT_POWERUP] )->giTag == PW_AMMOREGEN ) {
 		int w, max, inc, t, i;
-    int weapList[]={WP_MACHINEGUN,WP_SHOTGUN,WP_GRENADE_LAUNCHER,WP_ROCKET_LAUNCHER,WP_LIGHTNING,WP_RAILGUN,WP_PLASMAGUN,WP_BFG,WP_NAILGUN,WP_PROX_LAUNCHER,WP_CHAINGUN};
-    int weapCount = ARRAY_LEN( weapList );
-		//
-    for (i = 0; i < weapCount; i++) {
-		  w = weapList[i];
+		int weapList[]={WP_MACHINEGUN,WP_SHOTGUN,WP_GRENADE_LAUNCHER,WP_ROCKET_LAUNCHER,WP_LIGHTNING,WP_RAILGUN,WP_PLASMAGUN,WP_BFG,WP_NAILGUN,WP_PROX_LAUNCHER,WP_CHAINGUN};
+		int weapCount = ARRAY_LEN( weapList );
+			//
+		for (i = 0; i < weapCount; i++) {
+			w = weapList[i];
 
-		  switch(w) {
-			  case WP_MACHINEGUN: max = 50; inc = 4; t = 1000; break;
-			  case WP_SHOTGUN: max = 10; inc = 1; t = 1500; break;
-			  case WP_GRENADE_LAUNCHER: max = 10; inc = 1; t = 2000; break;
-			  case WP_ROCKET_LAUNCHER: max = 10; inc = 1; t = 1750; break;
-			  case WP_LIGHTNING: max = 50; inc = 5; t = 1500; break;
-			  case WP_RAILGUN: max = 10; inc = 1; t = 1750; break;
-			  case WP_PLASMAGUN: max = 50; inc = 5; t = 1500; break;
-			  case WP_BFG: max = 10; inc = 1; t = 4000; break;
-			  case WP_NAILGUN: max = 10; inc = 1; t = 1250; break;
-			  case WP_PROX_LAUNCHER: max = 5; inc = 1; t = 2000; break;
-			  case WP_CHAINGUN: max = 100; inc = 5; t = 1000; break;
-			  default: max = 0; inc = 0; t = 1000; break;
-		  }
-		  player->ammoTimes[w] += msec;
-		  if ( player->ps.ammo[w] >= max ) {
-			  player->ammoTimes[w] = 0;
-		  }
-		  if ( player->ammoTimes[w] >= t ) {
-			  while ( player->ammoTimes[w] >= t )
-				  player->ammoTimes[w] -= t;
-			  player->ps.ammo[w] += inc;
-			  if ( player->ps.ammo[w] > max ) {
-				  player->ps.ammo[w] = max;
-			  }
-		  }
-    }
+			switch(w) {
+				case WP_MACHINEGUN: max = 50; inc = 4; t = 1000; break;
+				case WP_SHOTGUN: max = 10; inc = 1; t = 1500; break;
+				case WP_GRENADE_LAUNCHER: max = 10; inc = 1; t = 2000; break;
+				case WP_ROCKET_LAUNCHER: max = 10; inc = 1; t = 1750; break;
+				case WP_LIGHTNING: max = 50; inc = 5; t = 1500; break;
+				case WP_RAILGUN: max = 10; inc = 1; t = 1750; break;
+				case WP_PLASMAGUN: max = 50; inc = 5; t = 1500; break;
+				case WP_BFG: max = 10; inc = 1; t = 4000; break;
+				case WP_NAILGUN: max = 10; inc = 1; t = 1250; break;
+				case WP_PROX_LAUNCHER: max = 5; inc = 1; t = 2000; break;
+				case WP_CHAINGUN: max = 100; inc = 5; t = 1000; break;
+				default: max = 0; inc = 0; t = 1000; break;
+			}
+			player->ammoTimes[w] += msec;
+			if ( player->ps.ammo[w] >= max ) {
+				player->ammoTimes[w] = 0;
+			}
+			if ( player->ammoTimes[w] >= t ) {
+				while ( player->ammoTimes[w] >= t )
+					player->ammoTimes[w] -= t;
+				player->ps.ammo[w] += inc;
+				if ( player->ps.ammo[w] > max ) {
+					player->ps.ammo[w] = max;
+				}
+			}
+		}
 	}
-#endif
 }
 
 /*
@@ -595,7 +588,6 @@ void PlayerEvents( gentity_t *ent, int oldEventSequence ) {
 				ent->health = ent->player->ps.stats[STAT_MAX_HEALTH] + 25;
 				break;
 
-#ifdef MISSIONPACK
 			case HI_KAMIKAZE:
 				// make sure the invulnerability is off
 				ent->player->invulnerabilityTime = 0;
@@ -615,7 +607,6 @@ void PlayerEvents( gentity_t *ent, int oldEventSequence ) {
 			case HI_INVULNERABILITY:
 				ent->player->invulnerabilityTime = level.time + 10000;
 				break;
-#endif // MISSIONPACK
 			}
 			break;
 		}
@@ -627,7 +618,6 @@ void PlayerEvents( gentity_t *ent, int oldEventSequence ) {
 
 }
 
-#ifdef MISSIONPACK
 /*
 ==============
 StuckInOtherPlayer
@@ -668,7 +658,6 @@ static int StuckInOtherPlayer(gentity_t *ent) {
 	}
 	return qfalse;
 }
-#endif
 
 void BotTestSolid(vec3_t origin);
 
@@ -821,13 +810,10 @@ void PlayerThink_real( gentity_t *ent ) {
 	// set speed
 	player->ps.speed = g_speed.value;
 
-#ifdef MISSIONPACK
 	if( BG_ItemForItemNum( player->ps.stats[STAT_PERSISTANT_POWERUP] )->giTag == PW_SCOUT ) {
 		player->ps.speed *= 1.5;
 	}
-	else
-#endif
-	if ( player->ps.powerups[PW_HASTE] ) {
+	else if ( player->ps.powerups[PW_HASTE] ) {
 		player->ps.speed *= 1.3;
 	}
 
@@ -854,7 +840,6 @@ void PlayerThink_real( gentity_t *ent ) {
 		ent->player->pers.cmd.buttons |= BUTTON_GESTURE;
 	}
 
-#ifdef MISSIONPACK
 	// check for invulnerability expansion before doing the Pmove
 	if (player->ps.powerups[PW_INVULNERABILITY] ) {
 		if ( !(player->ps.pm_flags & PMF_INVULEXPAND) ) {
@@ -879,7 +864,6 @@ void PlayerThink_real( gentity_t *ent ) {
 			trap_LinkEntity(ent);
 		}
 	}
-#endif
 
 	pm.ps = &player->ps;
 	pm.cmd = *ucmd;
@@ -908,7 +892,6 @@ void PlayerThink_real( gentity_t *ent ) {
 
 	VectorCopy( player->ps.origin, player->oldOrigin );
 
-#ifdef MISSIONPACK
 	if ( level.intermissionQueued != 0 && g_singlePlayer.integer ) {
 		if ( level.time - level.intermissionQueued >= 1000 ) {
 			pm.cmd.buttons = 0;
@@ -921,7 +904,6 @@ void PlayerThink_real( gentity_t *ent ) {
 			ent->player->ps.pm_type = PM_SPINTERMISSION;
 		}
 	}
-#endif
 
 	Pmove (&pm);
 
@@ -1100,7 +1082,6 @@ void PlayerEndFrame( gentity_t *ent ) {
 		}
 	}
 
-#ifdef MISSIONPACK
 	// set powerup for player animation
 	if( BG_ItemForItemNum( ent->player->ps.stats[STAT_PERSISTANT_POWERUP] )->giTag == PW_GUARD ) {
 		ent->player->ps.powerups[PW_GUARD] = level.time;
@@ -1117,7 +1098,6 @@ void PlayerEndFrame( gentity_t *ent ) {
 	if ( ent->player->invulnerabilityTime > level.time ) {
 		ent->player->ps.powerups[PW_INVULNERABILITY] = level.time;
 	}
-#endif
 
 	// save network bandwidth
 #if 0

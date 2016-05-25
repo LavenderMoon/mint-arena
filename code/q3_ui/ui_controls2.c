@@ -113,11 +113,10 @@ enum {
 	ID_WEAPON7,
 	ID_WEAPON8,
 	ID_WEAPON9,
-#ifdef MISSIONPACK
+	// !TODO: Add a binding for ID_WEAPON10
 	ID_WEAPON11,
 	ID_WEAPON12,
 	ID_WEAPON13,
-#endif
 	ID_ATTACK,
 	ID_WEAPPREV,
 	ID_WEAPNEXT,
@@ -163,11 +162,9 @@ enum {
 	ANIM_WEAPON8,
 	ANIM_WEAPON9,
 	ANIM_WEAPON10,
-#ifdef MISSIONPACK
 	ANIM_WEAPON11,
 	ANIM_WEAPON12,
 	ANIM_WEAPON13,
-#endif
 	ANIM_ATTACK,
 	ANIM_GESTURE,
 	ANIM_DIE,
@@ -208,11 +205,9 @@ typedef struct
 	menuaction_s		railgun;
 	menuaction_s		plasma;
 	menuaction_s		bfg;
-#ifdef MISSIONPACK
 	menuaction_s		nailgun;
 	menuaction_s		proxylauncher;
 	menuaction_s		chaingun;
-#endif
 	menuaction_s		attack;
 	menuaction_s		prevweapon;
 	menuaction_s		nextweapon;
@@ -291,11 +286,10 @@ static bind_t g_bindings[] =
 	{"weapon 7",		"railgun",			ID_WEAPON7,		ANIM_WEAPON7,	'7',			-1,		-1, -1},
 	{"weapon 8",		"plasma gun",		ID_WEAPON8,		ANIM_WEAPON8,	'8',			-1,		-1, -1},
 	{"weapon 9",		"BFG",				ID_WEAPON9,		ANIM_WEAPON9,	'9',			-1,		-1, -1},
-#ifdef MISSIONPACK
+	// !TODO: Add a binding for ID_WEAPON10
 	{"weapon 11",		"nail gun",			ID_WEAPON11,	ANIM_WEAPON11,	-1,				-1,		-1, -1},
 	{"weapon 12",		"proximity mine",	ID_WEAPON12,	ANIM_WEAPON12,	-1,				-1,		-1, -1},
 	{"weapon 13",		"chain gun",		ID_WEAPON13,	ANIM_WEAPON13,	-1,				-1,		-1, -1},
-#endif
 	{"+attack", 		"attack",			ID_ATTACK,		ANIM_ATTACK,	K_CTRL,			-1,		-1, -1},
 	{"weapprev",		"prev weapon",		ID_WEAPPREV,	ANIM_IDLE,		'[',			-1,		-1, -1},
 	{"weapnext", 		"next weapon",		ID_WEAPNEXT,	ANIM_IDLE,		']',			-1,		-1, -1},
@@ -338,11 +332,9 @@ static bind_t g_bindings2[] =
 	MINIBIND(ID_WEAPON7, -1, -1),
 	MINIBIND(ID_WEAPON8, -1, -1),
 	MINIBIND(ID_WEAPON9, -1, -1),
-#ifdef MISSIONPACK
 	MINIBIND(ID_WEAPON11, -1, -1),
 	MINIBIND(ID_WEAPON12, -1, -1),
 	MINIBIND(ID_WEAPON13, -1, -1),
-#endif
 	MINIBIND(ID_ATTACK, -1, -1),
 	MINIBIND(ID_WEAPPREV, -1, -1),
 	MINIBIND(ID_WEAPNEXT, -1, -1),
@@ -382,11 +374,10 @@ static bind_t g_bindings3[] =
 	MINIBIND(ID_WEAPON7, -1, -1),
 	MINIBIND(ID_WEAPON8, -1, -1),
 	MINIBIND(ID_WEAPON9, -1, -1),
-#ifdef MISSIONPACK
+	// !TODO: Add a binding for ID_WEAPON10
 	MINIBIND(ID_WEAPON11, -1, -1),
 	MINIBIND(ID_WEAPON12, -1, -1),
 	MINIBIND(ID_WEAPON13, -1, -1),
-#endif
 	MINIBIND(ID_ATTACK, -1, -1),
 	MINIBIND(ID_WEAPPREV, -1, -1),
 	MINIBIND(ID_WEAPNEXT, -1, -1),
@@ -426,11 +417,10 @@ static bind_t g_bindings4[] =
 	MINIBIND(ID_WEAPON7, -1, -1),
 	MINIBIND(ID_WEAPON8, -1, -1),
 	MINIBIND(ID_WEAPON9, -1, -1),
-#ifdef MISSIONPACK
+	// !TODO: Add a binding for ID_WEAPON10
 	MINIBIND(ID_WEAPON11, -1, -1),
 	MINIBIND(ID_WEAPON12, -1, -1),
 	MINIBIND(ID_WEAPON13, -1, -1),
-#endif
 	MINIBIND(ID_ATTACK, -1, -1),
 	MINIBIND(ID_WEAPPREV, -1, -1),
 	MINIBIND(ID_WEAPNEXT, -1, -1),
@@ -505,11 +495,10 @@ static menucommon_s *g_weapons_controls[] = {
 	(menucommon_s *)&s_controls.railgun,          
 	(menucommon_s *)&s_controls.plasma,           
 	(menucommon_s *)&s_controls.bfg,              
-#ifdef MISSIONPACK
+	// !TODO: Add a binding for ID_WEAPON10
 	(menucommon_s *)&s_controls.nailgun,
 	(menucommon_s *)&s_controls.proxylauncher,
 	(menucommon_s *)&s_controls.chaingun,
-#endif
 	NULL,
 };
 
@@ -772,7 +761,6 @@ static void Controls_UpdateModel( int anim ) {
 		s_controls.playerWeapon = WP_GRAPPLING_HOOK;
 		break;
 
-#ifdef MISSIONPACK
 	case ANIM_WEAPON11:
 		s_controls.playerWeapon = WP_NAILGUN;
 		break;
@@ -784,7 +772,6 @@ static void Controls_UpdateModel( int anim ) {
 	case ANIM_WEAPON13:
 		s_controls.playerWeapon = WP_CHAINGUN;
 		break;
-#endif
 
 	case ANIM_ATTACK:
 		s_controls.playerTorso = TORSO_ATTACK;
@@ -1822,7 +1809,8 @@ static void Controls_MenuInit( int localPlayerNum )
 	s_controls.bfg.generic.ownerdraw = Controls_DrawKeyBinding;
 	s_controls.bfg.generic.id        = ID_WEAPON9;
 
-#ifdef MISSIONPACK
+	// !TODO: Add a binding for ID_WEAPON10
+
 	s_controls.nailgun.generic.type	     = MTYPE_ACTION;
 	s_controls.nailgun.generic.flags     = QMF_LEFT_JUSTIFY|QMF_PULSEIFFOCUS|QMF_GRAYED|QMF_HIDDEN;
 	s_controls.nailgun.generic.callback  = Controls_ActionEvent;
@@ -1840,7 +1828,6 @@ static void Controls_MenuInit( int localPlayerNum )
 	s_controls.chaingun.generic.callback  = Controls_ActionEvent;
 	s_controls.chaingun.generic.ownerdraw = Controls_DrawKeyBinding;
 	s_controls.chaingun.generic.id        = ID_WEAPON13;
-#endif
 
 	s_controls.attack.generic.type	    = MTYPE_ACTION;
 	s_controls.attack.generic.flags     = QMF_LEFT_JUSTIFY|QMF_PULSEIFFOCUS|QMF_GRAYED|QMF_HIDDEN;
@@ -2074,11 +2061,10 @@ static void Controls_MenuInit( int localPlayerNum )
 	Menu_AddItem( &s_controls.menu, &s_controls.railgun );
 	Menu_AddItem( &s_controls.menu, &s_controls.plasma );
 	Menu_AddItem( &s_controls.menu, &s_controls.bfg );
-#ifdef MISSIONPACK
+	// !TODO: Add a binding for ID_WEAPON10
 	Menu_AddItem( &s_controls.menu, &s_controls.nailgun );
 	Menu_AddItem( &s_controls.menu, &s_controls.proxylauncher );
 	Menu_AddItem( &s_controls.menu, &s_controls.chaingun );
-#endif
 
 	Menu_AddItem( &s_controls.menu, &s_controls.showscores );
 	Menu_AddItem( &s_controls.menu, &s_controls.useitem );

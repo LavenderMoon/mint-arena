@@ -402,10 +402,8 @@ just like the existing corpse to leave behind.
 =============
 */
 void CopyToBodyQue( gentity_t *ent ) {
-#ifdef MISSIONPACK
 	gentity_t	*e;
 	int i;
-#endif
 	gentity_t		*body;
 	int			contents;
 
@@ -423,7 +421,7 @@ void CopyToBodyQue( gentity_t *ent ) {
 
 	body->s = ent->s;
 	body->s.eFlags = EF_DEAD;		// clear EF_TALK, etc
-#ifdef MISSIONPACK
+
 	if ( ent->s.eFlags & EF_KAMIKAZE ) {
 		body->s.eFlags |= EF_KAMIKAZE;
 
@@ -440,7 +438,7 @@ void CopyToBodyQue( gentity_t *ent ) {
 			break;
 		}
 	}
-#endif
+
 	body->s.powerups = 0;	// clear powerups
 	body->s.loopSound = 0;	// clear lava burning
 	body->s.number = body - g_entities;
@@ -762,15 +760,11 @@ void PlayerUserinfoChanged( int playerNum ) {
 	}
 
 	// set max health
-#ifdef MISSIONPACK
 	if (player->ps.powerups[PW_GUARD]) {
 		player->pers.maxHealth = 200;
 	} else {
 		player->pers.maxHealth = PlayerHandicap( player );
 	}
-#else
-	player->pers.maxHealth = PlayerHandicap( player );
-#endif
 	player->ps.stats[STAT_MAX_HEALTH] = player->pers.maxHealth;
 
 	// set model
@@ -1285,13 +1279,11 @@ void PlayerDisconnect( int playerNum ) {
 		// They don't get to take powerups with them!
 		// Especially important for stuff like CTF flags
 		TossPlayerItems( ent );
-#ifdef MISSIONPACK
+
 		TossPlayerPersistantPowerups( ent );
 		if( g_gametype.integer == GT_HARVESTER ) {
 			TossPlayerCubes( ent );
 		}
-#endif
-
 	}
 
 	G_LogPrintf( "PlayerDisconnect: %i\n", playerNum );

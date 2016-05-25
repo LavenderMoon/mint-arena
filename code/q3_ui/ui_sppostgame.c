@@ -71,7 +71,7 @@ typedef struct {
 	int				ranks[MAX_SCOREBOARD_PLAYERS];
 	int				scores[MAX_SCOREBOARD_PLAYERS];
 
-	char			placeNames[3][64];
+	char			winnerName[64];
 
 	int				level;
 	int				numPlayers;
@@ -199,7 +199,6 @@ static sfxHandle_t UI_SPPostgameMenu_MenuKey( int key ) {
 	}
 
 	if( postgameMenuInfo.phase == 1 ) {
-		trap_Cmd_ExecuteText( EXEC_APPEND, "abort_podium\n" );
 		postgameMenuInfo.phase = 2;
 		postgameMenuInfo.starttime = uis.realtime;
 		postgameMenuInfo.ignoreKeysTime	= uis.realtime + 250;
@@ -279,31 +278,32 @@ static void UI_SPPostgameMenu_DrawAwardsPresentation( int timer ) {
 UI_SPPostgameMenu_MenuDrawScoreLine
 =================
 */
-static void UI_SPPostgameMenu_MenuDrawScoreLine( int n, int y ) {
+/*static void UI_SPPostgameMenu_MenuDrawScoreLine( int n, int y ) {
 	int		rank;
 	char	name[64];
 	char	info[MAX_INFO_STRING];
 
-	if( n > (postgameMenuInfo.numPlayers + 1) ) {
+	/-if( n > (postgameMenuInfo.numPlayers + 1) ) {
 		n -= (postgameMenuInfo.numPlayers + 2);
 	}
 
 	if( n >= postgameMenuInfo.numPlayers ) {
 		return;
-	}
+	}-/
 
-	rank = postgameMenuInfo.ranks[n];
-	if( rank & RANK_TIED_FLAG ) {
+	rank = (postgameMenuInfo.ranks[n] & ~RANK_TIED_FLAG) + 1;
+	/-if( rank & RANK_TIED_FLAG ) {
 		UI_DrawString( 640 - 31 * SMALLCHAR_WIDTH, y, "(tie)", UI_LEFT|UI_SMALLFONT, color_white );
 		rank &= ~RANK_TIED_FLAG;
-	}
+	}-/
 	trap_GetConfigString( CS_PLAYERS + postgameMenuInfo.playerNums[n], info, MAX_INFO_STRING );
 	Q_strncpyz( name, Info_ValueForKey( info, "n" ), sizeof(name) );
 	Q_CleanStr( name );
 
-	UI_DrawString( 640 - 25 * SMALLCHAR_WIDTH, y, va( "#%i: %-16s %2i", rank + 1, name, postgameMenuInfo.scores[n] ), UI_LEFT|UI_SMALLFONT, color_white );
-}
+	UI_DrawString( 640 - 25 * SMALLCHAR_WIDTH, y, va( "#%i: %-16s %2i", rank, name, postgameMenuInfo.scores[n] ), UI_LEFT|UI_SMALLFONT, color_white );
+}*/
 
+extern qboolean CG_DrawOldScoreboard( void );
 
 /*
 =================
@@ -313,7 +313,7 @@ UI_SPPostgameMenu_MenuDraw
 static void UI_SPPostgameMenu_MenuDraw( void ) {
 	int		timer;
 	int		serverId;
-	int		n;
+//	int		n;
 	char	info[MAX_INFO_STRING];
 
 	trap_GetConfigString( CS_SYSTEMINFO, info, sizeof(info) );
@@ -323,12 +323,10 @@ static void UI_SPPostgameMenu_MenuDraw( void ) {
 		return;
 	}
 
+	CG_DrawOldScoreboard();
+
 	// phase 1
-	if ( postgameMenuInfo.numPlayers > 2 ) {
-		UI_DrawProportionalString( 510, 480 - 64 - PROP_HEIGHT, postgameMenuInfo.placeNames[2], UI_CENTER, color_white );
-	}
-	UI_DrawProportionalString( 130, 480 - 64 - PROP_HEIGHT, postgameMenuInfo.placeNames[1], UI_CENTER, color_white );
-	UI_DrawProportionalString( 320, 480 - 64 - 2 * PROP_HEIGHT, postgameMenuInfo.placeNames[0], UI_CENTER, color_white );
+	//UI_DrawProportionalString( 32, 2 * PROP_HEIGHT, va("Winner: %s", postgameMenuInfo.winnerName), UI_LEFT, color_white );
 
 	if( postgameMenuInfo.phase == 1 ) {
 		timer = uis.realtime - postgameMenuInfo.starttime;
@@ -394,20 +392,9 @@ static void UI_SPPostgameMenu_MenuDraw( void ) {
 	}
 
 	// draw the scoreboard
-	if( !trap_Cvar_VariableValue( "ui_spScoreboard" ) ) {
+	/*if( !trap_Cvar_VariableValue( "ui_spScoreboard" ) ) {
 		return;
-	}
-
-	timer = uis.realtime - postgameMenuInfo.scoreboardtime;
-	if( postgameMenuInfo.numPlayers <= 3 ) {
-		n = 0;
-	}
-	else {
-		n = timer / 1500 % (postgameMenuInfo.numPlayers + 2);
-	}
-	UI_SPPostgameMenu_MenuDrawScoreLine( n, 0 );
-	UI_SPPostgameMenu_MenuDrawScoreLine( n + 1, 0 + SMALLCHAR_HEIGHT );
-	UI_SPPostgameMenu_MenuDrawScoreLine( n + 2, 0 + 2 * SMALLCHAR_HEIGHT );
+	}*/
 }
 
 
@@ -508,7 +495,7 @@ static void Prepname( int index ) {
 		name[len] = 0;
 	}
 
-	Q_strncpyz( postgameMenuInfo.placeNames[index], name, sizeof(postgameMenuInfo.placeNames[index]) );
+	Q_strncpyz( postgameMenuInfo.winnerName, name, sizeof(postgameMenuInfo.winnerName) );
 }
 
 
@@ -526,6 +513,8 @@ void UI_SPPostgameMenu_f( void ) {
 	int			awardValues[MAX_UI_AWARDS];
 	char		map[MAX_QPATH];
 	char		info[MAX_INFO_STRING];
+	int			winnerNum, lastRank;
+	int			tempRank;
 
 	memset( &postgameMenuInfo, 0, sizeof(postgameMenuInfo) );
 
@@ -550,13 +539,38 @@ void UI_SPPostgameMenu_f( void ) {
 		postgameMenuInfo.numPlayers = MAX_SCOREBOARD_PLAYERS;
 	}
 
+	winnerNum = 0;
+	lastRank = 200;
+
 	for( n = 0; n < postgameMenuInfo.numPlayers; n++ ) {
+		tempRank = ( atoi( CG_Argv( 8 + n * 3 + 2 ) ) & ~RANK_TIED_FLAG ) + 1;
+		
 		postgameMenuInfo.playerNums[n] = atoi( CG_Argv( 8 + n * 3 + 1 ) );
-		postgameMenuInfo.ranks[n] = atoi( CG_Argv( 8 + n * 3 + 2 ) );
+		postgameMenuInfo.ranks[n] = tempRank;
 		postgameMenuInfo.scores[n] = atoi( CG_Argv( 8 + n * 3 + 3 ) );
+		
+		CG_Printf( "\n" );
+		if( postgameMenuInfo.playerNums[n] == playerNum )
+		{
+			CG_Printf( "[PLAYER]\n" );
+		}
+		CG_Printf( "playerNums[%i]: %i\n", n, postgameMenuInfo.playerNums[n] );
+		CG_Printf( "ranks[%i]: %i\n", n, tempRank );
+		CG_Printf( "scores[%i]: %i\n", n, postgameMenuInfo.scores[n] );
+		
+		if( lastRank > tempRank )
+		{
+			CG_Printf( "%i > %i: SUCCEEDED\n", lastRank, tempRank );
+			winnerNum = postgameMenuInfo.playerNums[n];
+			lastRank = tempRank;
+		}
+		else
+		{
+			CG_Printf( "%i < %i: FAILED\n", lastRank, tempRank );
+		}
 
 		if( postgameMenuInfo.playerNums[n] == playerNum ) {
-			playerGameRank = (postgameMenuInfo.ranks[n] & ~RANK_TIED_FLAG) + 1;
+			playerGameRank = tempRank;
 		}
 	}
 
@@ -638,12 +652,10 @@ void UI_SPPostgameMenu_f( void ) {
 		Menu_SetCursorToItem( &postgameMenuInfo.menu, &postgameMenuInfo.item_again );
 	}
 
-	Prepname( 0 );
-	Prepname( 1 );
-	Prepname( 2 );
+	Prepname( winnerNum );
 
 	if ( playerGameRank != 1 ) {
-		postgameMenuInfo.winnerSound = trap_S_RegisterSound( va( "sound/player/announce/%s_wins.wav", postgameMenuInfo.placeNames[0] ), qfalse );
+		postgameMenuInfo.winnerSound = trap_S_RegisterSound( va( "sound/player/announce/%s_wins.wav", postgameMenuInfo.winnerName ), qfalse );
 		trap_Cmd_ExecuteText( EXEC_APPEND, "music music/loss\n" );
 	}
 	else {

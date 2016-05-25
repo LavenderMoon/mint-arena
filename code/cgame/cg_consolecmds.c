@@ -33,10 +33,8 @@ Suite 120, Rockville, Maryland 20850 USA.
 
 #include "cg_local.h"
 #include "../ui/ui_public.h"
-#ifdef MISSIONPACK
 #include "../ui/ui_shared.h"
-#endif
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 extern menuDef_t *menuScoreboard;
 #endif
 
@@ -180,7 +178,7 @@ CG_ScoresDown
 static void CG_ScoresDown_f(int localPlayerNum) {
 	localPlayer_t *player = &cg.localPlayers[localPlayerNum];
 
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 	CG_BuildSpectatorString();
 #endif
 	if ( cg.scoresRequestTime + 2000 < cg.time ) {
@@ -239,29 +237,21 @@ void CG_SetModel_f( int localPlayerNum ) {
 	}
 }
 
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 extern menuDef_t *menuScoreboard;
 extern displayContextDef_t cgDC;
 void Menu_Reset( void );			// FIXME: add to right include file
-#ifdef MISSIONPACK
 void UI_Load( void );
-#endif
 
 static void CG_LoadHud_f( void) {
   char buff[1024];
 	const char *hudSet;
   memset(buff, 0, sizeof(buff));
 
-#ifdef MISSIONPACK
 	// must reload both ui and hud at once, they share the string memory pool
 	UI_Load();
 
 	Init_Display(&cgDC);
-#else
-	Init_Display(&cgDC);
-
-	String_Init();
-#endif
 
 	Menu_Reset();
 	
@@ -368,7 +358,6 @@ static void CG_CameraOrbit( int speed, int delay ) {
 	}
 }
 
-#ifdef MISSIONPACK
 static void CG_spWin_f( void) {
 	CG_CameraOrbit( 2, 35 );
 	CG_AddBufferedSound(cgs.media.winnerSound);
@@ -382,8 +371,6 @@ static void CG_spLose_f( void) {
 	//trap_S_StartLocalSound(cgs.media.loserSound, CHAN_ANNOUNCER);
 	CG_GlobalCenterPrint("YOU LOSE...", SCREEN_HEIGHT/2, 2.0);
 }
-
-#endif
 
 static void CG_TellTarget_f( int localPlayerNum ) {
 	int		playerNum;
@@ -415,7 +402,6 @@ static void CG_TellAttacker_f( int localPlayerNum ) {
 	trap_SendClientCommand( command );
 }
 
-#ifdef MISSIONPACK
 static void CG_VoiceTellTarget_f( int localPlayerNum ) {
 	int		playerNum;
 	char	command[128];
@@ -641,7 +627,7 @@ static void CG_EditHud_f( void ) {
 }
 */
 
-#endif
+
 
 /*
 ==================
@@ -863,12 +849,10 @@ static consoleCommand_t	cg_commands[] = {
 	{ "prevskin", CG_TestModelPrevSkin_f, CMD_INGAME },
 	{ "sizeup", CG_SizeUp_f, 0 },
 	{ "sizedown", CG_SizeDown_f, 0 },
-#ifdef MISSIONPACK
 	{ "spWin", CG_spWin_f, CMD_INGAME },
 	{ "spLose", CG_spLose_f, CMD_INGAME },
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 	{ "loadhud", CG_LoadHud_f, CMD_INGAME },
-#endif
 #endif
 	{ "startOrbit", CG_StartOrbit_f, CMD_INGAME },
 	//{ "camera", CG_Camera_f, CMD_INGAME },
@@ -965,7 +949,6 @@ static playerConsoleCommand_t	playerCommands[] = {
 	{ "tcmd", CG_TargetCommand_f, CMD_INGAME },
 	{ "tell_target", CG_TellTarget_f, CMD_INGAME },
 	{ "tell_attacker", CG_TellAttacker_f, CMD_INGAME },
-#ifdef MISSIONPACK
 	{ "vtell_target", CG_VoiceTellTarget_f, CMD_INGAME },
 	{ "vtell_attacker", CG_VoiceTellAttacker_f, CMD_INGAME },
 	{ "nextTeamMember", CG_NextTeamMember_f, CMD_INGAME },
@@ -987,8 +970,7 @@ static playerConsoleCommand_t	playerCommands[] = {
 	{ "tauntTaunt", CG_TauntTaunt_f, CMD_INGAME },
 	{ "tauntDeathInsult", CG_TauntDeathInsult_f, CMD_INGAME },
 	{ "tauntGauntlet", CG_TauntGauntlet_f, CMD_INGAME },
-#endif
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 	{ "scoresDown", CG_ScrollScoresDown_f, CMD_INGAME },
 	{ "scoresUp", CG_ScrollScoresUp_f, CMD_INGAME },
 #endif
@@ -1133,7 +1115,6 @@ void CG_InitConsoleCommands( void ) {
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "say"));
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "say_team"));
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "tell"));
-#ifdef MISSIONPACK
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "vsay"));
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "vsay_team"));
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "vtell"));
@@ -1141,7 +1122,6 @@ void CG_InitConsoleCommands( void ) {
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "vosay_team"));
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "votell"));
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "vtaunt"));
-#endif
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "give"));
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "god"));
 		trap_AddCommand(Com_LocalPlayerCvarName(i, "notarget"));

@@ -813,7 +813,7 @@ static void CG_LoadPlayerInfo( int playerNum, playerInfo_t *pi ) {
 	char		teamname[MAX_QPATH];
 
 	teamname[0] = 0;
-#ifdef MISSIONPACK
+
 	if( cgs.gametype >= GT_TEAM) {
 		if( pi->team == TEAM_BLUE ) {
 			Q_strncpyz(teamname, cg_blueTeamName.string, sizeof(teamname) );
@@ -824,7 +824,7 @@ static void CG_LoadPlayerInfo( int playerNum, playerInfo_t *pi ) {
 	if( teamname[0] ) {
 		strcat( teamname, "/" );
 	}
-#endif
+
 	modelloaded = qtrue;
 	if ( !CG_RegisterPlayerModelname( pi, pi->modelName, pi->skinName, pi->headModelName, pi->headSkinName, teamname ) ) {
 		if ( cg_buildScript.integer ) {
@@ -937,10 +937,8 @@ static qboolean CG_ScanForExistingPlayerInfo( playerInfo_t *pi ) {
 			&& !Q_stricmp( pi->skinName, match->skinName )
 			&& !Q_stricmp( pi->headModelName, match->headModelName )
 			&& !Q_stricmp( pi->headSkinName, match->headSkinName ) 
-#ifdef MISSIONPACK
 			&& !Q_stricmp( pi->blueTeam, match->blueTeam ) 
 			&& !Q_stricmp( pi->redTeam, match->redTeam )
-#endif
 			&& (cgs.gametype < GT_TEAM || pi->team == match->team) ) {
 			// this playerinfo is identical, so use its handles
 
@@ -1102,11 +1100,9 @@ void CG_NewPlayerInfo( int playerNum ) {
 	v = Info_ValueForKey( configstring, "tl" );
 	newInfo.teamLeader = atoi(v);
 
-#ifdef MISSIONPACK
 	Q_strncpyz(newInfo.redTeam, cg_redTeamName.string, MAX_TEAMNAME);
 
 	Q_strncpyz(newInfo.blueTeam, cg_blueTeamName.string, MAX_TEAMNAME);
-#endif
 
 	// model
 	v = Info_ValueForKey( configstring, "model" );
@@ -1709,17 +1705,13 @@ static void CG_BreathPuff( int playerNum, qboolean firstPerson, vec3_t origin, v
 
 	if ( contents & ( CONTENTS_WATER | CONTENTS_SLIME | CONTENTS_LAVA ) ) {
 		numPuffs = CG_SpawnBubbles( puffs, origin, 2, (int)( 3 + random() * 5 ) );
-	} else {
-#ifdef MISSIONPACK
-		if ( cg_enableBreath.integer ) {
-			vec3_t up;
+	} else if ( cg_enableBreath.integer ) {
+		vec3_t up;
 
-			VectorSet( up, 0, 0, 8 );
+		VectorSet( up, 0, 0, 8 );
 
-			puffs[0] = CG_SmokePuff( origin, up, 16, 1, 1, 1, 0.66f, 1500, cg.time, cg.time + 400, LEF_PUFF_DONT_SCALE, cgs.media.shotgunSmokePuffShader );
-			numPuffs = 1;
-		}
-#endif
+		puffs[0] = CG_SmokePuff( origin, up, 16, 1, 1, 1, 0.66f, 1500, cg.time, cg.time + 400, LEF_PUFF_DONT_SCALE, cgs.media.shotgunSmokePuffShader );
+		numPuffs = 1;
 	}
 
 	// if first person entity, only draw for specific player in first person
@@ -1785,7 +1777,6 @@ static void CG_AddBreathPuffs( centity_t *cent, refEntity_t *head ) {
 	pi->breathPuffTime = cg.time + 2000;
 }
 
-#ifdef MISSIONPACK
 /*
 ===============
 CG_DustTrail
@@ -1833,8 +1824,6 @@ static void CG_DustTrail( centity_t *cent ) {
 				  0,
 				  cgs.media.dustPuffShader );
 }
-
-#endif
 
 /*
 ===============
@@ -1986,7 +1975,6 @@ static void CG_PlayerFlag( centity_t *cent, const cgSkin_t *skin, refEntity_t *t
 }
 
 
-#ifdef MISSIONPACK
 /*
 ===============
 CG_PlayerTokens
@@ -2054,7 +2042,6 @@ static void CG_PlayerTokens( centity_t *cent, int renderfx ) {
 		VectorCopy(trail->positions[i], origin);
 	}
 }
-#endif
 
 
 /*
@@ -2523,14 +2510,12 @@ void CG_Player( centity_t *cent ) {
 	vec3_t			shadowOrigin;
 	float			shadowAlpha;
 	float			bodySinkOffset;
-#ifdef MISSIONPACK
 	refEntity_t		skull;
 	refEntity_t		powerup;
 	int				t;
 	float			c;
 	float			angle;
 	vec3_t			dir, angles;
-#endif
 
 	// the player number is stored in playerNum.  It can't be derived
 	// from the entity number, because a single player may have
@@ -2625,11 +2610,11 @@ void CG_Player( centity_t *cent ) {
 		renderfx |= RF_SHADOW_PLANE;
 	}
 	renderfx |= RF_LIGHTING_ORIGIN;			// use the same origin for all
-#ifdef MISSIONPACK
+
 	if( cgs.gametype == GT_HARVESTER ) {
 		CG_PlayerTokens( cent, renderfx );
 	}
-#endif
+
 	//
 	// add the legs
 	//
@@ -2676,7 +2661,6 @@ void CG_Player( centity_t *cent ) {
 	// add the talk baloon or disconnect icon
 	CG_PlayerSprites( cent, &torso );
 
-#ifdef MISSIONPACK
 	if ( cent->currentState.eFlags & EF_KAMIKAZE ) {
 
 		memset( &skull, 0, sizeof(skull) );
@@ -2878,7 +2862,6 @@ void CG_Player( centity_t *cent ) {
 		}
 		CG_AddRefEntityWithMinLight( &powerup );
 	}
-#endif // MISSIONPACK
 
 	//
 	// add the head
@@ -2902,9 +2885,7 @@ void CG_Player( centity_t *cent ) {
 
 	CG_AddBreathPuffs( cent, &head );
 
-#ifdef MISSIONPACK
 	CG_DustTrail(cent);
-#endif
 
 	//
 	// add the gun / barrel / flash

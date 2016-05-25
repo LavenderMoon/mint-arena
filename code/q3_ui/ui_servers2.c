@@ -108,11 +108,9 @@ MULTIPLAYER MENU (SERVER BROWSER)
 #define GAMES_TEAMPLAY		2
 #define GAMES_TOURNEY		3
 #define GAMES_CTF			4
-#ifdef MISSIONPACK
 #define GAMES_1FCTF			5
 #define GAMES_OBELISK		6
 #define GAMES_HARVESTER		7
-#endif // MISSIONPACK
 
 static const char *master_items[] = {
 	"Local",
@@ -131,11 +129,9 @@ static const char *servertype_items[] = {
 	"Team Deathmatch",
 	"Tournament",
 	"Capture the Flag",
-#ifdef MISSIONPACK
 	"1 Flag CTF",
 	"Overload",
 	"Harvester",
-#endif // MISSIONPACK
 	NULL
 };
 
@@ -366,7 +362,6 @@ int ArenaServers_GametypeForGames(int games) {
 		gametype = GT_CTF;
 		break;
 
-#ifdef MISSIONPACK
 	case GAMES_1FCTF:
 		gametype = GT_1FCTF;
 		break;
@@ -378,7 +373,6 @@ int ArenaServers_GametypeForGames(int games) {
 	case GAMES_HARVESTER:
 		gametype = GT_HARVESTER;
 		break;
-#endif
 	}
 
 	return gametype;

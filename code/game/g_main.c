@@ -103,7 +103,6 @@ vmCvar_t	pmove_msec;
 vmCvar_t	g_rankings;
 vmCvar_t	g_listEntity;
 vmCvar_t	g_singlePlayer;
-#ifdef MISSIONPACK
 vmCvar_t	g_obeliskHealth;
 vmCvar_t	g_obeliskRegenPeriod;
 vmCvar_t	g_obeliskRegenAmount;
@@ -112,7 +111,6 @@ vmCvar_t	g_cubeTimeout;
 vmCvar_t	g_redteam;
 vmCvar_t	g_blueteam;
 vmCvar_t	g_proxMineTimeout;
-#endif
 vmCvar_t	g_playerCapsule;
 
 static cvarTable_t		gameCvarTable[] = {
@@ -177,7 +175,6 @@ static cvarTable_t		gameCvarTable[] = {
 
 	{ &g_singlePlayer, "ui_singlePlayerActive", "0", CVAR_SYSTEMINFO | CVAR_ROM, 0, RANGE_ALL },
 
-#ifdef MISSIONPACK
 	{ &g_obeliskHealth, "g_obeliskHealth", "2500", 0, 0, RANGE_ALL },
 	{ &g_obeliskRegenPeriod, "g_obeliskRegenPeriod", "1", 0, 0, RANGE_ALL },
 	{ &g_obeliskRegenAmount, "g_obeliskRegenAmount", "15", 0, 0, RANGE_ALL },
@@ -188,7 +185,6 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_blueteam, "g_blueteam", DEFAULT_BLUETEAM_NAME, CVAR_ARCHIVE | CVAR_SYSTEMINFO, GCF_TRACK_CHANGE | GCF_TEAM_SHADER, RANGE_ALL },
 
 	{ &g_proxMineTimeout, "g_proxMineTimeout", "20000", 0, 0, RANGE_ALL },
-#endif
 	{ &g_playerCapsule, "g_playerCapsule", "0", 0, 0, RANGE_BOOL },
 	{ &g_smoothClients, "g_smoothClients", "1", 0, 0, RANGE_BOOL },
 	{ &pmove_overbounce, "pmove_overbounce", "0", CVAR_SYSTEMINFO, 0, RANGE_BOOL },
@@ -365,7 +361,6 @@ void G_FindTeams( void ) {
 }
 
 void G_RemapTeamShaders( void ) {
-#ifdef MISSIONPACK
 	char string[1024];
 	float f = level.time * 0.001;
 	Com_sprintf( string, sizeof(string), "team_icon/%s_red", g_redteam.string );
@@ -375,7 +370,6 @@ void G_RemapTeamShaders( void ) {
 	AddRemap("textures/ctf2/blueteam01", string, f); 
 	AddRemap("textures/ctf2/blueteam02", string, f); 
 	trap_SetConfigstring(CS_SHADERSTATE, BuildShaderStateConfig());
-#endif
 }
 
 
@@ -1202,21 +1196,21 @@ void BeginIntermission( void ) {
 		MovePlayerToIntermission( player );
 		trap_UnlinkEntity(player);
 	}
-#ifdef MISSIONPACK
-	if (g_singlePlayer.integer) {
+//#ifdef MISSIONPACK
+	if ( g_gametype.integer == GT_SINGLE_PLAYER || g_singlePlayer.integer ) {
 		trap_Cvar_SetValue("ui_singlePlayerActive", 0);
 		UpdateTournamentInfo();
+		//SpawnModelsOnVictoryPads(); // !TODO: Make sure this works. I took this from Q3A.
 	}
-#else
+/*#else
 	// if single player game
 	if ( g_gametype.integer == GT_SINGLE_PLAYER ) {
 		UpdateTournamentInfo();
 		SpawnModelsOnVictoryPads();
 	}
-#endif
+#endif*/
 	// send the current scoring to all clients
 	SendScoreboardMessageToAllClients();
-
 }
 
 
@@ -1334,10 +1328,8 @@ Append information about this game to the log file
 void LogExit( const char *string ) {
 	int				i, numSorted;
 	gplayer_t		*cl;
-#ifdef MISSIONPACK
 	qboolean won = qtrue;
 	team_t team = TEAM_RED;
-#endif
 	G_LogPrintf( "Exit: %s\n", string );
 
 	level.intermissionQueued = level.time;
@@ -1372,7 +1364,6 @@ void LogExit( const char *string ) {
 		ping = cl->ps.ping < 999 ? cl->ps.ping : 999;
 
 		G_LogPrintf( "score: %i  ping: %i  player: %i %s\n", cl->ps.persistant[PERS_SCORE], ping, level.sortedPlayers[i],	cl->pers.netname );
-#ifdef MISSIONPACK
 		if (g_singlePlayer.integer && !(g_entities[cl - level.players].r.svFlags & SVF_BOT)) {
 			team = cl->sess.sessionTeam;
 		}
@@ -1381,11 +1372,8 @@ void LogExit( const char *string ) {
 				won = qfalse;
 			}
 		}
-#endif
-
 	}
 
-#ifdef MISSIONPACK
 	if (g_singlePlayer.integer) {
 		if (g_gametype.integer >= GT_TEAM) {
 			if (team == TEAM_BLUE) {
@@ -1396,9 +1384,6 @@ void LogExit( const char *string ) {
 		}
 		trap_Cmd_ExecuteText( EXEC_APPEND, (won) ? "spWin\n" : "spLose\n" );
 	}
-#endif
-
-
 }
 
 
@@ -1525,18 +1510,18 @@ void CheckExitRules( void ) {
 	}
 
 	if ( level.intermissionQueued ) {
-#ifdef MISSIONPACK
+/*#ifdef MISSIONPACK
 		int time = (g_singlePlayer.integer) ? SP_INTERMISSION_DELAY_TIME : INTERMISSION_DELAY_TIME;
 		if ( level.time - level.intermissionQueued >= time ) {
 			level.intermissionQueued = 0;
 			BeginIntermission();
 		}
-#else
+#else*/
 		if ( level.time - level.intermissionQueued >= INTERMISSION_DELAY_TIME ) {
 			level.intermissionQueued = 0;
 			BeginIntermission();
 		}
-#endif
+//#endif
 		return;
 	}
 

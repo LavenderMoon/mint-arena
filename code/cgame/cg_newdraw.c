@@ -31,9 +31,7 @@ Suite 120, Rockville, Maryland 20850 USA.
 #include "cg_local.h"
 #include "../ui/ui_shared.h"
 
-#ifdef MISSIONPACK
-
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 extern displayContextDef_t cgDC;
 
 fontInfo_t *CG_FontForScale( float scale ) {
@@ -108,7 +106,7 @@ void CG_Text_Paint_Limit(float *maxX, float x, float y, float scale, const vec4_
 
 //static int sortedTeamPlayers[TEAM_MAXOVERLAY];
 //static int numSortedTeamPlayers;
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 int drawTeamOverlayModificationCount = -1;
 #endif
 
@@ -273,7 +271,7 @@ void CG_SelectPrevPlayer( int localPlayerNum ) {
 }
 
 
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 static void CG_DrawPlayerArmorIcon( rectDef_t *rect, qboolean draw2D ) {
 	vec3_t		angles;
 	vec3_t		origin;
@@ -1072,7 +1070,7 @@ float CG_GetValue(int ownerDraw) {
   }
 	return -1;
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 qboolean CG_OtherTeamHasFlag(void) {
 	if (cgs.gametype == GT_CTF || cgs.gametype == GT_1FCTF) {
@@ -1122,7 +1120,7 @@ qboolean CG_YourTeamHasFlag(void) {
 	return qfalse;
 }
 
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 // THINKABOUTME: should these be exclusive or inclusive.. 
 // 
 qboolean CG_OwnerDrawVisible(int flags) {
@@ -1872,7 +1870,7 @@ void CG_KeyEvent(int key, qboolean down) {
 		}
 	}
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 void CG_RunMenuScript(char **args) {
 }
@@ -1893,6 +1891,3 @@ void CG_GetTeamColor(vec4_t *color) {
     (*color)[3] = 0.25f;
 	}
 }
-
-#endif
-

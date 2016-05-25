@@ -89,7 +89,6 @@ static const char *ctfMessages[] = {
 	"i stop being the leader",
 	NULL
 };
-#ifdef MISSIONPACK
 static const char *ctfVoiceChats[] = {
 	"startleader",
 	"defend",
@@ -110,7 +109,6 @@ static const char *ctfButtons[] = {
 	NULL,
 	NULL
 };
-#endif
 
 #define NUM_TEAM_ORDERS		6
 static const char *teamOrders[] = {
@@ -131,7 +129,6 @@ static const char *teamMessages[] = {
 	"i stop being the leader",
 	NULL
 };
-#ifdef MISSIONPACK
 static const char *teamVoiceChats[] = {
 	"startleader",
 	"followme",
@@ -150,7 +147,6 @@ static const char *teamButtons[] = {
 	NULL,
 	NULL
 };
-#endif
 
 
 /*
@@ -321,10 +317,8 @@ static void UI_TeamOrdersMenu_ListEvent( void *ptr, int event ) {
 	int		id;
 	int		selection;
 	char	message[256];
-#ifdef MISSIONPACK
 	const char **voiceChats;
 	const char **buttons;
-#endif
 
 	if (event != QM_ACTIVATED)
 		return;
@@ -345,20 +339,15 @@ static void UI_TeamOrdersMenu_ListEvent( void *ptr, int event ) {
 
 	if( id == ID_LIST_CTF_ORDERS ) {
 		Com_sprintf( message, sizeof(message), ctfMessages[selection], teamOrdersMenuInfo.botNames[teamOrdersMenuInfo.selectedBot] );
-#ifdef MISSIONPACK
 		voiceChats = ctfVoiceChats;
 		buttons = ctfButtons;
-#endif
 	}
 	else {
 		Com_sprintf( message, sizeof(message), teamMessages[selection], teamOrdersMenuInfo.botNames[teamOrdersMenuInfo.selectedBot] );
-#ifdef MISSIONPACK
 		voiceChats = teamVoiceChats;
 		buttons = teamButtons;
-#endif
 	}
 
-#ifdef MISSIONPACK
 	if (teamOrdersMenuInfo.selectedBot == 0) // Everyone
 	{
 		if (voiceChats[selection] != NULL && buttons[selection] != NULL)
@@ -377,9 +366,6 @@ static void UI_TeamOrdersMenu_ListEvent( void *ptr, int event ) {
 		else
 			trap_Cmd_ExecuteText( EXEC_APPEND, va( "say_team \"%s\"\n", message ) );
 	}
-#else
-	trap_Cmd_ExecuteText( EXEC_APPEND, va( "say_team \"%s\"\n", message ) );
-#endif
 	UI_PopMenu();
 }
 

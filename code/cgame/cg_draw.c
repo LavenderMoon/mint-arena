@@ -33,7 +33,7 @@ Suite 120, Rockville, Maryland 20850 USA.
 
 #include "cg_local.h"
 
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 #include "../ui/ui_shared.h"
 
 // used for scoreboard
@@ -58,7 +58,7 @@ CG_DrawField
 Draws large numbers for status bar and powerups
 ==============
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static void CG_DrawField (int x, int y, int style, int width, int value, float *color) {
 	char	num[16];
 
@@ -94,7 +94,7 @@ static void CG_DrawField (int x, int y, int style, int width, int value, float *
 
 	CG_DrawString( x + 2 + CHAR_WIDTH * width, y, num, UI_RIGHT|UI_GRADIENT|UI_NUMBERFONT|UI_NOSCALE|style, color );
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 /*
 ================
@@ -268,7 +268,7 @@ CG_DrawStatusBarHead
 
 ================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 
 static void CG_DrawStatusBarHead( float x ) {
 	vec3_t		angles;
@@ -320,7 +320,7 @@ static void CG_DrawStatusBarHead( float x ) {
 	CG_DrawHead( x, 480 - size, size, size, 
 				cg.cur_ps->playerNum, angles );
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 /*
 ================
@@ -328,11 +328,11 @@ CG_DrawStatusBarFlag
 
 ================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static void CG_DrawStatusBarFlag( float x, int team ) {
 	CG_DrawFlagModel( x, 480 - ICON_SIZE, ICON_SIZE, ICON_SIZE, team, qfalse );
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 /*
 ================
@@ -369,7 +369,7 @@ CG_DrawStatusBar
 
 ================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static void CG_DrawStatusBar( void ) {
 	int			color;
 	centity_t	*cent;
@@ -487,7 +487,7 @@ static void CG_DrawStatusBar( void ) {
 
 	}
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 /*
 ===========================================================================================
@@ -874,7 +874,7 @@ CG_DrawScores
 Draw the small two score display
 =================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static float CG_DrawScores( float y ) {
 	const char	*s;
 	int			s1, s2, score;
@@ -925,7 +925,6 @@ static float CG_DrawScores( float y ) {
 			}
 		}
 
-#ifdef MISSIONPACK
 		if ( cgs.gametype == GT_1FCTF ) {
 			// Display flag status
 			item = BG_FindItemForPowerup( PW_NEUTRALFLAG );
@@ -950,7 +949,6 @@ static float CG_DrawScores( float y ) {
 				}
 			}
 		}
-#endif
 
 		color[0] = 1.0f;
 		color[1] = 0.0f;
@@ -1054,14 +1052,14 @@ static float CG_DrawScores( float y ) {
 
 	return y1 - 8;
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 /*
 ================
 CG_DrawPowerups
 ================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static float CG_DrawPowerups( float y ) {
 	int		sorted[MAX_POWERUPS];
 	int		sortedTime[MAX_POWERUPS];
@@ -1092,7 +1090,6 @@ static float CG_DrawPowerups( float y ) {
 			continue;
 		}
 
-#ifdef MISSIONPACK
 		if (i == PW_SCOUT
 			|| i == PW_GUARD
 			|| i == PW_DOUBLER
@@ -1100,7 +1097,6 @@ static float CG_DrawPowerups( float y ) {
 		{
 			continue;
 		}
-#endif
 
 		// ZOID--don't draw if the power up has unlimited time
 		// This is true of the CTF flags
@@ -1169,7 +1165,7 @@ static float CG_DrawPowerups( float y ) {
 
 	return y;
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 /*
 =====================
@@ -1177,7 +1173,7 @@ CG_DrawLowerRight
 
 =====================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static void CG_DrawLowerRight( void ) {
 	float	y;
 
@@ -1192,14 +1188,14 @@ static void CG_DrawLowerRight( void ) {
 	y = CG_DrawScores( y );
 	CG_DrawPowerups( y );
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 /*
 ===================
 CG_DrawPickupItem
 ===================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static int CG_DrawPickupItem( int y ) {
 	int		value;
 	float	*fadeColor;
@@ -1224,7 +1220,7 @@ static int CG_DrawPickupItem( int y ) {
 	
 	return y;
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 /*
 =====================
@@ -1232,7 +1228,7 @@ CG_DrawLowerLeft
 
 =====================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static void CG_DrawLowerLeft( void ) {
 	float	y;
 
@@ -1247,7 +1243,7 @@ static void CG_DrawLowerLeft( void ) {
 
 	CG_DrawPickupItem( y );
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 
 //===========================================================================================
@@ -1257,7 +1253,7 @@ static void CG_DrawLowerLeft( void ) {
 CG_DrawTeamInfo
 =================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static void CG_DrawTeamInfo( void ) {
 	int h;
 	int i;
@@ -1318,14 +1314,14 @@ static void CG_DrawTeamInfo( void ) {
 		}
 	}
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
 /*
 ===================
 CG_DrawHoldableItem
 ===================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static void CG_DrawHoldableItem( void ) { 
 	int		value;
 
@@ -1338,15 +1334,14 @@ static void CG_DrawHoldableItem( void ) {
 	}
 
 }
-#endif // MISSIONPACK_HUD
+#endif // TEAMARENA_HUD
 
-#ifdef MISSIONPACK
 /*
 ===================
 CG_DrawPersistantPowerup
 ===================
 */
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 static void CG_DrawPersistantPowerup( void ) { 
 	int		value;
 
@@ -1358,8 +1353,7 @@ static void CG_DrawPersistantPowerup( void ) {
 		CG_DrawPic( 640-ICON_SIZE, (SCREEN_HEIGHT-ICON_SIZE)/2 - ICON_SIZE, ICON_SIZE, ICON_SIZE, cg_items[ value ].icon );
 	}
 }
-#endif // MISSIONPACK_HUD
-#endif // MISSIONPACK
+#endif // TEAMARENA_HUD
 
 
 /*
@@ -1531,7 +1525,7 @@ static void CG_DrawDisconnect( void ) {
 
 	CG_SetScreenPlacement(PLACE_RIGHT, PLACE_BOTTOM);
 
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 	x = 640 - 48;
 	y = 480 - 144;
 #else
@@ -1568,7 +1562,7 @@ static void CG_DrawLagometer( void ) {
 	//
 	// draw the graph
 	//
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 	x = 640 - 48;
 	y = 480 - 144;
 #else
@@ -2286,7 +2280,7 @@ static void CG_DrawVote(void) {
 	CG_DrawSmallString( 2, 58, s, 1.0F );
 	s = va( "Yes (%s): %i, No (%s): %i", yesKeys, cgs.voteYes, noKeys, cgs.voteNo );
 	CG_DrawSmallString( 2, 58 + lineHeight, s, 1.0F );
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 	s = "or press ESC then click Vote";
 	CG_DrawSmallString( 2, 58 + lineHeight * 2, s, 1.0F );
 #endif
@@ -2347,7 +2341,7 @@ qboolean CG_AnyScoreboardShowing( void ) {
 }
 
 static qboolean CG_DrawScoreboard( void ) {
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 	static qboolean firstTime[MAX_SPLITVIEW] = {qtrue, qtrue, qtrue, qtrue};
 
 	CG_SetScreenPlacement(PLACE_CENTER, PLACE_CENTER);
@@ -2466,7 +2460,7 @@ CG_DrawIntermission
 */
 static void CG_DrawIntermission( void ) {
 //	int key;
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 	//if (cg_singlePlayer.integer) {
 	//	CG_DrawCenterString();
 	//	return;
@@ -2598,8 +2592,6 @@ static void CG_DrawAmmoWarning( void ) {
 	CG_DrawString( SCREEN_WIDTH / 2, 64, s, UI_CENTER|UI_DROPSHADOW|UI_BIGFONT, NULL );
 }
 
-
-#ifdef MISSIONPACK
 /*
 =================
 CG_DrawProxWarning
@@ -2634,8 +2626,6 @@ static void CG_DrawProxWarning( void ) {
 
 	CG_DrawString( SCREEN_WIDTH / 2, 64 + lineHeight, s, UI_CENTER|UI_DROPSHADOW|UI_BIGFONT, g_color_table[ColorIndex(COLOR_RED)] );
 }
-#endif
-
 
 /*
 =================
@@ -2738,7 +2728,7 @@ Draw console notify area.
 void CG_DrawNotify( void ) {
 	int x;
 
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 	// voice head is being shown
 	if ( !cg.cur_lc->showScores && cg.cur_ps->stats[STAT_HEALTH] > 0 &&
 		cg.cur_lc->voiceTime && cg.cur_lc->voiceTime >= cg.time && cg.cur_lc->playerNum != cg.cur_lc->currentVoicePlayerNum )
@@ -2752,7 +2742,7 @@ void CG_DrawNotify( void ) {
 }
 
 //==================================================================================
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 /* 
 =================
 CG_DrawTimedMenus
@@ -2773,11 +2763,10 @@ CG_Draw2D
 */
 static void CG_Draw2D(stereoFrame_t stereoFrame)
 {
-#ifdef MISSIONPACK
 	if (cg.cur_lc->orderPending && cg.time > cg.cur_lc->orderTime) {
 		CG_CheckOrderPending( cg.cur_localPlayerNum );
 	}
-#endif
+
 	// if we are taking a levelshot for the menu, don't draw anything
 	if ( cg.levelShot ) {
 		return;
@@ -2812,7 +2801,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame)
 		// don't draw any status if dead or the scoreboard is being explicitly shown
 		if ( !cg.cur_lc->showScores && cg.cur_ps->stats[STAT_HEALTH] > 0 ) {
 
-#ifdef MISSIONPACK_HUD
+#ifdef TEAMARENA_HUD
 			if ( cg_drawStatus.integer ) {
 				CG_SetScreenPlacement(PLACE_CENTER, PLACE_BOTTOM);
 
@@ -2825,25 +2814,22 @@ static void CG_Draw2D(stereoFrame_t stereoFrame)
       
 			CG_DrawAmmoWarning();
 
-#ifdef MISSIONPACK
 			CG_DrawProxWarning();
-#endif      
+
 			if(stereoFrame == STEREO_CENTER)
 				CG_DrawCrosshair();
 			CG_DrawCrosshairNames();
 			CG_DrawWeaponSelect();
 
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 			CG_DrawHoldableItem();
-#ifdef MISSIONPACK
 			CG_DrawPersistantPowerup();
-#endif
 #endif
 			CG_DrawReward();
 		}
     
 		if ( cgs.gametype >= GT_TEAM ) {
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 			CG_DrawTeamInfo();
 #endif
 		}
@@ -2856,15 +2842,11 @@ static void CG_Draw2D(stereoFrame_t stereoFrame)
 
 	CG_DrawVoipMeter();
 
-#ifdef MISSIONPACK
 	if (!cg_paused.integer) {
 		CG_DrawUpperRight(stereoFrame);
 	}
-#else
-	CG_DrawUpperRight(stereoFrame);
-#endif
 
-#ifndef MISSIONPACK_HUD
+#ifndef TEAMARENA_HUD
 	CG_DrawLowerRight();
 	CG_DrawLowerLeft();
 #endif
@@ -3045,11 +3027,10 @@ void CG_DrawDemoRecording( void ) {
 	if ( trap_GetDemoState() != DS_RECORDING ) {
 		return;
 	}
-#ifdef MISSIONPACK
+
 	if ( cg_recordSPDemo.integer ) {
 		return;
 	}
-#endif
 
 	trap_GetDemoName( demoName, sizeof( demoName ) );
 	pos = trap_GetDemoPos();
