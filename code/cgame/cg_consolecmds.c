@@ -343,32 +343,13 @@ static void CG_ScrollScoresUp_f( int localPlayerNum ) {
 }
 #endif
 
-static void CG_CameraOrbit( int speed, int delay ) {
-	int i;
-
-	trap_Cvar_SetValue( "cg_cameraOrbit", speed );
-	if ( delay > 0 ) {
-		trap_Cvar_SetValue( "cg_cameraOrbitDelay", delay );
-	}
-
-	for ( i = 0; i < CG_MaxSplitView(); i++ ) {
-		trap_Cvar_SetValue(Com_LocalPlayerCvarName( i, "cg_thirdPerson" ), speed == 0 ? 0 : 1 );
-		trap_Cvar_SetValue(Com_LocalPlayerCvarName( i, "cg_thirdPersonAngle" ), 0 );
-		trap_Cvar_SetValue(Com_LocalPlayerCvarName( i, "cg_thirdPersonRange" ), 100 );
-	}
-}
-
 static void CG_spWin_f( void) {
-	CG_CameraOrbit( 2, 35 );
-	CG_AddBufferedSound(cgs.media.winnerSound);
-	//trap_S_StartLocalSound(cgs.media.winnerSound, CHAN_ANNOUNCER);
+	// LM: We no longer go into third person.	CG_AddBufferedSound(cgs.media.winnerSound);
 	CG_GlobalCenterPrint("YOU WIN!", SCREEN_HEIGHT/2, 2.0);
 }
 
 static void CG_spLose_f( void) {
-	CG_CameraOrbit( 2, 35 );
 	CG_AddBufferedSound(cgs.media.loserSound);
-	//trap_S_StartLocalSound(cgs.media.loserSound, CHAN_ANNOUNCER);
 	CG_GlobalCenterPrint("YOU LOSE...", SCREEN_HEIGHT/2, 2.0);
 }
 
@@ -596,73 +577,6 @@ static void CG_TaskSuicide_f( int localPlayerNum ) {
 	trap_SendClientCommand( command );
 }
 
-
-
-/*
-==================
-CG_TeamMenu_f
-==================
-*/
-/*
-static void CG_TeamMenu_f( void ) {
-  if (Key_GetCatcher() & KEYCATCH_CGAME) {
-    CG_EventHandling(CGAME_EVENT_NONE);
-    Key_SetCatcher(0);
-  } else {
-    CG_EventHandling(CGAME_EVENT_TEAMMENU);
-    //Key_SetCatcher(KEYCATCH_CGAME);
-  }
-}
-*/
-
-/*
-==================
-CG_EditHud_f
-==================
-*/
-/*
-static void CG_EditHud_f( void ) {
-  //cls.keyCatchers ^= KEYCATCH_CGAME;
-  //VM_Call (cgvm, CG_EVENT_HANDLING, (cls.keyCatchers & KEYCATCH_CGAME) ? CGAME_EVENT_EDITHUD : CGAME_EVENT_NONE);
-}
-*/
-
-
-
-/*
-==================
-CG_StartOrbit_f
-==================
-*/
-
-static void CG_StartOrbit_f( void ) {
-	char var[MAX_TOKEN_CHARS];
-
-	trap_Cvar_VariableStringBuffer( "developer", var, sizeof( var ) );
-	if ( !atoi(var) ) {
-		return;
-	}
-	if (cg_cameraOrbit.value != 0) {
-		CG_CameraOrbit( 0, -1 );
-	} else {
-		CG_CameraOrbit( 5, -1 );
-	}
-}
-
-/*
-static void CG_Camera_f( void ) {
-	char name[1024];
-	trap_Argv( 1, name, sizeof(name));
-	if (trap_loadCamera(name)) {
-		cg.cameraMode = qtrue;
-		trap_startCamera(cg.time);
-	} else {
-		CG_Printf ("Unable to load camera %s\n",name);
-	}
-}
-*/
-
-
 void CG_GenerateTracemap(void)
 {
 	bgGenTracemap_t gen;
@@ -854,8 +768,6 @@ static consoleCommand_t	cg_commands[] = {
 #ifdef TEAMARENA_HUD
 	{ "loadhud", CG_LoadHud_f, CMD_INGAME },
 #endif
-	{ "startOrbit", CG_StartOrbit_f, CMD_INGAME },
-	//{ "camera", CG_Camera_f, CMD_INGAME },
 	{ "loaddeferred", CG_LoadDeferredPlayers, CMD_INGAME },
 	{ "generateTracemap", CG_GenerateTracemap, CMD_INGAME },
 	{ "remapShader", CG_RemapShader_f, 0 },

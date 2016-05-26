@@ -71,8 +71,6 @@ typedef struct {
 	int				ranks[MAX_SCOREBOARD_PLAYERS];
 	int				scores[MAX_SCOREBOARD_PLAYERS];
 
-	char			winnerName[64];
-
 	int				level;
 	int				numPlayers;
 	int				won;
@@ -231,7 +229,7 @@ static void UI_SPPostgameMenu_DrawAwardsMedals( int max ) {
 
 	for( n = 0; n < max; n++ ) {
 		x = medalLocations[n];
-		y = 64;
+		y = 8;
 		medal = postgameMenuInfo.awardsEarned[n];
 		amount = postgameMenuInfo.awardsLevels[n];
 
@@ -262,7 +260,7 @@ static void UI_SPPostgameMenu_DrawAwardsPresentation( int timer ) {
 
 	color[0] = color[1] = color[2] = 1.0f;
 	color[3] = (float)( AWARD_PRESENTATION_TIME - atimer ) / (float)AWARD_PRESENTATION_TIME;
-	UI_DrawProportionalString( 320, 64, ui_medalNames[postgameMenuInfo.awardsEarned[awardNum]], UI_CENTER, color );
+	UI_DrawProportionalString( 320, 8, ui_medalNames[postgameMenuInfo.awardsEarned[awardNum]], UI_CENTER, color );
 
 	UI_SPPostgameMenu_DrawAwardsMedals( awardNum + 1 );
 
@@ -272,37 +270,7 @@ static void UI_SPPostgameMenu_DrawAwardsPresentation( int timer ) {
 	}
 }
 
-
-/*
-=================
-UI_SPPostgameMenu_MenuDrawScoreLine
-=================
-*/
-/*static void UI_SPPostgameMenu_MenuDrawScoreLine( int n, int y ) {
-	int		rank;
-	char	name[64];
-	char	info[MAX_INFO_STRING];
-
-	/-if( n > (postgameMenuInfo.numPlayers + 1) ) {
-		n -= (postgameMenuInfo.numPlayers + 2);
-	}
-
-	if( n >= postgameMenuInfo.numPlayers ) {
-		return;
-	}-/
-
-	rank = (postgameMenuInfo.ranks[n] & ~RANK_TIED_FLAG) + 1;
-	/-if( rank & RANK_TIED_FLAG ) {
-		UI_DrawString( 640 - 31 * SMALLCHAR_WIDTH, y, "(tie)", UI_LEFT|UI_SMALLFONT, color_white );
-		rank &= ~RANK_TIED_FLAG;
-	}-/
-	trap_GetConfigString( CS_PLAYERS + postgameMenuInfo.playerNums[n], info, MAX_INFO_STRING );
-	Q_strncpyz( name, Info_ValueForKey( info, "n" ), sizeof(name) );
-	Q_CleanStr( name );
-
-	UI_DrawString( 640 - 25 * SMALLCHAR_WIDTH, y, va( "#%i: %-16s %2i", rank, name, postgameMenuInfo.scores[n] ), UI_LEFT|UI_SMALLFONT, color_white );
-}*/
-
+// !TODO: Make some sort of cg-ui_shared.h file or something for cg_ things shared to ui_
 extern qboolean CG_DrawOldScoreboard( void );
 
 /*
@@ -313,7 +281,6 @@ UI_SPPostgameMenu_MenuDraw
 static void UI_SPPostgameMenu_MenuDraw( void ) {
 	int		timer;
 	int		serverId;
-//	int		n;
 	char	info[MAX_INFO_STRING];
 
 	trap_GetConfigString( CS_SYSTEMINFO, info, sizeof(info) );
@@ -326,8 +293,6 @@ static void UI_SPPostgameMenu_MenuDraw( void ) {
 	CG_DrawOldScoreboard();
 
 	// phase 1
-	//UI_DrawProportionalString( 32, 2 * PROP_HEIGHT, va("Winner: %s", postgameMenuInfo.winnerName), UI_LEFT, color_white );
-
 	if( postgameMenuInfo.phase == 1 ) {
 		timer = uis.realtime - postgameMenuInfo.starttime;
 
@@ -390,11 +355,6 @@ static void UI_SPPostgameMenu_MenuDraw( void ) {
 
 		Menu_Draw( &postgameMenuInfo.menu );
 	}
-
-	// draw the scoreboard
-	/*if( !trap_Cvar_VariableValue( "ui_spScoreboard" ) ) {
-		return;
-	}*/
 }
 
 
@@ -479,30 +439,10 @@ static void UI_SPPostgameMenu_Init( void ) {
 	Menu_AddItem( &postgameMenuInfo.menu, ( void * )&postgameMenuInfo.item_next );
 }
 
-
-static void Prepname( int index ) {
-	int		len;
-	char	name[64];
-	char	info[MAX_INFO_STRING];
-
-	trap_GetConfigString( CS_PLAYERS + postgameMenuInfo.playerNums[index], info, MAX_INFO_STRING );
-	Q_strncpyz( name, Info_ValueForKey( info, "n" ), sizeof(name) );
-	Q_CleanStr( name );
-	len = strlen( name );
-
-	while( len && UI_ProportionalStringWidth( name ) > 256 ) {
-		len--;
-		name[len] = 0;
-	}
-
-	Q_strncpyz( postgameMenuInfo.winnerName, name, sizeof(postgameMenuInfo.winnerName) );
-}
-
-
 /*
-=================
+===================
 UI_SPPostgameMenu_f
-=================
+===================
 */
 void UI_SPPostgameMenu_f( void ) {
 	int			playerGameRank;
@@ -652,14 +592,10 @@ void UI_SPPostgameMenu_f( void ) {
 		Menu_SetCursorToItem( &postgameMenuInfo.menu, &postgameMenuInfo.item_again );
 	}
 
-	Prepname( winnerNum );
-
 	if ( playerGameRank != 1 ) {
-		postgameMenuInfo.winnerSound = trap_S_RegisterSound( va( "sound/player/announce/%s_wins.wav", postgameMenuInfo.winnerName ), qfalse );
 		trap_Cmd_ExecuteText( EXEC_APPEND, "music music/loss\n" );
 	}
 	else {
-		postgameMenuInfo.winnerSound = trap_S_RegisterSound( "sound/player/announce/youwin.wav", qfalse );
 		trap_Cmd_ExecuteText( EXEC_APPEND, "music music/win\n" );
 	}
 
