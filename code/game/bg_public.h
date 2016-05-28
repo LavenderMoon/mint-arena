@@ -1063,21 +1063,21 @@ typedef struct headAnimation_s {
 #define DEFAULT_MODEL_FEMALE	"major"
 
 // Default team player model names
-#define DEFAULT_TEAM_MODEL		"james"
-#define DEFAULT_TEAM_HEAD		"*james"
+#define DEFAULT_TEAM_MODEL		"sergei"
+#define DEFAULT_TEAM_HEAD		"*sergei"
 
-#define DEFAULT_TEAM_MODEL2		"james"
-#define DEFAULT_TEAM_HEAD2		"*james"
+#define DEFAULT_TEAM_MODEL2		"sergei"
+#define DEFAULT_TEAM_HEAD2		"*sergei"
 
-#define DEFAULT_TEAM_MODEL3		"janet"
-#define DEFAULT_TEAM_HEAD3		"*janet"
+#define DEFAULT_TEAM_MODEL3		"kyonshi"
+#define DEFAULT_TEAM_HEAD3		"*kyonshi"
 
-#define DEFAULT_TEAM_MODEL4		"janet"
-#define DEFAULT_TEAM_HEAD4		"*janet"
+#define DEFAULT_TEAM_MODEL4		"kyonshi"
+#define DEFAULT_TEAM_HEAD4		"*kyonshi"
 
 // For team fallback sounds
-#define DEFAULT_TEAM_MODEL_MALE		"james"
-#define DEFAULT_TEAM_MODEL_FEMALE	"janet"
+#define DEFAULT_TEAM_MODEL_MALE		"sergei"
+#define DEFAULT_TEAM_MODEL_FEMALE	"kyonshi"
 
 #define DEFAULT_REDTEAM_NAME		"Pagans"
 #define DEFAULT_BLUETEAM_NAME		"Stroggs"
