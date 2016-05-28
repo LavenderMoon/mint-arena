@@ -369,7 +369,7 @@ typedef struct {
 	int				defendCount;
 	int				assistCount;
 	int				captures;
-	qboolean	perfect;
+	qboolean		perfect;
 	int				team;
 } score_t;
 
@@ -446,6 +446,26 @@ typedef struct {
 	sfxHandle_t		sounds[MAX_CUSTOM_SOUNDS];
 } playerInfo_t;
 
+typedef enum {
+	W_PART_1,
+	W_PART_2,
+	W_PART_3,
+	W_PART_4,
+	W_PART_5,
+	W_PART_6,
+	W_PART_7,
+	W_MAX_PARTS
+} barrelType_t;
+
+typedef enum {
+	W_AP_MODEL,			//  all-purpose model
+//	W_TP_MODEL,         //	third person model
+//	W_FP_MODEL,         //	first person model
+//	W_PU_MODEL,         //	pickup model
+//	W_FP_MODEL_SWAP,    //	swap out model
+//	W_SKTP_MODEL,       //	SKELETAL version third person model
+	W_NUM_TYPES
+} modelViewType_t;
 
 // each WP_* weapon enum has an associated weaponInfo_t
 // that contains media references necessary to present the
@@ -454,18 +474,36 @@ typedef struct weaponInfo_s {
 	qboolean		registered;
 	gitem_t			*item;
 
-	qhandle_t		handsModel;			// the hands don't actually draw, they just position the weapon
+//----(SA)	weapon animation sequences loaded from the weapon.cfg
+	animation_t		weapAnimations[MAX_WP_ANIMATIONS];
+//----(SA)	end
+
+	qhandle_t		handsModel;				// the hands don't actually draw, they just position the weapon
+
+	qhandle_t		standModel;				// not drawn.  tags used for positioning weapons for pickup
+
+//----(SA) mod for 1st/3rd person weap views
 	qhandle_t		weaponModel;
+//	qhandle_t		wpPartModels[W_MAX_PARTS];
 	qhandle_t		barrelModel;
 	qhandle_t		flashModel;
+	qhandle_t		modModel;	// like the scope for the rifles
+//----(SA) end
 
-	vec3_t			weaponMidpoint;		// so it will rotate centered instead of by tag
+	pose_t position;						// wolf locations (high, low, knife, pistol, shoulder, throw)  defines are WPOS_HIGH, WPOS_LOW, WPOS_KNIFE, WPOS_PISTOL, WPOS_SHOULDER, WPOS_THROW
+
+	vec3_t			weaponMidpoint;			// so it will rotate centered instead of by tag
 
 	float			flashDlight;
 	vec3_t			flashDlightColor;
-	sfxHandle_t		flashSound[4];		// fast firing weapons randomly choose
+	sfxHandle_t		flashSound[4];			// fast firing weapons randomly choose
+	sfxHandle_t		flashEchoSound[4];		//----(SA)	added - distant gun firing sound
+	sfxHandle_t		lastShotSound[4];		// sound of the last shot can be different (mauser doesn't have bolt action on last shot for example)
 
-	qhandle_t		weaponIcon;
+	sfxHandle_t		switchSound[4];			//----(SA)	added
+
+//	qhandle_t		weaponIcon[2];			//----(SA)	[0] is weap icon, [1] is highlight icon
+	qhandle_t		weaponIcon;				// LM: Just use the single weapon icon
 	qhandle_t		ammoIcon;
 
 	qhandle_t		ammoModel;
@@ -475,6 +513,7 @@ typedef struct weaponInfo_s {
 	void			(*missileTrailFunc)( centity_t *, const struct weaponInfo_s *wi );
 	float			missileDlight;
 	vec3_t			missileDlightColor;
+	int				missileRenderfx;
 
 	void			(*ejectBrassFunc)( centity_t * );
 
@@ -483,6 +522,11 @@ typedef struct weaponInfo_s {
 
 	sfxHandle_t		readySound;
 	sfxHandle_t		firingSound;
+	sfxHandle_t		overheatSound;
+	sfxHandle_t		reloadSound;
+
+	sfxHandle_t		spinupSound;			//----(SA)	added // sound started when fire button goes down, and stepped on when the first fire event happens
+	sfxHandle_t		spindownSound;			//----(SA)	added // sound called if the above is running but player doesn't follow through and fire
 } weaponInfo_t;
 
 

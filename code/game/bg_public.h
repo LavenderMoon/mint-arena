@@ -258,13 +258,13 @@ typedef struct entityState_s {
 
 
 // bit limits
-#define WEAPONNUM_BITS			4
+#define WEAPONNUM_BITS			6
 
 // array limits (engine will only network arrays <= 1024 elements)
 #define	MAX_STATS				16
 #define	MAX_PERSISTANT			16
 #define	MAX_POWERUPS			16 // entityState_t::powerups bit field limits this to <= 32.
-#define	MAX_WEAPONS				(1<<WEAPONNUM_BITS) // playerState_t::stats[STAT_WEAPONS] bit field limits this to <= 16.
+#define	MAX_WEAPONS				(1<<WEAPONNUM_BITS) // 64
 
 #define	MAX_PS_EVENTS			2
 
@@ -363,6 +363,8 @@ typedef struct playerState_s {
 	//int			persistant[MAX_PERSISTANT];	// stats that aren't cleared on death
 	int			powerups[MAX_POWERUPS];	// level.time that the powerup runs out
 	int			ammo[MAX_WEAPONS];
+	int			ammoclip[MAX_WEAPONS];	// ammo in clip
+	int			weapons[2];				// !TODO: Is this 64 bits? It should be, right?
 
 	int			tokens;			// harvester skulls
 	int			loopSound;
@@ -512,7 +514,7 @@ void Pmove (pmove_t *pmove);
 typedef enum {
 	STAT_HEALTH,
 	STAT_HOLDABLE_ITEM,
-	STAT_WEAPONS,					// 16 bit fields
+//	STAT_WEAPONS,					// 16 bit fields
 	STAT_ARMOR,				
 	STAT_DEAD_YAW,					// look this direction when dead (FIXME: get rid of?)
 	STAT_MAX_HEALTH,				// health / armor limit, changable by handicap
@@ -605,6 +607,15 @@ typedef enum {
 	HI_NUM_HOLDABLE
 } holdable_t;
 
+typedef enum {
+	WPOS_HIGH,
+	WPOS_LOW,
+	WPOS_KNIFE,
+	WPOS_PISTOL,
+	WPOS_SHOULDER,
+	WPOS_THROW,
+	WPOS_NUM_POSITIONS
+} pose_t;
 
 // NOTE: may not have more than MAX_WEAPONS
 typedef enum {
@@ -623,6 +634,9 @@ typedef enum {
 	WP_NAILGUN,
 	WP_PROX_LAUNCHER,
 	WP_CHAINGUN,
+	
+/*	WP_COLT,
+	WP_COLT_AKIMBO,*/
 
 	WP_NUM_WEAPONS
 } weapon_t;
@@ -784,7 +798,7 @@ typedef enum {
 	TORSO_ATTACK2,
 
 	TORSO_DROP,
-	TORSO_RAISE,
+	TORSO_RAISE,	// (low)
 
 	TORSO_STAND,
 	TORSO_STAND2,
@@ -815,17 +829,167 @@ typedef enum {
 
 	MAX_ANIMATIONS,
 
+	LEGS_WALKCR_BACK,
+	LEGS_SWIM_IDLE,
+	LEGS_IDLE_ALT, // LEGS_IDLE2
+
+	BOTH_DEAD1_WATER,
+	BOTH_DEAD2_WATER,
+	BOTH_DEAD3_WATER,
+
+	BOTH_CLIMB,
+	BOTH_CLIMB_DOWN,
+	BOTH_CLIMB_DISMOUNT,
+
+	BOTH_SALUTE,
+
+	BOTH_PAIN1,		// head
+	BOTH_PAIN2,		// chest
+	BOTH_PAIN3,		// groin
+	BOTH_PAIN4,		// right shoulder
+	BOTH_PAIN5,		// left shoulder
+	BOTH_PAIN6,		// right knee
+	BOTH_PAIN7,		// left knee
+	BOTH_PAIN8,		// dazed
+
+	BOTH_GRAB_GRENADE,
+
+	BOTH_ATTACK1,
+	BOTH_ATTACK2,
+	BOTH_ATTACK3,
+	BOTH_ATTACK4,
+	BOTH_ATTACK5,
+
+	BOTH_EXTRA1,
+	BOTH_EXTRA2,
+	BOTH_EXTRA3,
+	BOTH_EXTRA4,
+	BOTH_EXTRA5,
+	BOTH_EXTRA6,
+	BOTH_EXTRA7,
+	BOTH_EXTRA8,
+	BOTH_EXTRA9,
+	BOTH_EXTRA10,
+	BOTH_EXTRA11,
+	BOTH_EXTRA12,
+	BOTH_EXTRA13,
+	BOTH_EXTRA14,
+	BOTH_EXTRA15,
+	BOTH_EXTRA16,
+	BOTH_EXTRA17,
+	BOTH_EXTRA18,
+	BOTH_EXTRA19,
+	BOTH_EXTRA20,
+
+	TORSO_GESTURE2,
+	TORSO_GESTURE3,
+	TORSO_GESTURE4,
+
+	TORSO_STAND_ALT1,
+	TORSO_STAND_ALT2,
+	TORSO_READY,
+	TORSO_RELAX,
+
+	TORSO_RAISE2,	// (high)
+	TORSO_STAND2_ALT1,
+	TORSO_STAND2_ALT2,
+	TORSO_READY2,
+	TORSO_RELAX2,
+
+	TORSO_RAISE3,	// (pistol)
+	TORSO_ATTACK3,
+	TORSO_STAND3,
+	TORSO_STAND3_ALT1,
+	TORSO_STAND3_ALT2,
+	TORSO_READY3,
+	TORSO_RELAX3,
+
+	TORSO_RAISE4,	// (shoulder)
+	TORSO_ATTACK4,
+	TORSO_STAND4,
+	TORSO_STAND4_ALT1,
+	TORSO_STAND4_ALT2,
+	TORSO_READY4,
+	TORSO_RELAX4,
+
+	TORSO_RAISE5,	// (throw)
+	TORSO_ATTACK5,
+	TORSO_ATTACK5B,
+	TORSO_STAND5,
+	TORSO_STAND5_ALT1,
+	TORSO_STAND5_ALT2,
+	TORSO_READY5,
+	TORSO_RELAX5,
+
+	TORSO_RELOAD1,	// (low)
+	TORSO_RELOAD2,	// (high)
+	TORSO_RELOAD3,	// (pistol)
+	TORSO_RELOAD4,	// (shoulder)
+
+	TORSO_MG42,		// firing tripod mounted weapon animation
+
+	TORSO_MOVE,		// torso anim to play while moving and not firing (swinging arms type thing)
+	TORSO_MOVE_ALT,
+
+	TORSO_EXTRA,
+	TORSO_EXTRA2,
+	TORSO_EXTRA3,
+	TORSO_EXTRA4,
+	TORSO_EXTRA5,
+	TORSO_EXTRA6,
+	TORSO_EXTRA7,
+	TORSO_EXTRA8,
+	TORSO_EXTRA9,
+	TORSO_EXTRA10,
+
+	LEGS_BOOT,		// kicking animation
+
 	LEGS_BACKCR,
 	LEGS_BACKWALK,
 	FLAG_RUN,
 	FLAG_STAND,
 	FLAG_STAND2RUN,
 
+	LEGS_EXTRA1,
+	LEGS_EXTRA2,
+	LEGS_EXTRA3,
+	LEGS_EXTRA4,
+	LEGS_EXTRA5,
+	LEGS_EXTRA6,
+	LEGS_EXTRA7,
+	LEGS_EXTRA8,
+	LEGS_EXTRA9,
+	LEGS_EXTRA10,
+
 	MAX_TOTALANIMATIONS
 } animNumber_t;
 
 
+// text represenation for scripting
+extern char *animStrings[];		// defined in bg_misc.c
+extern char *animStringsOld[];	// defined in bg_misc.c
+
+typedef enum {
+	WEAP_IDLE1,
+	WEAP_IDLE2,
+	WEAP_ATTACK1,
+	WEAP_ATTACK2,
+	WEAP_ATTACK_LASTSHOT,	// used when firing the last round before having an empty clip.
+	WEAP_DROP,
+	WEAP_RAISE,
+	WEAP_RELOAD1,
+	WEAP_RELOAD2,
+	WEAP_RELOAD3,
+	WEAP_ALTSWITCHFROM,		// switch from alt fire mode weap (scoped/silencer/etc)
+	WEAP_ALTSWITCHTO,		// switch to alt fire mode weap
+	MAX_WP_ANIMATIONS
+} weapAnimNumber_t;
+
+#define ANIMFL_LADDERANIM	0x1
+#define ANIMFL_FIRINGANIM	0x2
+
 typedef struct animation_s {
+	char	name[MAX_QPATH];
 	int		firstFrame;
 	int		numFrames;
 	int		loopFrames;			// 0 to numFrames
@@ -833,13 +997,49 @@ typedef struct animation_s {
 	int		initialLerp;		// msec to get to first frame
 	int		reversed;			// true if animation is reversed
 	int		flipflop;			// true if animation should flipflop back to base
+	int		moveSpeed;
+	int		animBlend;			// take this long to blend to next anim
+	int		priority;
+	//
+	// derived
+	//
+	int		duration;
+	int		nameHash;
+	int		flags;
+	int		movetype;
+	float	stepGap;
 } animation_t;
 
+// Ridah, head animations
+typedef enum {
+	HEAD_NEUTRAL_CLOSED,
+	HEAD_NEUTRAL_A,
+	HEAD_NEUTRAL_O,
+	HEAD_NEUTRAL_I,
+	HEAD_NEUTRAL_E,
+	HEAD_HAPPY_CLOSED,
+	HEAD_HAPPY_O,
+	HEAD_HAPPY_I,
+	HEAD_HAPPY_E,
+	HEAD_HAPPY_A,
+	HEAD_ANGRY_CLOSED,
+	HEAD_ANGRY_O,
+	HEAD_ANGRY_I,
+	HEAD_ANGRY_E,
+	HEAD_ANGRY_A,
+
+	MAX_HEAD_ANIMS
+} animHeadNumber_t;
+
+typedef struct headAnimation_s {
+	int firstFrame;
+	int numFrames;
+} headAnimation_t;
+// done.
 
 // flip the togglebit every time an animation
 // changes so a restart of the same anim can be detected
-#define	ANIM_TOGGLEBIT		128
-
+#define ANIM_TOGGLEBIT      ( 1 << ( ANIM_BITS - 1 ) )
 
 #define DEFAULT_PLAYER_NAME		"UnnamedPlayer"
 #define DEFAULT_PLAYER_COLOR1	4
@@ -982,11 +1182,17 @@ typedef struct gitem_s {
 	char		*pickup_name;	// for printing on pickup
 
 	int			quantity;		// for ammo how much, or duration of powerup
-	itemType_t  giType;			// IT_* flags
+	itemType_t	giType;			// IT_* flags
 
 	int			giTag;
 
 	char		*sounds;		// string of all sounds this item will use
+
+	int			giAmmoIndex;	// RTCW: type of weapon ammo this uses.  (ex. WP_MP40 and WP_LUGER share 9mm ammo, so they both have WP_LUGER for giAmmoIndex)
+//	int			giClipIndex;	// RTCW: which clip this weapon uses.  this allows the sniper rifle to use the same clip as the garand, etc.
+
+//	char		*ammoicon;		// RTCW: Ammo icon
+//	char		*precaches;		// RTCW: string of all models and images this item will use
 } gitem_t;
 
 // included in both the game dll and the client
@@ -998,6 +1204,7 @@ gitem_t	*BG_FindItemForWeapon( weapon_t weapon );
 gitem_t	*BG_FindItemForAmmo( weapon_t weapon );
 gitem_t	*BG_FindItemForPowerup( powerup_t pw );
 gitem_t	*BG_FindItemForHoldable( holdable_t pw );
+weapon_t BG_FindAmmoForWeapon( weapon_t weapon );
 #define	BG_NumItems() (bg_numItems)
 #define	BG_ItemForItemNum(x) (&bg_itemlist[(x)])
 #define	BG_ItemNumForItem(x) ((x)-bg_itemlist)

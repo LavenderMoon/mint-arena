@@ -393,10 +393,22 @@ static void CG_TouchItem( centity_t *cent ) {
 
 	// if it's a weapon, give them some predicted ammo so the autoswitch will work
 	if ( item->giType == IT_WEAPON ) {
-		cg.cur_lc->predictedPlayerState.stats[ STAT_WEAPONS ] |= 1 << item->giTag;
-		if ( !cg.cur_lc->predictedPlayerState.ammo[ item->giTag ] ) {
-			cg.cur_lc->predictedPlayerState.ammo[ item->giTag ] = 1;
+		int weapon = item->giTag;
+
+/*		if (weapon == WP_COLT) {
+			if (COM_BitCheck(cg.cur_lc->predictedPlayerState.weapons, WP_COLT)) {
+				// you got the colt, you gettin' another
+				weapon = WP_COLT_AKIMBO;
+			}
+		}*/
+
+		Q_AddWeapon(cg.cur_lc->predictedPlayerState.weapons, weapon);
+		if (!cg.cur_lc->predictedPlayerState.ammo[BG_FindAmmoForWeapon(weapon)]) {
+			cg.cur_lc->predictedPlayerState.ammo[BG_FindAmmoForWeapon(weapon)] = 1;
 		}
+		/*if ( !cg.cur_lc->predictedPlayerState.ammo[ item->giTag ] ) {
+			cg.cur_lc->predictedPlayerState.ammo[ item->giTag ] = 1;
+		}*/
 	}
 }
 

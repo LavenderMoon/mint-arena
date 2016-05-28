@@ -453,7 +453,6 @@ void UI_SPPostgameMenu_f( void ) {
 	int			awardValues[MAX_UI_AWARDS];
 	char		map[MAX_QPATH];
 	char		info[MAX_INFO_STRING];
-	int			winnerNum, lastRank;
 	int			tempRank;
 
 	memset( &postgameMenuInfo, 0, sizeof(postgameMenuInfo) );
@@ -479,9 +478,6 @@ void UI_SPPostgameMenu_f( void ) {
 		postgameMenuInfo.numPlayers = MAX_SCOREBOARD_PLAYERS;
 	}
 
-	winnerNum = 0;
-	lastRank = 200;
-
 	for( n = 0; n < postgameMenuInfo.numPlayers; n++ ) {
 		tempRank = ( atoi( CG_Argv( 8 + n * 3 + 2 ) ) & ~RANK_TIED_FLAG ) + 1;
 		
@@ -498,17 +494,6 @@ void UI_SPPostgameMenu_f( void ) {
 		CG_Printf( "ranks[%i]: %i\n", n, tempRank );
 		CG_Printf( "scores[%i]: %i\n", n, postgameMenuInfo.scores[n] );
 		
-		if( lastRank > tempRank )
-		{
-			CG_Printf( "%i > %i: SUCCEEDED\n", lastRank, tempRank );
-			winnerNum = postgameMenuInfo.playerNums[n];
-			lastRank = tempRank;
-		}
-		else
-		{
-			CG_Printf( "%i < %i: FAILED\n", lastRank, tempRank );
-		}
-
 		if( postgameMenuInfo.playerNums[n] == playerNum ) {
 			playerGameRank = tempRank;
 		}

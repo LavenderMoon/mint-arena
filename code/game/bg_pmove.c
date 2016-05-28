@@ -1478,7 +1478,7 @@ static void PM_BeginWeaponChange( int weapon ) {
 		return;
 	}
 
-	if ( !( pm->ps->stats[STAT_WEAPONS] & ( 1 << weapon ) ) ) {
+	if ( !Q_HasWeapon(pm->ps->weapons, weapon) ) {
 		return;
 	}
 	
@@ -1506,7 +1506,7 @@ static void PM_FinishWeaponChange( void ) {
 		weapon = WP_NONE;
 	}
 
-	if ( !( pm->ps->stats[STAT_WEAPONS] & ( 1 << weapon ) ) ) {
+	if ( !Q_HasWeapon(pm->ps->weapons, weapon) ) {
 		weapon = WP_NONE;
 	}
 

@@ -231,9 +231,9 @@ int Pickup_Weapon (gentity_t *ent, gentity_t *other) {
 	}
 
 	// add the weapon
-	other->player->ps.stats[STAT_WEAPONS] |= ( 1 << ent->item->giTag );
+	Q_AddWeapon(other->player->ps.weapons, ent->item->giTag);
 
-	Add_Ammo( other, ent->item->giTag, quantity );
+	Add_Ammo( other, ent->item->giAmmoIndex, quantity ); // LM: Give the ammo this uses.
 
 	if (ent->item->giTag == WP_GRAPPLING_HOOK)
 		other->player->ps.ammo[ent->item->giTag] = -1; // unlimited ammo

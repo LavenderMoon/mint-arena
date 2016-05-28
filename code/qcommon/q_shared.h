@@ -714,6 +714,11 @@ void	COM_ParseError( char *format, ... ) __attribute__ ((format (printf, 1, 2)))
 void	COM_ParseWarning( char *format, ... ) __attribute__ ((format (printf, 1, 2)));
 //int		COM_ParseInfos( char *buf, int max, char infos[][MAX_INFO_STRING] );
 
+// RTCW Functions
+qboolean COM_BitCheck(const int array[], int bitNum);
+void COM_BitSet(int array[], int bitNum);
+void COM_BitClear(int array[], int bitNum);
+
 #define MAX_TOKENLENGTH		1024
 
 #ifndef TT_STRING
@@ -1167,6 +1172,7 @@ typedef enum {
 
 ========================================================================
 */
+#define ANIM_BITS		10
 
 #define	ANGLE2SHORT(x)	((int)((x)*65536/360) & 65535)
 #define	SHORT2ANGLE(x)	((x)*(360.0/65536))
@@ -1347,5 +1353,10 @@ typedef enum {
 
 #define LERP( a, b, w ) ( ( a ) * ( 1.0f - ( w ) ) + ( b ) * ( w ) )
 #define LUMA( red, green, blue ) ( 0.2126f * ( red ) + 0.7152f * ( green ) + 0.0722f * ( blue ) )
+
+qboolean	Q_HasWeapon(int* weapons, int weapon);
+void		Q_SetWeapons(int* weapons, int weapon);
+void		Q_AddWeapon(int* weapons, int weapon);
+void		Q_RemoveWeapon(int* weapons, int weapon);
 
 #endif	// __Q_SHARED_H

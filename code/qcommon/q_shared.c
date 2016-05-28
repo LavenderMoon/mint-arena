@@ -369,6 +369,64 @@ void COM_ParseWarning( char *format, ... )
 	Com_Printf("WARNING: %s, line %d: %s\n", com_parsename, COM_GetCurrentParseLine(), string);
 }
 
+// RTCW Functions
+/*
+==================
+COM_BitCheck
+
+Allows bit-wise checks on arrays with more than one item (> 32 bits)
+==================
+*/
+qboolean COM_BitCheck(const int array[], int bitNum) {
+	int i;
+
+	i = 0;
+	while (bitNum > 31) {
+		i++;
+		bitNum -= 32;
+	}
+
+	return ((array[i] & (1 << bitNum)) != 0);  // (SA) heh, whoops. :)
+}
+
+/*
+==================
+COM_BitSet
+
+Allows bit-wise SETS on arrays with more than one item (> 32 bits)
+==================
+*/
+void COM_BitSet(int array[], int bitNum) {
+	int i;
+
+	i = 0;
+	while (bitNum > 31) {
+		i++;
+		bitNum -= 32;
+	}
+
+	array[i] |= (1 << bitNum);
+}
+
+/*
+==================
+COM_BitClear
+
+Allows bit-wise CLEAR on arrays with more than one item (> 32 bits)
+==================
+*/
+void COM_BitClear(int array[], int bitNum) {
+	int i;
+
+	i = 0;
+	while (bitNum > 31) {
+		i++;
+		bitNum -= 32;
+	}
+
+	array[i] &= ~(1 << bitNum);
+}
+
 /*
 ==============
 COM_Parse
@@ -1666,3 +1724,36 @@ const char *Com_LocalPlayerBaseCvarName(const char *in_cvarName) {
 	return baseName;
 }
 
+// Urgh, this isn't accessible from here. Copy it from bg_public.h
+#define WP_NUM_WEAPONS 14
+
+qboolean Q_HasWeapon(int* weapons, int weapon)
+{
+	return COM_BitCheck(weapons, weapon);
+}
+
+void Q_SetWeapons(int* weapons, int weapon)
+{
+	int i = 0;
+	for (i = 0; i < WP_NUM_WEAPONS; i++)
+	{
+		if (i == weapon)
+		{
+			COM_BitSet(weapons, i);
+		}
+		else
+		{
+			COM_BitClear(weapons, i);
+		}
+	}
+}
+
+void Q_AddWeapon(int* weapons, int weapon)
+{
+	COM_BitSet(weapons, weapon);
+}
+
+void Q_RemoveWeapon(int* weapons, int weapon)
+{
+	COM_BitClear(weapons, weapon);
+}

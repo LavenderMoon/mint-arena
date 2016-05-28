@@ -46,13 +46,11 @@ void CG_CheckAmmo( void ) {
 	int		i;
 	int		total;
 	int		previous;
-	int		weapons;
 
 	// see about how many seconds of ammo we have remaining
-	weapons = cg.cur_ps->stats[ STAT_WEAPONS ];
 	total = 0;
 	for ( i = WP_MACHINEGUN ; i < WP_NUM_WEAPONS ; i++ ) {
-		if ( ! ( weapons & ( 1 << i ) ) ) {
+		if ( !Q_HasWeapon(cg.cur_ps->weapons, i) ) {
 			continue;
 		}
 		switch ( i ) {

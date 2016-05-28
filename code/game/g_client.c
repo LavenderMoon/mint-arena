@@ -1153,14 +1153,14 @@ void PlayerSpawn(gentity_t *ent) {
 
 	player->ps.playerNum = index;
 
-	player->ps.stats[STAT_WEAPONS] = ( 1 << WP_MACHINEGUN );
+	Q_SetWeapons(player->ps.weapons, WP_MACHINEGUN);
 	if ( g_gametype.integer == GT_TEAM ) {
 		player->ps.ammo[WP_MACHINEGUN] = 50;
 	} else {
 		player->ps.ammo[WP_MACHINEGUN] = 100;
 	}
 
-	player->ps.stats[STAT_WEAPONS] |= ( 1 << WP_GAUNTLET );
+	Q_AddWeapon(player->ps.weapons, WP_GAUNTLET);
 	player->ps.ammo[WP_GAUNTLET] = -1;
 	player->ps.ammo[WP_GRAPPLING_HOOK] = -1;
 
@@ -1199,7 +1199,7 @@ void PlayerSpawn(gentity_t *ent) {
 			player->ps.weapon = 1;
 
 			for (i = WP_NUM_WEAPONS - 1 ; i > 0 ; i--) {
-				if (player->ps.stats[STAT_WEAPONS] & (1 << i)) {
+				if (Q_HasWeapon(player->ps.weapons, i)) {
 					player->ps.weapon = i;
 					break;
 				}

@@ -660,11 +660,30 @@ void CG_RegisterWeapon( int weaponNum ) {
 	}
 
 	switch ( weaponNum ) {
+	case WP_NONE:
+		break;
+
 	case WP_GAUNTLET:
 		MAKERGB( weaponInfo->flashDlightColor, 0.6f, 0.6f, 1.0f );
 		weaponInfo->firingSound = trap_S_RegisterSound( "sound/weapons/melee/fstrun.wav", qfalse );
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/melee/fstatck.wav", qfalse );
 		break;
+
+/*	case WP_COLT:
+		MAKERGB(weaponInfo->flashDlightColor, 1.0, 0.6, 0.23);
+		weaponInfo->flashSound[0] = trap_S_RegisterSound("sound/weapons/colt/coltf1.wav", qfalse);
+		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/mp40/mp40e1.wav", qfalse); // use same as mp40
+		weaponInfo->reloadSound = trap_S_RegisterSound("sound/weapons/colt/colt_reload.wav", qfalse);
+		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
+		break;
+
+	case WP_COLT_AKIMBO:
+		MAKERGB(weaponInfo->flashDlightColor, 1.0, 0.6, 0.23);
+		weaponInfo->flashSound[0] = trap_S_RegisterSound("sound/weapons/colt/coltf1.wav", qfalse);
+		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/mp40/mp40e1.wav", qfalse); // use same as mp40
+		weaponInfo->reloadSound = trap_S_RegisterSound("sound/weapons/colt/colt_reload2.wav", qfalse);
+		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
+		break;*/
 
 	case WP_LIGHTNING:
 		MAKERGB( weaponInfo->flashDlightColor, 0.6f, 0.6f, 1.0f );
@@ -1447,7 +1466,6 @@ CG_DrawWeaponSelect
 */
 void CG_DrawWeaponSelect( void ) {
 	int		i;
-	int		bits;
 	int		count;
 	int		x, y;
 	char	*name;
@@ -1470,10 +1488,9 @@ void CG_DrawWeaponSelect( void ) {
 	cg.cur_lc->itemPickupTime = 0;
 
 	// count the number of weapons owned
-	bits = cg.cur_ps->stats[ STAT_WEAPONS ];
 	count = 0;
-	for ( i = 1 ; i < MAX_WEAPONS ; i++ ) {
-		if ( bits & ( 1 << i ) ) {
+	for (i = 1; i < MAX_WEAPONS; i++) {
+		if ( Q_HasWeapon(cg.cur_ps->weapons, i) ) {
 			count++;
 		}
 	}
@@ -1482,7 +1499,7 @@ void CG_DrawWeaponSelect( void ) {
 	y = 380;
 
 	for ( i = 1 ; i < MAX_WEAPONS ; i++ ) {
-		if ( !( bits & ( 1 << i ) ) ) {
+		if (!Q_HasWeapon(cg.cur_ps->weapons, i)) {
 			continue;
 		}
 
@@ -1515,7 +1532,6 @@ void CG_DrawWeaponSelect( void ) {
 	trap_R_SetColor( NULL );
 }
 
-
 /*
 ===============
 CG_WeaponSelectable
@@ -1525,11 +1541,8 @@ static qboolean CG_WeaponSelectable( playerState_t *ps, int i ) {
 	if ( !ps->ammo[i] ) {
 		return qfalse;
 	}
-	if ( ! (ps->stats[ STAT_WEAPONS ] & ( 1 << i ) ) ) {
-		return qfalse;
-	}
 
-	return qtrue;
+	return Q_HasWeapon(ps->weapons, i);
 }
 
 /*
@@ -1599,7 +1612,7 @@ void CG_PrevWeapon_f( int localPlayerNum ) {
 	player->weaponSelectTime = cg.time;
 	original = player->weaponSelect;
 
-	for ( i = 0 ; i < MAX_WEAPONS ; i++ ) {
+	for ( i = 0; i < MAX_WEAPONS; i++ ) {
 		player->weaponSelect--;
 		if ( player->weaponSelect == -1 ) {
 			player->weaponSelect = MAX_WEAPONS - 1;
@@ -1639,13 +1652,13 @@ void CG_Weapon_f( int localPlayerNum ) {
 
 	num = atoi( CG_Argv( 1 ) );
 
-	if ( num < 1 || num > MAX_WEAPONS-1 ) {
+	if ( num < 1 || num >= MAX_WEAPONS ) {
 		return;
 	}
 
 	player->weaponSelectTime = cg.time;
 
-	if ( ! ( ps->stats[STAT_WEAPONS] & ( 1 << num ) ) ) {
+	if ( !Q_HasWeapon(ps->weapons, num)) {
 		return;		// don't have the weapon
 	}
 
