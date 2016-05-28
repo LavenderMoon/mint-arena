@@ -284,9 +284,6 @@ and that local cinematics are killed
 */
 void UI_MainMenu( void ) {
 	int		y;
-#ifndef MISSIONPACK
-	qboolean teamArena = qfalse;
-#endif
 	int		style = UI_CENTER | UI_DROPSHADOW;
 
 	CG_KillServer();
@@ -361,45 +358,16 @@ void UI_MainMenu( void ) {
 	s_main.demos.color						= text_big_color;
 	s_main.demos.style						= style;
 
-	y += MAIN_MENU_VERTICAL_SPACING;
-	s_main.cinematics.generic.type			= MTYPE_PTEXT;
-	s_main.cinematics.generic.flags			= QMF_CENTER_JUSTIFY|QMF_PULSEIFFOCUS;
-	s_main.cinematics.generic.x				= 320;
-	s_main.cinematics.generic.y				= y;
-	s_main.cinematics.generic.id			= ID_CINEMATICS;
-	s_main.cinematics.generic.callback		= Main_MenuEvent; 
-	s_main.cinematics.string				= "CINEMATICS";
-	s_main.cinematics.color					= text_big_color;
-	s_main.cinematics.style					= style;
-
-#ifndef MISSIONPACK
-	if ( !uis.demoversion && UI_TeamArenaExists() ) {
-		teamArena = qtrue;
-		y += MAIN_MENU_VERTICAL_SPACING;
-		s_main.teamArena.generic.type			= MTYPE_PTEXT;
-		s_main.teamArena.generic.flags			= QMF_CENTER_JUSTIFY|QMF_PULSEIFFOCUS;
-		s_main.teamArena.generic.x				= 320;
-		s_main.teamArena.generic.y				= y;
-		s_main.teamArena.generic.id				= ID_TEAMARENA;
-		s_main.teamArena.generic.callback		= Main_MenuEvent; 
-		s_main.teamArena.string					= "TEAM ARENA";
-		s_main.teamArena.color					= text_big_color;
-		s_main.teamArena.style					= style;
-	}
-#endif
-
-	if ( !uis.demoversion ) {
-		y += MAIN_MENU_VERTICAL_SPACING;
-		s_main.mods.generic.type			= MTYPE_PTEXT;
-		s_main.mods.generic.flags			= QMF_CENTER_JUSTIFY|QMF_PULSEIFFOCUS;
-		s_main.mods.generic.x				= 320;
-		s_main.mods.generic.y				= y;
-		s_main.mods.generic.id				= ID_MODS;
-		s_main.mods.generic.callback		= Main_MenuEvent; 
-		s_main.mods.string					= "MODS";
-		s_main.mods.color					= text_big_color;
-		s_main.mods.style					= style;
-	}
+	/*y += MAIN_MENU_VERTICAL_SPACING;
+	s_main.mods.generic.type				= MTYPE_PTEXT;
+	s_main.mods.generic.flags				= QMF_CENTER_JUSTIFY|QMF_PULSEIFFOCUS;
+	s_main.mods.generic.x					= 320;
+	s_main.mods.generic.y					= y;
+	s_main.mods.generic.id					= ID_MODS;
+	s_main.mods.generic.callback			= Main_MenuEvent; 
+	s_main.mods.string						= "MODS";
+	s_main.mods.color						= text_big_color;
+	s_main.mods.style						= style;*/
 
 	y += MAIN_MENU_VERTICAL_SPACING;
 	s_main.exit.generic.type				= MTYPE_PTEXT;
@@ -416,15 +384,8 @@ void UI_MainMenu( void ) {
 	Menu_AddItem( &s_main.menu,	&s_main.multiplayer );
 	Menu_AddItem( &s_main.menu,	&s_main.setup );
 	Menu_AddItem( &s_main.menu,	&s_main.demos );
-	Menu_AddItem( &s_main.menu,	&s_main.cinematics );
-#ifndef MISSIONPACK
-	if (teamArena) {
-		Menu_AddItem( &s_main.menu,	&s_main.teamArena );
-	}
-#endif
-	if ( !uis.demoversion ) {
-		Menu_AddItem( &s_main.menu,	&s_main.mods );
-	}
+	//Menu_AddItem( &s_main.menu,	&s_main.cinematics );
+	//Menu_AddItem( &s_main.menu,	&s_main.mods );
 	Menu_AddItem( &s_main.menu,	&s_main.exit );             
 
 	uis.menusp = 0;
