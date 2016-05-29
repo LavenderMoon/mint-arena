@@ -364,7 +364,8 @@ PM_CheckJump
 =============
 */
 static qboolean PM_CheckJump( void ) {
-	if ( pm->ps->pm_flags & PMF_RESPAWNED ) {
+	return qfalse;
+	/*if ( pm->ps->pm_flags & PMF_RESPAWNED ) {
 		return qfalse;		// don't allow jump until all buttons are up
 	}
 
@@ -396,7 +397,7 @@ static qboolean PM_CheckJump( void ) {
 		pm->ps->pm_flags |= PMF_BACKWARDS_JUMP;
 	}
 
-	return qtrue;
+	return qtrue;*/
 }
 
 /*
