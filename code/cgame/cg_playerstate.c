@@ -53,17 +53,16 @@ void CG_CheckAmmo( void ) {
 		if ( !Q_HasWeapon(cg.cur_ps->weapons, i) ) {
 			continue;
 		}
-		// Don't check based off the weapon's ammo, because 1 round shared between 100 weapons is 1 round, not 100.
 		switch ( i ) {
 		case WP_ROCKET_LAUNCHER:
 		case WP_GRENADE_LAUNCHER:
 		case WP_RAILGUN:
 		case WP_SHOTGUN:
 		case WP_PROX_LAUNCHER:
-			total += cg.cur_ps->ammo[i] * 1000;
+			total += cg.cur_ps->ammo[BG_FindAmmoForWeapon(i)] * 1000;
 			break;
 		default:
-			total += cg.cur_ps->ammo[i] * 200;
+			total += cg.cur_ps->ammo[BG_FindAmmoForWeapon(i)] * 200;
 			break;
 		}
 		if ( total >= 5000 ) {
