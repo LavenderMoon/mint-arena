@@ -1355,8 +1355,9 @@ typedef enum {
 #define LUMA( red, green, blue ) ( 0.2126f * ( red ) + 0.7152f * ( green ) + 0.0722f * ( blue ) )
 
 qboolean	Q_HasWeapon(int* weapons, int weapon);
-void		Q_SetWeapons(int* weapons, int weapon);
+void		Q_ClearWeapons(int* weapons);
 void		Q_AddWeapon(int* weapons, int weapon);
+void		Q_AddWeapon2x(int* weapons, int weapon);
 void		Q_RemoveWeapon(int* weapons, int weapon);
 
 #endif	// __Q_SHARED_H

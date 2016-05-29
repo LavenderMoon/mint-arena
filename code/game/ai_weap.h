@@ -100,15 +100,15 @@ typedef struct weaponconfig_s
 	qboolean valid;
 	int numweapons;
 	int numprojectiles;
-	projectileinfo_t projectileinfo[MAX_WEAPONS];
-	weaponinfo_t weaponinfo[MAX_WEAPONS];
+	projectileinfo_t projectileinfo[WP_NUM_WEAPONS];
+	weaponinfo_t weaponinfo[WP_NUM_WEAPONS];
 } weaponconfig_t;
 
 //the bot weapon state
 typedef struct bot_weaponstate_s
 {
 	struct weightconfig_s *weaponweightconfig;		//weapon weight configuration
-	int weaponweightindex[MAX_WEAPONS];				//weapon weight index
+	int weaponweightindex[WP_NUM_WEAPONS];				//weapon weight index
 } bot_weaponstate_t;
 
 //setup the weapon AI

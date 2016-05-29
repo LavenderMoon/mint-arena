@@ -1729,31 +1729,35 @@ const char *Com_LocalPlayerBaseCvarName(const char *in_cvarName) {
 
 qboolean Q_HasWeapon(int* weapons, int weapon)
 {
-	return COM_BitCheck(weapons, weapon);
+	return weapons[weapon] > 0;
 }
 
-void Q_SetWeapons(int* weapons, int weapon)
+void Q_ClearWeapons(int* weapons)
 {
 	int i = 0;
 	for (i = 0; i < WP_NUM_WEAPONS; i++)
 	{
-		if (i == weapon)
-		{
-			COM_BitSet(weapons, i);
-		}
-		else
-		{
-			COM_BitClear(weapons, i);
-		}
+		Q_RemoveWeapon(weapons, i);
 	}
 }
 
 void Q_AddWeapon(int* weapons, int weapon)
 {
-	COM_BitSet(weapons, weapon);
+	if (weapons[weapon] < 1)
+	{
+		weapons[weapon] = 1;
+	}
+}
+
+void Q_AddWeapon2x(int* weapons, int weapon)
+{
+	if (weapons[weapon] < 2)
+	{
+		weapons[weapon] = 2;
+	}
 }
 
 void Q_RemoveWeapon(int* weapons, int weapon)
 {
-	COM_BitClear(weapons, weapon);
+	weapons[weapon] = 0;
 }

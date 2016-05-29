@@ -755,6 +755,15 @@
     <ClInclude Include="code\renderercommon\tr_types.h">
       <Filter>Header Files\renderercommon</Filter>
     </ClInclude>
+    <ClInclude Include="code\qcommon\q_weapons.h">
+      <Filter>Header Files\qcommon</Filter>
+    </ClInclude>
+    <ClInclude Include="code\game\ent_weapons.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="code\game\ent_ammo.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="code\game\bg_syscalls.asm">

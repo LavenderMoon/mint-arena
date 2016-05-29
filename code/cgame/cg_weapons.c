@@ -638,7 +638,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 	weaponInfo->weaponIcon = trap_R_RegisterShader( item->icon );
 	weaponInfo->ammoIcon = trap_R_RegisterShader( item->icon );
 
-	ammo = BG_FindItemForAmmo( weaponNum );
+	ammo = BG_FindItemForAmmo( BG_FindAmmoForWeapon(weaponNum) );
 	if ( ammo && ammo->world_model[0] ) {
 		weaponInfo->ammoModel = trap_R_RegisterModel( ammo->world_model[0] );
 	}
@@ -674,14 +674,6 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->flashSound[0] = trap_S_RegisterSound("sound/weapons/colt/coltf1.wav", qfalse);
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/mp40/mp40e1.wav", qfalse); // use same as mp40
 		weaponInfo->reloadSound = trap_S_RegisterSound("sound/weapons/colt/colt_reload.wav", qfalse);
-		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
-		break;
-
-	case WP_COLT_AKIMBO:
-		MAKERGB(weaponInfo->flashDlightColor, 1.0, 0.6, 0.23);
-		weaponInfo->flashSound[0] = trap_S_RegisterSound("sound/weapons/colt/coltf1.wav", qfalse);
-		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/mp40/mp40e1.wav", qfalse); // use same as mp40
-		weaponInfo->reloadSound = trap_S_RegisterSound("sound/weapons/colt/colt_reload2.wav", qfalse);
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		break;
 
@@ -1513,7 +1505,7 @@ void CG_DrawWeaponSelect( void ) {
 			CG_DrawPic( x-4, y-4, 40, 40, cgs.media.selectShader );
 		}
 
-		// no ammo cross on top
+		// draw a "no ammo" cross on top
 		if ( !cg.cur_ps->ammo[ BG_FindAmmoForWeapon(i) ] ) {
 			CG_DrawPic( x, y, 32, 32, cgs.media.noammoShader );
 		}

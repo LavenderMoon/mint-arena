@@ -212,7 +212,7 @@ qboolean LoadWeaponConfig(char *filename)
 	//initialize weapon config
 	wc = &weaponconfig;
 	memset(wc, 0, sizeof (weaponconfig_t) );
-	wc->numweapons = MAX_WEAPONS;
+	wc->numweapons = WP_NUM_WEAPONS;
 	wc->numprojectiles = 0;
 	//parse the source file
 	while(trap_PC_ReadToken(source, &token))
@@ -225,7 +225,7 @@ qboolean LoadWeaponConfig(char *filename)
 				trap_PC_FreeSource(source);
 				return qfalse;
 			} //end if
-			if (weaponinfo.number < 0 || weaponinfo.number >= MAX_WEAPONS)
+			if (weaponinfo.number < 0 || weaponinfo.number >= WP_NUM_WEAPONS)
 			{
 				BotAI_Print(PRT_ERROR, "weapon info number %d out of range in %s\n", weaponinfo.number, path);
 				trap_PC_FreeSource(source);
@@ -236,9 +236,9 @@ qboolean LoadWeaponConfig(char *filename)
 		} //end if
 		else if (!strcmp(token.string, "projectileinfo"))
 		{
-			if (wc->numprojectiles >= MAX_WEAPONS)
+			if (wc->numprojectiles >= WP_NUM_WEAPONS)
 			{
-				BotAI_Print(PRT_ERROR, "more than %d projectiles defined in %s\n", MAX_WEAPONS, path);
+				BotAI_Print(PRT_ERROR, "more than %d projectiles defined in %s\n", WP_NUM_WEAPONS, path);
 				trap_PC_FreeSource(source);
 				return qfalse;
 			} //end if
@@ -306,7 +306,7 @@ void WeaponWeightIndex(const weaponconfig_t *wc, weightconfig_t *wwc, int *index
 	{
 		index[i] = FindFuzzyWeight(wwc, wc->weaponinfo[i].name);
 	} //end for
-	for ( ; i < MAX_WEAPONS; i++)
+	for ( ; i < WP_NUM_WEAPONS; i++)
 	{
 		index[i] = -1;
 	} //end for

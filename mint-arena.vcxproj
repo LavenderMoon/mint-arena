@@ -271,6 +271,8 @@
     <ClInclude Include="code\game\bg_local.h" />
     <ClInclude Include="code\game\bg_public.h" />
     <ClInclude Include="code\game\chars.h" />
+    <ClInclude Include="code\game\ent_ammo.h" />
+    <ClInclude Include="code\game\ent_weapons.h" />
     <ClInclude Include="code\game\g_local.h" />
     <ClInclude Include="code\game\g_public.h" />
     <ClInclude Include="code\game\g_syscalls.h" />
@@ -283,6 +285,7 @@
     <ClInclude Include="code\qcommon\q_platform.h" />
     <ClInclude Include="code\qcommon\q_shared.h" />
     <ClInclude Include="code\qcommon\q_unicode.h" />
+    <ClInclude Include="code\qcommon\q_weapons.h" />
     <ClInclude Include="code\qcommon\surfaceflags.h" />
     <ClInclude Include="code\qcommon\unicode_data.h" />
     <ClInclude Include="code\renderercommon\tr_types.h" />

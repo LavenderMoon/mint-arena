@@ -279,6 +279,7 @@ void Cmd_Give_f (gentity_t *ent)
 			if (i != WP_NONE && i != WP_GRAPPLING_HOOK)
 			{
 				Q_AddWeapon(ent->player->ps.weapons, i);
+				Q_AddWeapon2x(ent->player->ps.weapons, i);
 			}
 		}
 
@@ -288,9 +289,9 @@ void Cmd_Give_f (gentity_t *ent)
 
 	if (give_all || Q_stricmp(name, "ammo") == 0)
 	{
-		for ( i = 0 ; i < WP_NUM_WEAPONS ; i++ ) {
+		for ( i = 0 ; i < AM_NUM_AMMOS ; i++ ) {
 			// !TODO: Make this set it to the actual maximum amount for that ammo
-			ent->player->ps.ammo[ BG_FindAmmoForWeapon(i) ] = 999;
+			ent->player->ps.ammo[ i ] = 999;
 		}
 
 		if (!give_all)

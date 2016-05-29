@@ -1153,7 +1153,8 @@ void PlayerSpawn(gentity_t *ent) {
 
 	player->ps.playerNum = index;
 
-	Q_SetWeapons(player->ps.weapons, WP_MACHINEGUN);
+	Q_ClearWeapons(player->ps.weapons);
+	Q_AddWeapon(player->ps.weapons, WP_MACHINEGUN);
 	if ( g_gametype.integer == GT_TEAM ) {
 		player->ps.ammo[ BG_FindAmmoForWeapon(WP_MACHINEGUN) ] = 50;
 	} else {

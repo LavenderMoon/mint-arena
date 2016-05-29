@@ -140,7 +140,7 @@ Q_EXPORT intptr_t vmMain( int command, int arg0, int arg1, int arg2, int arg3, i
 cg_t				cg;
 cgs_t				cgs;
 centity_t			cg_entities[MAX_GENTITIES];
-weaponInfo_t		cg_weapons[MAX_WEAPONS];
+weaponInfo_t		cg_weapons[WP_NUM_WEAPONS];
 itemInfo_t			cg_items[MAX_ITEMS];
 
 

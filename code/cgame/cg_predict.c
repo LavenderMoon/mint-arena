@@ -395,12 +395,13 @@ static void CG_TouchItem( centity_t *cent ) {
 	if ( item->giType == IT_WEAPON ) {
 		int weapon = item->giTag;
 
-		if (weapon == WP_COLT) {
+		// !TODO: Make this give you dual weapons in multiplayer, but not in singleplayer (unless it's a dual drop)
+		/*if (weapon == WP_COLT) {
 			if (COM_BitCheck(cg.cur_lc->predictedPlayerState.weapons, WP_COLT)) {
 				// you got the colt, you're getting another
 				weapon = WP_COLT_AKIMBO;
 			}
-		}
+		}*/
 
 		Q_AddWeapon(cg.cur_lc->predictedPlayerState.weapons, weapon);
 		if (!cg.cur_lc->predictedPlayerState.ammo[BG_FindAmmoForWeapon(weapon)]) {

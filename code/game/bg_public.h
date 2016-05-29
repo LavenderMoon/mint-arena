@@ -31,6 +31,7 @@ Suite 120, Rockville, Maryland 20850 USA.
 // bg_public.h -- definitions shared by both the server game and client game modules
 
 #include "../qcommon/surfaceflags.h"
+#include "../qcommon/q_weapons.h"
 
 #ifndef MODDIR
   #define MODDIR "baseq3"
@@ -264,7 +265,8 @@ typedef struct entityState_s {
 #define	MAX_STATS				16
 #define	MAX_PERSISTANT			16
 #define	MAX_POWERUPS			16 // entityState_t::powerups bit field limits this to <= 32.
-#define	MAX_WEAPONS				(1<<WEAPONNUM_BITS) // 64
+// We no longer need this:
+//#define	MAX_WEAPONS			(1<<WEAPONNUM_BITS)
 
 #define	MAX_PS_EVENTS			2
 
@@ -362,9 +364,9 @@ typedef struct playerState_s {
 	int			stats[MAX_STATS];
 	//int		persistant[MAX_PERSISTANT];	// stats that aren't cleared on death
 	int			powerups[MAX_POWERUPS];	// level.time that the powerup runs out
-	int			ammo[MAX_WEAPONS];
-	int			ammoclip[MAX_WEAPONS];	// ammo in clip
-	int			weapons[2];				// !TODO: Is this 64 bits? It should be, right?
+	int			ammo[AM_NUM_AMMOS];
+	int			ammoclip[WP_NUM_WEAPONS];	// ammo in clip
+	int			weapons[WP_NUM_WEAPONS];
 
 	int			tokens;			// harvester skulls
 	int			loopSound;
@@ -617,30 +619,7 @@ typedef enum {
 	WPOS_NUM_POSITIONS
 } pose_t;
 
-// NOTE: may not have more than MAX_WEAPONS
-typedef enum {
-	WP_NONE,
-
-	WP_GAUNTLET,
-	WP_MACHINEGUN,
-	WP_SHOTGUN,
-	WP_GRENADE_LAUNCHER,
-	WP_ROCKET_LAUNCHER,
-	WP_LIGHTNING,
-	WP_RAILGUN,
-	WP_PLASMAGUN,
-	WP_BFG,
-	WP_GRAPPLING_HOOK,
-	WP_NAILGUN,
-	WP_PROX_LAUNCHER,
-	WP_CHAINGUN,
-	
-	WP_COLT,
-	WP_COLT_AKIMBO,
-
-	WP_NUM_WEAPONS
-} weapon_t;
-
+#include "../qcommon/q_weapons.h"
 
 // reward sounds (stored in ps->persistant[PERS_PLAYEREVENTS])
 #define	PLAYEREVENT_DENIEDREWARD		0x0001
