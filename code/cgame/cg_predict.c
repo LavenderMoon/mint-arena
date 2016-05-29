@@ -395,20 +395,17 @@ static void CG_TouchItem( centity_t *cent ) {
 	if ( item->giType == IT_WEAPON ) {
 		int weapon = item->giTag;
 
-/*		if (weapon == WP_COLT) {
+		if (weapon == WP_COLT) {
 			if (COM_BitCheck(cg.cur_lc->predictedPlayerState.weapons, WP_COLT)) {
-				// you got the colt, you gettin' another
+				// you got the colt, you're getting another
 				weapon = WP_COLT_AKIMBO;
 			}
-		}*/
+		}
 
 		Q_AddWeapon(cg.cur_lc->predictedPlayerState.weapons, weapon);
 		if (!cg.cur_lc->predictedPlayerState.ammo[BG_FindAmmoForWeapon(weapon)]) {
 			cg.cur_lc->predictedPlayerState.ammo[BG_FindAmmoForWeapon(weapon)] = 1;
 		}
-		/*if ( !cg.cur_lc->predictedPlayerState.ammo[ item->giTag ] ) {
-			cg.cur_lc->predictedPlayerState.ammo[ item->giTag ] = 1;
-		}*/
 	}
 }
 

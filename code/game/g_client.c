@@ -1155,14 +1155,14 @@ void PlayerSpawn(gentity_t *ent) {
 
 	Q_SetWeapons(player->ps.weapons, WP_MACHINEGUN);
 	if ( g_gametype.integer == GT_TEAM ) {
-		player->ps.ammo[WP_MACHINEGUN] = 50;
+		player->ps.ammo[ BG_FindAmmoForWeapon(WP_MACHINEGUN) ] = 50;
 	} else {
-		player->ps.ammo[WP_MACHINEGUN] = 100;
+		player->ps.ammo[ BG_FindAmmoForWeapon(WP_MACHINEGUN) ] = 100;
 	}
 
 	Q_AddWeapon(player->ps.weapons, WP_GAUNTLET);
-	player->ps.ammo[WP_GAUNTLET] = -1;
-	player->ps.ammo[WP_GRAPPLING_HOOK] = -1;
+	player->ps.ammo[ BG_FindAmmoForWeapon(WP_GAUNTLET) ] = -1;
+	player->ps.ammo[ BG_FindAmmoForWeapon(WP_GRAPPLING_HOOK) ] = -1;
 
 	// health will count down towards max_health
 	ent->health = player->ps.stats[STAT_HEALTH] = player->ps.stats[STAT_MAX_HEALTH] + 25;

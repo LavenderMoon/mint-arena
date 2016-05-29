@@ -288,9 +288,11 @@ void Cmd_Give_f (gentity_t *ent)
 
 	if (give_all || Q_stricmp(name, "ammo") == 0)
 	{
-		for ( i = 0 ; i < MAX_WEAPONS ; i++ ) {
-			ent->player->ps.ammo[i] = 999;
+		for ( i = 0 ; i < WP_NUM_WEAPONS ; i++ ) {
+			// !TODO: Make this set it to the actual maximum amount for that ammo
+			ent->player->ps.ammo[ BG_FindAmmoForWeapon(i) ] = 999;
 		}
+
 		if (!give_all)
 			return;
 	}

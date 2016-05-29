@@ -919,6 +919,42 @@ Only in One Flag CTF games
 /* sounds */ "sound/weapons/vulcan/wvulwind.wav",
 		WP_CHAINGUN,
 	},
+	
+/*QUAKED weapon_colt (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+	{
+		"weapon_colt", 
+		"sound/misc/w_pkup.wav",
+		{   "models/weapons2/colt/colt.md3",
+			"models/weapons2/colt/v_colt.md3",
+			"models/weapons2/colt/pu_colt.md3",
+			0 },
+/* icon */		"icons/iconw_colt_1",
+/* pickup */	"Colt",
+		30,
+		IT_WEAPON,
+		WP_COLT,
+/* sounds */ "sound/weapons/colt/coltf1.wav",
+		WP_MACHINEGUN,
+	},
+
+/*QUAKED weapon_colt_akimbo (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+*/
+	{
+		"weapon_colt_akimbo", 
+		"sound/misc/w_pkup.wav",
+		{   "models/weapons2/colt2/colt2.md3",
+			"models/weapons2/colt2/v_colt2.md3",
+			"models/weapons2/colt2/pu_colt2.md3",
+			0 },
+/* icon */		"icons/iconw_colt_1",
+/* pickup */	"Dual Colts",
+		50,
+		IT_WEAPON,
+		WP_COLT_AKIMBO,
+/* sounds */ "sound/weapons/colt/coltf1.wav",
+		WP_MACHINEGUN,
+	},
 
 	// end of list marker
 	{NULL}
@@ -1312,6 +1348,7 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 		return qtrue;	// weapons are always picked up
 
 	case IT_AMMO:
+		// !TODO: Make this respect the max amount of ammo for each ammo type.
 		if ( ps->ammo[ item->giTag ] >= 200 ) {
 			return qfalse;		// can't hold any more
 		}

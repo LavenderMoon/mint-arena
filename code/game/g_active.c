@@ -452,9 +452,11 @@ void PlayerTimerActions( gentity_t *ent, int msec ) {
 
 	if( BG_ItemForItemNum( player->ps.stats[STAT_PERSISTANT_POWERUP] )->giTag == PW_AMMOREGEN ) {
 		int w, max, inc, t, i;
+
+		// !TODO: Make this update automatically. Note that this should be ammo types, not a list of all weapons
 		int weapList[]={WP_MACHINEGUN,WP_SHOTGUN,WP_GRENADE_LAUNCHER,WP_ROCKET_LAUNCHER,WP_LIGHTNING,WP_RAILGUN,WP_PLASMAGUN,WP_BFG,WP_NAILGUN,WP_PROX_LAUNCHER,WP_CHAINGUN};
 		int weapCount = ARRAY_LEN( weapList );
-			//
+
 		for (i = 0; i < weapCount; i++) {
 			w = weapList[i];
 

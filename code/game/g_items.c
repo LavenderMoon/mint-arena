@@ -182,9 +182,9 @@ int Pickup_Holdable( gentity_t *ent, gentity_t *other ) {
 
 void Add_Ammo (gentity_t *ent, int weapon, int count)
 {
-	ent->player->ps.ammo[weapon] += count;
-	if ( ent->player->ps.ammo[weapon] > 200 ) {
-		ent->player->ps.ammo[weapon] = 200;
+	ent->player->ps.ammo[ BG_FindAmmoForWeapon(weapon) ] += count;
+	if ( ent->player->ps.ammo[ BG_FindAmmoForWeapon(weapon) ] > 200 ) {
+		ent->player->ps.ammo[ BG_FindAmmoForWeapon(weapon) ] = 200;
 	}
 }
 
@@ -222,8 +222,8 @@ int Pickup_Weapon (gentity_t *ent, gentity_t *other) {
 		if ( ! (ent->flags & FL_DROPPED_ITEM) && g_gametype.integer != GT_TEAM ) {
 			// respawning rules
 			// drop the quantity if the already have over the minimum
-			if ( other->player->ps.ammo[ ent->item->giTag ] < quantity ) {
-				quantity = quantity - other->player->ps.ammo[ ent->item->giTag ];
+			if ( other->player->ps.ammo[ ent->item->giAmmoIndex ] < quantity ) {
+				quantity = quantity - other->player->ps.ammo[ ent->item->giAmmoIndex];
 			} else {
 				quantity = 1;		// only add a single shot
 			}
@@ -235,8 +235,9 @@ int Pickup_Weapon (gentity_t *ent, gentity_t *other) {
 
 	Add_Ammo( other, ent->item->giAmmoIndex, quantity ); // LM: Give the ammo this uses.
 
+	// !TODO: Make weapons with infinite ammo use WP_NONE for ammo.
 	if (ent->item->giTag == WP_GRAPPLING_HOOK)
-		other->player->ps.ammo[ent->item->giTag] = -1; // unlimited ammo
+		other->player->ps.ammo[ ent->item->giAmmoIndex ] = -1; // unlimited ammo
 
 	// team deathmatch has slow weapon respawns
 	if ( g_gametype.integer == GT_TEAM ) {

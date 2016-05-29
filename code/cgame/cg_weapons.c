@@ -669,7 +669,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/melee/fstatck.wav", qfalse );
 		break;
 
-/*	case WP_COLT:
+	case WP_COLT:
 		MAKERGB(weaponInfo->flashDlightColor, 1.0, 0.6, 0.23);
 		weaponInfo->flashSound[0] = trap_S_RegisterSound("sound/weapons/colt/coltf1.wav", qfalse);
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/mp40/mp40e1.wav", qfalse); // use same as mp40
@@ -683,7 +683,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->flashEchoSound[0] = trap_S_RegisterSound("sound/weapons/mp40/mp40e1.wav", qfalse); // use same as mp40
 		weaponInfo->reloadSound = trap_S_RegisterSound("sound/weapons/colt/colt_reload2.wav", qfalse);
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
-		break;*/
+		break;
 
 	case WP_LIGHTNING:
 		MAKERGB( weaponInfo->flashDlightColor, 0.6f, 0.6f, 1.0f );
@@ -1489,7 +1489,7 @@ void CG_DrawWeaponSelect( void ) {
 
 	// count the number of weapons owned
 	count = 0;
-	for (i = 1; i < MAX_WEAPONS; i++) {
+	for (i = 1; i < WP_NUM_WEAPONS; i++) {
 		if ( Q_HasWeapon(cg.cur_ps->weapons, i) ) {
 			count++;
 		}
@@ -1498,7 +1498,7 @@ void CG_DrawWeaponSelect( void ) {
 	x = 320 - count * 20;
 	y = 380;
 
-	for ( i = 1 ; i < MAX_WEAPONS ; i++ ) {
+	for ( i = 1 ; i < WP_NUM_WEAPONS ; i++ ) {
 		if (!Q_HasWeapon(cg.cur_ps->weapons, i)) {
 			continue;
 		}
@@ -1514,7 +1514,7 @@ void CG_DrawWeaponSelect( void ) {
 		}
 
 		// no ammo cross on top
-		if ( !cg.cur_ps->ammo[ i ] ) {
+		if ( !cg.cur_ps->ammo[ BG_FindAmmoForWeapon(i) ] ) {
 			CG_DrawPic( x, y, 32, 32, cgs.media.noammoShader );
 		}
 
@@ -1538,7 +1538,7 @@ CG_WeaponSelectable
 ===============
 */
 static qboolean CG_WeaponSelectable( playerState_t *ps, int i ) {
-	if ( !ps->ammo[i] ) {
+	if ( !ps->ammo[BG_FindAmmoForWeapon(i)] ) {
 		return qfalse;
 	}
 
@@ -1570,9 +1570,9 @@ void CG_NextWeapon_f( int localPlayerNum ) {
 	player->weaponSelectTime = cg.time;
 	original = player->weaponSelect;
 
-	for ( i = 0 ; i < MAX_WEAPONS ; i++ ) {
+	for ( i = 0 ; i < WP_NUM_WEAPONS ; i++ ) {
 		player->weaponSelect++;
-		if ( player->weaponSelect == MAX_WEAPONS ) {
+		if ( player->weaponSelect == WP_NUM_WEAPONS ) {
 			player->weaponSelect = 0;
 		}
 		if ( player->weaponSelect == WP_GAUNTLET ) {
@@ -1582,7 +1582,7 @@ void CG_NextWeapon_f( int localPlayerNum ) {
 			break;
 		}
 	}
-	if ( i == MAX_WEAPONS ) {
+	if ( i == WP_NUM_WEAPONS ) {
 		player->weaponSelect = original;
 	}
 }
@@ -1612,10 +1612,10 @@ void CG_PrevWeapon_f( int localPlayerNum ) {
 	player->weaponSelectTime = cg.time;
 	original = player->weaponSelect;
 
-	for ( i = 0; i < MAX_WEAPONS; i++ ) {
+	for ( i = 0; i < WP_NUM_WEAPONS; i++ ) {
 		player->weaponSelect--;
 		if ( player->weaponSelect == -1 ) {
-			player->weaponSelect = MAX_WEAPONS - 1;
+			player->weaponSelect = WP_NUM_WEAPONS - 1;
 		}
 		if ( player->weaponSelect == WP_GAUNTLET ) {
 			continue;		// never cycle to gauntlet
@@ -1624,7 +1624,7 @@ void CG_PrevWeapon_f( int localPlayerNum ) {
 			break;
 		}
 	}
-	if ( i == MAX_WEAPONS ) {
+	if ( i == WP_NUM_WEAPONS ) {
 		player->weaponSelect = original;
 	}
 }
@@ -1652,7 +1652,7 @@ void CG_Weapon_f( int localPlayerNum ) {
 
 	num = atoi( CG_Argv( 1 ) );
 
-	if ( num < 1 || num >= MAX_WEAPONS ) {
+	if ( num < 1 || num >= WP_NUM_WEAPONS ) {
 		return;
 	}
 
@@ -1686,7 +1686,7 @@ void CG_OutOfAmmoChange( int localPlayerNum ) {
 
 	player->weaponSelectTime = cg.time;
 
-	for ( i = MAX_WEAPONS-1 ; i > 0 ; i-- ) {
+	for ( i = WP_NUM_WEAPONS-1 ; i > 0 ; i-- ) {
 		if ( CG_WeaponSelectable( ps, i ) ) {
 			player->weaponSelect = i;
 			break;

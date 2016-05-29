@@ -107,7 +107,7 @@ void TossPlayerItems( gentity_t *self ) {
 	}
 
 	if ( weapon > WP_MACHINEGUN && weapon != WP_GRAPPLING_HOOK && 
-		self->player->ps.ammo[ weapon ] ) {
+		self->player->ps.ammo[ BG_FindAmmoForWeapon(weapon) ] ) {
 		// find the item type for this weapon
 		item = BG_FindItemForWeapon( weapon );
 

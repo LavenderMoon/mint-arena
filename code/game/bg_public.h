@@ -360,7 +360,7 @@ typedef struct playerState_s {
 	int			damageCount;
 
 	int			stats[MAX_STATS];
-	//int			persistant[MAX_PERSISTANT];	// stats that aren't cleared on death
+	//int		persistant[MAX_PERSISTANT];	// stats that aren't cleared on death
 	int			powerups[MAX_POWERUPS];	// level.time that the powerup runs out
 	int			ammo[MAX_WEAPONS];
 	int			ammoclip[MAX_WEAPONS];	// ammo in clip
@@ -635,8 +635,8 @@ typedef enum {
 	WP_PROX_LAUNCHER,
 	WP_CHAINGUN,
 	
-/*	WP_COLT,
-	WP_COLT_AKIMBO,*/
+	WP_COLT,
+	WP_COLT_AKIMBO,
 
 	WP_NUM_WEAPONS
 } weapon_t;
