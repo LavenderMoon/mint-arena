@@ -180,11 +180,11 @@ int Pickup_Holdable( gentity_t *ent, gentity_t *other ) {
 
 //======================================================================
 
-void Add_Ammo (gentity_t *ent, int weapon, int count)
+void Add_Ammo (gentity_t *ent, int ammo, int count)
 {
-	ent->player->ps.ammo[ BG_FindAmmoForWeapon(weapon) ] += count;
-	if ( ent->player->ps.ammo[ BG_FindAmmoForWeapon(weapon) ] > 200 ) {
-		ent->player->ps.ammo[ BG_FindAmmoForWeapon(weapon) ] = 200;
+	ent->player->ps.ammo[ammo] += count;
+	if ( ent->player->ps.ammo[ammo] > 200 ) {
+		ent->player->ps.ammo[ammo] = 200;
 	}
 }
 
