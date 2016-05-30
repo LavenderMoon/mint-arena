@@ -370,9 +370,6 @@ static void CG_Item( centity_t *cent ) {
 	refEntity_t		ent;
 	entityState_t	*es;
 	gitem_t			*item;
-	int				msec;
-	float			frac;
-	float			scale;
 	weaponInfo_t	*wi;
 
 	es = &cent->currentState;
@@ -400,21 +397,13 @@ static void CG_Item( centity_t *cent ) {
 		return;
 	}
 
-	// items bob up and down continuously
-	scale = 0.005 + cent->currentState.number * 0.00001;
-	cent->lerpOrigin[2] += 4 + cos( ( cg.time + 1000 ) *  scale ) * 4;
-
 	memset (&ent, 0, sizeof(ent));
 
-	// autorotate at one of two speeds
-	if ( item->giType == IT_HEALTH ) {
-		VectorCopy( cg.autoAnglesFast, cent->lerpAngles );
-		AxisCopy( cg.autoAxisFast, ent.axis );
-	} else {
-		VectorCopy( cg.autoAngles, cent->lerpAngles );
-		AxisCopy( cg.autoAxis, ent.axis );
-	}
-
+	// don't autorotate
+	// !TODO: Make this set it to it's direction.
+	VectorCopy( cg.autoAnglesNone, cent->lerpAngles );
+	AxisCopy( cg.autoAxisNone, ent.axis );
+	
 	wi = NULL;
 	// the weapons have their origin where they attatch to player
 	// models, so we need to offset them or they will rotate
@@ -434,7 +423,7 @@ static void CG_Item( centity_t *cent ) {
 			wi->weaponMidpoint[1] * ent.axis[1][2] +
 			wi->weaponMidpoint[2] * ent.axis[2][2];
 
-		cent->lerpOrigin[2] += 8;	// an extra height boost
+		//cent->lerpOrigin[2] += 8;	// an extra height boost
 	}
 	
 	if( item->giType == IT_WEAPON ) {
@@ -449,20 +438,13 @@ static void CG_Item( centity_t *cent ) {
 
 	ent.nonNormalizedAxes = qfalse;
 
-	// if just respawned, slowly scale up
-	msec = cg.time - cent->miscTime;
-	if ( msec >= 0 && msec < ITEM_SCALEUP_TIME ) {
-		frac = (float)msec / ITEM_SCALEUP_TIME;
-		VectorScale( ent.axis[0], frac, ent.axis[0] );
-		VectorScale( ent.axis[1], frac, ent.axis[1] );
-		VectorScale( ent.axis[2], frac, ent.axis[2] );
-		ent.nonNormalizedAxes = qtrue;
-	} else {
-		frac = 1.0;
-	}
-
 	// increase the size of the weapons when they are presented as items
 	if ( item->giType == IT_WEAPON ) {
+		// place wepaons on their side
+		//cent->lerpAngles[2] -= 90;
+		//AnglesToAxis(cent->lerpAngles, ent.axis);
+		// commented out because we're going to have to make custom pickup models to really sell this
+
 		VectorScale( ent.axis[0], 1.5, ent.axis[0] );
 		VectorScale( ent.axis[1], 1.5, ent.axis[1] );
 		VectorScale( ent.axis[2], 1.5, ent.axis[2] );
@@ -502,36 +484,6 @@ static void CG_Item( centity_t *cent ) {
 		barrel.nonNormalizedAxes = ent.nonNormalizedAxes;
 
 		CG_AddRefEntityWithMinLight( &barrel );
-	}
-
-	// accompanying rings / spheres for powerups
-	if ( !cg_simpleItems.integer ) 
-	{
-		vec3_t spinAngles;
-
-		VectorClear( spinAngles );
-
-		if ( item->giType == IT_HEALTH || item->giType == IT_POWERUP )
-		{
-			if ( ( ent.hModel = cg_items[es->modelindex].models[1] ) != 0 )
-			{
-				if ( item->giType == IT_POWERUP )
-				{
-					ent.origin[2] += 12;
-					spinAngles[1] = ( cg.time & 1023 ) * 360 / -1024.0f;
-				}
-				AnglesToAxis( spinAngles, ent.axis );
-				
-				// scale up if respawning
-				if ( frac != 1.0 ) {
-					VectorScale( ent.axis[0], frac, ent.axis[0] );
-					VectorScale( ent.axis[1], frac, ent.axis[1] );
-					VectorScale( ent.axis[2], frac, ent.axis[2] );
-					ent.nonNormalizedAxes = qtrue;
-				}
-				CG_AddRefEntityWithMinLight( &ent );
-			}
-		}
 	}
 }
 
@@ -1232,8 +1184,13 @@ void CG_AddPacketEntities( void ) {
 	cg.autoAnglesFast[1] = ( cg.time & 1023 ) * 360 / 1024.0f;
 	cg.autoAnglesFast[2] = 0;
 
+	cg.autoAnglesNone[0] = 0;
+	cg.autoAnglesNone[1] = 0;
+	cg.autoAnglesNone[2] = 0;
+
 	AnglesToAxis( cg.autoAngles, cg.autoAxis );
 	AnglesToAxis( cg.autoAnglesFast, cg.autoAxisFast );
+	AnglesToAxis( cg.autoAnglesNone, cg.autoAxisNone );
 
 	// generate and add the entity from the playerstate
 	for ( num = 0 ; num < CG_MaxSplitView() ; num++ ) {
