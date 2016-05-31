@@ -218,15 +218,10 @@ int Pickup_Weapon (gentity_t *ent, gentity_t *other) {
 			quantity = ent->item->quantity;
 		}
 
-		// dropped items and teamplay weapons always have full ammo
-		if ( ! (ent->flags & FL_DROPPED_ITEM) && g_gametype.integer != GT_TEAM ) {
-			// respawning rules
-			// drop the quantity if the already have over the minimum
-			if ( other->player->ps.ammo[ ent->item->giAmmoIndex ] < quantity ) {
-				quantity = quantity - other->player->ps.ammo[ ent->item->giAmmoIndex];
-			} else {
-				quantity = 1;		// only add a single shot
-			}
+		if (ent->flags & FL_DROPPED_ITEM)
+		{
+			// TODO: Give the player a second copy of their weapon if applicable.
+			// TODO: Set quantity to how ever much was left in the gun (backend stuff likely required for that)
 		}
 	}
 
@@ -235,8 +230,8 @@ int Pickup_Weapon (gentity_t *ent, gentity_t *other) {
 
 	Add_Ammo( other, ent->item->giAmmoIndex, quantity ); // LM: Give the ammo this uses.
 
-	// !TODO: Make weapons with infinite ammo use WP_NONE for ammo.
-	if (ent->item->giTag == WP_GRAPPLING_HOOK)
+	// !TODO: Make weapons with infinite ammo use AM_NONE for ammo, then remove this:
+	if (ent->item->giAmmoIndex == AM_NONE)
 		other->player->ps.ammo[ ent->item->giAmmoIndex ] = -1; // unlimited ammo
 
 	// team deathmatch has slow weapon respawns
