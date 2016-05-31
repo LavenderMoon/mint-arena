@@ -758,12 +758,12 @@ int CheckArmor (gentity_t *ent, int damage, int dflags)
 	if (!player)
 		return 0;
 
-	if (dflags & DAMAGE_NO_ARMOR)
-		return 0;
+	/*if (dflags & DAMAGE_NO_ARMOR)
+		return 0;*/
 
 	// armor
 	count = player->ps.stats[STAT_ARMOR];
-	save = ceil( damage * ARMOR_PROTECTION );
+	save = damage;
 	if (save >= count)
 		save = count;
 
@@ -883,11 +883,16 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	int			max;
 	vec3_t		bouncedir, impactpoint;
 
+	if(dir)
+	{
+		dir[2] = 0;
+	}
+
 	if (!targ->takedamage) {
 		return;
 	}
 
-	// the intermission has allready been qualified for, so don't
+	// the intermission has already been qualified for, so don't
 	// allow any extra scoring
 	if ( level.intermissionQueued ) {
 		return;
@@ -988,20 +993,22 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 		// if TF_NO_FRIENDLY_FIRE is set, don't do damage to the target
 		// if the attacker was on the same team
+		// TODO: Make sure the player still takes damage from their own rockets
 		if ( mod != MOD_JUICED && targ != attacker && !(dflags & DAMAGE_NO_TEAM_PROTECTION) && OnSameTeam (targ, attacker)  ) {
 			if ( !g_friendlyFire.integer ) {
 				return;
 			}
 		}
 
-		if (mod == MOD_PROXIMITY_MINE) {
+		// !TODO: Make sure friendly fire still doesn't hurt teammates, but hurts the player themselves
+		/*if (mod == MOD_PROXIMITY_MINE) {
 			if (inflictor && inflictor->parent && OnSameTeam(targ, inflictor->parent)) {
 				return;
 			}
 			if (targ == attacker) {
 				return;
 			}
-		}
+		}*/
 
 		// check for godmode
 		if ( targ->flags & FL_GODMODE ) {
@@ -1032,6 +1039,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		attacker->player->ps.persistant[PERS_ATTACKEE_ARMOR] = (targ->health<<8)|(player->ps.stats[STAT_ARMOR]);
 	}
 
+	// !TODO: Change this to apply Golden Gun bonuses
 	// always give half damage if hurting self
 	// calculated after knockback, so rocket jumping works
 	if ( targ == attacker) {
@@ -1268,9 +1276,6 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 				hitPlayer = qtrue;
 			}
 			VectorSubtract (ent->r.currentOrigin, origin, dir);
-			// push the center of mass higher than the origin so players
-			// get knocked into the air more
-			dir[2] += 24;
 			G_Damage (ent, NULL, attacker, dir, origin, (int)points, DAMAGE_RADIUS, mod);
 		}
 	}
