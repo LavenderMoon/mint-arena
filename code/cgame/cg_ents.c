@@ -399,11 +399,17 @@ static void CG_Item( centity_t *cent ) {
 
 	memset (&ent, 0, sizeof(ent));
 
-	// don't autorotate
-	// !TODO: Make this set it to it's direction.
-	VectorCopy( cg.autoAnglesNone, cent->lerpAngles );
-	AxisCopy( cg.autoAxisNone, ent.axis );
-	
+	// Use RTCW code to disable automatic rotation.
+	AnglesToAxis(cent->lerpAngles, ent.axis);
+	VectorCopy(cent->lerpOrigin, ent.origin);
+	VectorCopy(cent->lerpOrigin, ent.oldorigin);
+
+	// !TODO: Implement this.
+	/*if (es->eFlags & EF_SPINNING) {  // spinning will override the angles set by a stand
+		VectorCopy(cg.autoAnglesSlow, cent->lerpAngles);
+		AxisCopy(cg.autoAxisSlow, ent.axis);
+	}*/
+
 	wi = NULL;
 	// the weapons have their origin where they attatch to player
 	// models, so we need to offset them or they will rotate
@@ -1184,13 +1190,8 @@ void CG_AddPacketEntities( void ) {
 	cg.autoAnglesFast[1] = ( cg.time & 1023 ) * 360 / 1024.0f;
 	cg.autoAnglesFast[2] = 0;
 
-	cg.autoAnglesNone[0] = 0;
-	cg.autoAnglesNone[1] = 0;
-	cg.autoAnglesNone[2] = 0;
-
 	AnglesToAxis( cg.autoAngles, cg.autoAxis );
 	AnglesToAxis( cg.autoAnglesFast, cg.autoAxisFast );
-	AnglesToAxis( cg.autoAnglesNone, cg.autoAxisNone );
 
 	// generate and add the entity from the playerstate
 	for ( num = 0 ; num < CG_MaxSplitView() ; num++ ) {

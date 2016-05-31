@@ -768,8 +768,6 @@ typedef struct {
 	vec3_t		autoAxis[3];
 	vec3_t		autoAnglesFast;
 	vec3_t		autoAxisFast[3];
-	vec3_t		autoAnglesNone;
-	vec3_t		autoAxisNone[3];
 
 	// view rendering
 	refdef_t	refdef;
