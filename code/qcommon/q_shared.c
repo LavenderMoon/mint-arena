@@ -1724,8 +1724,7 @@ const char *Com_LocalPlayerBaseCvarName(const char *in_cvarName) {
 	return baseName;
 }
 
-// Urgh, this isn't accessible from here. Copy it from bg_public.h
-#define WP_NUM_WEAPONS 14
+#include "q_weapons.h"
 
 qboolean Q_HasWeapon(int* weapons, int weapon)
 {
