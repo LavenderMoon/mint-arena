@@ -883,6 +883,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	int			max;
 	vec3_t		bouncedir, impactpoint;
 
+	// Disable vertical knockback
 	if(dir)
 	{
 		dir[2] = 0;
