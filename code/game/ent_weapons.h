@@ -13,7 +13,10 @@
 		IT_WEAPON,
 		WP_GAUNTLET,
 /* sounds */ "",
-		AM_NONE,
+		{
+			AM_NONE,
+			400,
+		},
 	},
 
 /*QUAKED weapon_shotgun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -29,7 +32,10 @@
 		IT_WEAPON,
 		WP_SHOTGUN,
 /* sounds */ "",
-		AM_SHELLS,
+		{
+			AM_SHELLS,
+			1000,
+		},
 	},
 
 /*QUAKED weapon_machinegun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -45,7 +51,10 @@
 		IT_WEAPON,
 		WP_MACHINEGUN,
 /* sounds */ "",
-		AM_5MM,
+		{
+			AM_HEAVY,
+			100,
+		},
 	},
 
 /*QUAKED weapon_grenadelauncher (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -61,7 +70,10 @@
 		IT_WEAPON,
 		WP_GRENADE_LAUNCHER,
 /* sounds */ "sound/weapons/grenade/hgrenb1a.wav sound/weapons/grenade/hgrenb2a.wav",
-		AM_GRENADES,
+		{
+			AM_GRENADES,
+			800,
+		},
 	},
 
 /*QUAKED weapon_rocketlauncher (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -77,7 +89,10 @@
 		IT_WEAPON,
 		WP_ROCKET_LAUNCHER,
 /* sounds */ "",
-		AM_ROCKETS,
+		{
+			AM_ROCKETS,
+			800,
+		},
 	},
 
 /*QUAKED weapon_lightning (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -93,7 +108,10 @@
 		IT_WEAPON,
 		WP_LIGHTNING,
 /* sounds */ "",
-		AM_LIGHTNING,
+		{
+			AM_LIGHTNING,
+			50,
+		},
 	},
 
 /*QUAKED weapon_railgun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -109,7 +127,10 @@
 		IT_WEAPON,
 		WP_RAILGUN,
 /* sounds */ "",
-		AM_SLUGS,
+		{
+			AM_SLUGS,
+			1500,
+		},
 	},
 
 /*QUAKED weapon_plasmagun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -125,7 +146,10 @@
 		IT_WEAPON,
 		WP_PLASMAGUN,
 /* sounds */ "",
-		AM_CELLS,
+		{
+			AM_CELLS,
+			100,
+		},
 	},
 
 /*QUAKED weapon_bfg (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -141,7 +165,10 @@
 		IT_WEAPON,
 		WP_BFG,
 /* sounds */ "",
-		AM_CELLS,
+		{
+			AM_CELLS,
+			200,
+		},
 	},
 
 /*QUAKED weapon_grapplinghook (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -157,7 +184,10 @@
 		IT_WEAPON,
 		WP_GRAPPLING_HOOK,
 /* sounds */ "",
-		AM_NONE,
+		{
+			AM_NONE,
+			400,
+		},
 	},
 
 /*QUAKED weapon_nailgun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -173,7 +203,10 @@
 		IT_WEAPON,
 		WP_NAILGUN,
 /* sounds */ "",
-		AM_NAILS,
+		{
+			AM_NAILS,
+			1000,
+		},
 	},
 
 /*QUAKED weapon_prox_launcher (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -194,7 +227,10 @@
 			"sound/weapons/proxmine/wstbimpm.wav "
 			"sound/weapons/proxmine/wstbimpd.wav "
 			"sound/weapons/proxmine/wstbactv.wav",
-		AM_MINES_PROX,
+		{
+			AM_MINE_PROXIMITY,
+			800,
+		},
 	},
 
 /*QUAKED weapon_chaingun (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -210,7 +246,10 @@
 		IT_WEAPON,
 		WP_CHAINGUN,
 /* sounds */ "sound/weapons/vulcan/wvulwind.wav",
-		AM_5MM,
+		{
+			AM_HEAVY,
+			30,
+		},
 	},
 	
 /*QUAKED weapon_colt (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -228,5 +267,8 @@
 		IT_WEAPON,
 		WP_COLT,
 /* sounds */ "sound/weapons/colt/coltf1.wav",
-		AM_9MM,
+		{
+			AM_LIGHT,
+			200,
+		},
 	},

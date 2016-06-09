@@ -1154,16 +1154,11 @@ void PlayerSpawn(gentity_t *ent) {
 	player->ps.playerNum = index;
 
 	Q_ClearWeapons(player->ps.weapons);
+	// !TODO: Check what the base weapons actually are:
 	Q_AddWeapon(player->ps.weapons, WP_MACHINEGUN);
-	if ( g_gametype.integer == GT_TEAM ) {
-		player->ps.ammo[ BG_FindAmmoForWeapon(WP_MACHINEGUN) ] = 50;
-	} else {
-		player->ps.ammo[ BG_FindAmmoForWeapon(WP_MACHINEGUN) ] = 100;
-	}
+	player->ps.ammo[ AM_HEAVY ] = 100;
 
 	Q_AddWeapon(player->ps.weapons, WP_GAUNTLET);
-	player->ps.ammo[ BG_FindAmmoForWeapon(WP_GAUNTLET) ] = -1;
-	player->ps.ammo[ BG_FindAmmoForWeapon(WP_GRAPPLING_HOOK) ] = -1;
 
 	// health will count down towards max_health
 	ent->health = player->ps.stats[STAT_HEALTH] = player->ps.stats[STAT_MAX_HEALTH] + 25;
@@ -1192,6 +1187,7 @@ void PlayerSpawn(gentity_t *ent) {
 		if (ent->player->sess.sessionTeam != TEAM_SPECTATOR) {
 			G_KillBox(ent);
 			// force the base weapon up
+			// !TODO: Check what the base weapon actually is:
 			player->ps.weapon = WP_MACHINEGUN;
 			player->ps.weaponstate = WEAPON_READY;
 			// fire the targets of the spawn point

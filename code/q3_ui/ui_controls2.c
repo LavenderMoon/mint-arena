@@ -721,6 +721,7 @@ static void Controls_UpdateModel( int anim ) {
 		s_controls.playerViewangles[PITCH] = 45;
 		break;
 
+	// !TODO: Genericize this:
 	case ANIM_WEAPON1:
 		s_controls.playerWeapon = WP_GAUNTLET;
 		break;

@@ -1153,25 +1153,25 @@ typedef enum {
 #define MAX_ITEM_MODELS 4
 
 typedef struct gitem_s {
-	char		*classname;	// spawning name
-	char		*pickup_sound;
-	char		*world_model[MAX_ITEM_MODELS];
+	char			*classname;	// spawning name
+	char			*pickup_sound;
+	char			*world_model[MAX_ITEM_MODELS];
 
-	char		*icon;
-	char		*pickup_name;	// for printing on pickup
+	char			*icon;
+	char			*pickup_name;	// for printing on pickup
 
-	int			quantity;		// for ammo how much, or duration of powerup
-	itemType_t	giType;			// IT_* flags
+	int				quantity;		// for ammo how much, or duration of powerup
+	itemType_t		giType;			// IT_* flags
 
-	int			giTag;
+	int				giTag;
 
-	char		*sounds;		// string of all sounds this item will use
+	char			*sounds;		// string of all sounds this item will use
 
-	int			giAmmoIndex;	// RTCW: type of weapon ammo this uses.  (ex. WP_MP40 and WP_LUGER share 9mm ammo, so they both have WP_LUGER for giAmmoIndex)
-//	int			giClipIndex;	// RTCW: which clip this weapon uses.  this allows the sniper rifle to use the same clip as the garand, etc.
+	dataWeapon_t	giWeaponData;	// RTCW: type of weapon ammo this uses.  (ex. WP_MP40 and WP_LUGER share 9mm ammo, so they both have WP_LUGER for giAmmoIndex)
+//	int				giClipIndex;	// RTCW: which clip this weapon uses.  this allows the sniper rifle to use the same clip as the garand, etc.
 
-//	char		*ammoicon;		// RTCW: Ammo icon
-//	char		*precaches;		// RTCW: string of all models and images this item will use
+//	char			*ammoicon;		// RTCW: Ammo icon
+//	char			*precaches;		// RTCW: string of all models and images this item will use
 } gitem_t;
 
 // included in both the game dll and the client
@@ -1180,10 +1180,10 @@ extern	int		bg_numItems;
 
 gitem_t	*BG_FindItem( const char *pickupName );
 gitem_t	*BG_FindItemForWeapon( weapon_t weapon );
-gitem_t	*BG_FindItemForAmmo( weapon_t weapon );
+gitem_t	*BG_FindItemForAmmo( ammo_t ammo );
 gitem_t	*BG_FindItemForPowerup( powerup_t pw );
 gitem_t	*BG_FindItemForHoldable( holdable_t pw );
-weapon_t BG_FindAmmoForWeapon( weapon_t weapon );
+ammo_t BG_FindAmmoForWeapon( weapon_t weapon );
 #define	BG_NumItems() (bg_numItems)
 #define	BG_ItemForItemNum(x) (&bg_itemlist[(x)])
 #define	BG_ItemNumForItem(x) ((x)-bg_itemlist)

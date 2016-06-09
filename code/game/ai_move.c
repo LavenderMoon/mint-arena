@@ -192,7 +192,7 @@ float AngleDiff(float ang1, float ang2)
 void BotPrintTravelType(int traveltype)
 {
 	char *str;
-	//
+	// !TODO: Automate this:
 	switch(traveltype & TRAVELTYPE_MASK)
 	{
 		case TRAVEL_INVALID: str = "TRAVEL_INVALID"; break;
@@ -206,6 +206,7 @@ void BotPrintTravelType(int traveltype)
 		case TRAVEL_WATERJUMP: str = "TRAVEL_WATERJUMP"; break;
 		case TRAVEL_TELEPORT: str = "TRAVEL_TELEPORT"; break;
 		case TRAVEL_ELEVATOR: str = "TRAVEL_ELEVATOR"; break;
+		// !TODO: Automate *_JUMPing
 		case TRAVEL_ROCKETJUMP: str = "TRAVEL_ROCKETJUMP"; break;
 		case TRAVEL_BFGJUMP: str = "TRAVEL_BFGJUMP"; break;
 		case TRAVEL_GRAPPLEHOOK: str = "TRAVEL_GRAPPLEHOOK"; break;
@@ -703,6 +704,7 @@ int BotAvoidSpots(vec3_t origin, aas_reachability_t *reach, bot_avoidspot_t *avo
 		case TRAVEL_TELEPORT: checkbetween = qfalse; break;
 		case TRAVEL_ELEVATOR: checkbetween = qfalse; break;
 		case TRAVEL_GRAPPLEHOOK: checkbetween = qfalse; break;
+		// !TODO: Automate *_JUMPing
 		case TRAVEL_ROCKETJUMP: checkbetween = qfalse; break;
 		case TRAVEL_BFGJUMP: checkbetween = qfalse; break;
 		case TRAVEL_JUMPPAD: checkbetween = qfalse; break;
@@ -893,6 +895,7 @@ int BotMovementViewTarget(int movestate, bot_goal_t *goal, int travelflags, floa
 		//never look beyond teleporters
 		if ((reach.traveltype & TRAVELTYPE_MASK) == TRAVEL_TELEPORT) return qtrue;
 		//never look beyond the weapon jump point
+		// !TODO: Automate *_JUMPing
 		if ((reach.traveltype & TRAVELTYPE_MASK) == TRAVEL_ROCKETJUMP) return qtrue;
 		if ((reach.traveltype & TRAVELTYPE_MASK) == TRAVEL_BFGJUMP) return qtrue;
 		//don't add jump pad distances
@@ -3049,6 +3052,7 @@ int BotReachabilityTime(aas_reachability_t *reach)
 		case TRAVEL_TELEPORT: return 5;
 		case TRAVEL_ELEVATOR: return 10;
 		case TRAVEL_GRAPPLEHOOK: return 8;
+		// !TODO: Automate *_JUMPing
 		case TRAVEL_ROCKETJUMP: return 6;
 		case TRAVEL_BFGJUMP: return 6;
 		case TRAVEL_JUMPPAD: return 10;
@@ -3438,6 +3442,7 @@ void BotMoveToGoal(bot_moveresult_t *result, int movestate, bot_goal_t *goal, in
 				case TRAVEL_TELEPORT: *result = BotTravel_Teleport(ms, &reach); break;
 				case TRAVEL_ELEVATOR: *result = BotTravel_Elevator(ms, &reach); break;
 				case TRAVEL_GRAPPLEHOOK: *result = BotTravel_Grapple(ms, &reach); break;
+				// !TODO: Automate *_JUMPing
 				case TRAVEL_ROCKETJUMP: *result = BotTravel_RocketJump(ms, &reach); break;
 				case TRAVEL_BFGJUMP: *result = BotTravel_BFGJump(ms, &reach); break;
 				case TRAVEL_JUMPPAD: *result = BotTravel_JumpPad(ms, &reach); break;
@@ -3548,6 +3553,7 @@ void BotMoveToGoal(bot_moveresult_t *result, int movestate, bot_goal_t *goal, in
 				case TRAVEL_TELEPORT: /*do nothing*/ break;
 				case TRAVEL_ELEVATOR: *result = BotFinishTravel_Elevator(ms, &reach); break;
 				case TRAVEL_GRAPPLEHOOK: *result = BotTravel_Grapple(ms, &reach); break;
+				// !TODO: Automate *_JUMPing
 				case TRAVEL_ROCKETJUMP:
 				case TRAVEL_BFGJUMP: *result = BotFinishTravel_WeaponJump(ms, &reach); break;
 				case TRAVEL_JUMPPAD: *result = BotFinishTravel_JumpPad(ms, &reach); break;

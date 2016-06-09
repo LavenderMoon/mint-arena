@@ -963,6 +963,7 @@ static void CG_LightningBolt( centity_t *cent, vec3_t origin ) {
 	vec3_t   muzzlePoint, endPoint;
 	int      anim;
 
+	// !TODO: Genericize this:
 	if (cent->currentState.weapon != WP_LIGHTNING) {
 		return;
 	}
@@ -1148,7 +1149,7 @@ static float	CG_MachinegunSpinAngle( centity_t *cent ) {
 		cent->pe.barrelTime = cg.time;
 		cent->pe.barrelAngle = AngleMod( angle );
 		cent->pe.barrelSpinning = !!(cent->currentState.eFlags & EF_FIRING);
-		// !TODO: Genericize this
+		// !TODO: Genericize this:
 		if ( cent->currentState.weapon == WP_CHAINGUN && !cent->pe.barrelSpinning ) {
 			trap_S_StartSound( NULL, cent->currentState.number, CHAN_WEAPON, cgs.media.sfx_chgstop );
 		}
@@ -1217,6 +1218,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	gun.renderfx = parent->renderfx;
 
 	// set custom shading for railgun refire rate
+	// !TODO: Genericize this:
 	if( weaponNum == WP_RAILGUN && cent->pe.railFireTime + 1500 > cg.time ) {
 		int scale = 255 * ( cg.time - cent->pe.railFireTime ) / 1500;
 		gun.shaderRGBA[0] = ( pi->c1RGBA[0] * scale ) >> 8;
@@ -1325,6 +1327,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 	}
 
 	// add the flash
+	// !TODO: Genericize this:
 	if ( ( weaponNum == WP_LIGHTNING || weaponNum == WP_GAUNTLET || weaponNum == WP_GRAPPLING_HOOK )
 		&& ( nonPredictedCent->currentState.eFlags & EF_FIRING ) )
 	{
@@ -1506,7 +1509,7 @@ void CG_DrawWeaponSelect( void ) {
 		}
 
 		// draw a "no ammo" cross on top
-		if ( !cg.cur_ps->ammo[ BG_FindAmmoForWeapon(i) ] ) {
+		if ( cg.cur_ps->ammo[ BG_FindAmmoForWeapon(i) ] <= 0 && BG_FindAmmoForWeapon(i) != AM_NONE ) {
 			CG_DrawPic( x, y, 32, 32, cgs.media.noammoShader );
 		}
 
@@ -1530,7 +1533,7 @@ CG_WeaponSelectable
 ===============
 */
 static qboolean CG_WeaponSelectable( playerState_t *ps, int i ) {
-	if ( !ps->ammo[BG_FindAmmoForWeapon(i)] ) {
+	if ( ps->ammo[BG_FindAmmoForWeapon(i)] <= 0 && BG_FindAmmoForWeapon(i) != AM_NONE ) {
 		return qfalse;
 	}
 
@@ -1567,6 +1570,7 @@ void CG_NextWeapon_f( int localPlayerNum ) {
 		if ( player->weaponSelect == WP_NUM_WEAPONS ) {
 			player->weaponSelect = 0;
 		}
+		// !TODO: Skip over all melee?
 		if ( player->weaponSelect == WP_GAUNTLET ) {
 			continue;		// never cycle to gauntlet
 		}
@@ -1609,6 +1613,7 @@ void CG_PrevWeapon_f( int localPlayerNum ) {
 		if ( player->weaponSelect == -1 ) {
 			player->weaponSelect = WP_NUM_WEAPONS - 1;
 		}
+		// !TODO: Skip over all melee?
 		if ( player->weaponSelect == WP_GAUNTLET ) {
 			continue;		// never cycle to gauntlet
 		}
@@ -1723,6 +1728,7 @@ void CG_FireWeapon( centity_t *cent ) {
 	cent->muzzleFlashTime = cg.time;
 
 	// lightning gun only does this this on initial press
+	// !TODO: Genericize this:
 	if ( ent->weapon == WP_LIGHTNING ) {
 		if ( cent->pe.lightningFiring ) {
 			return;
@@ -1946,6 +1952,7 @@ void CG_MissileHitWall( int weapon, int playerNum, vec3_t origin, vec3_t dir, im
 	// impact mark
 	//
 	alphaFade = (mark == cgs.media.energyMarkShader);	// plasma fades alpha, all others fade color
+	// !TODO: Genericize this:
 	if ( weapon == WP_RAILGUN ) {
 		float	*color;
 
@@ -1966,9 +1973,11 @@ CG_MissileHitPlayer
 void CG_MissileHitPlayer( int weapon, vec3_t origin, vec3_t dir, int entityNum ) {
 	CG_Bleed( origin, entityNum );
 
+	// !TODO: If this looks too gory for the look we're going for, add an option to disable it.
 	// some weapons will make an explosion with the blood, while
 	// others will just make the blood
 	switch ( weapon ) {
+	// !TODO: Have this check for all projectile weapons:
 	case WP_GRENADE_LAUNCHER:
 	case WP_ROCKET_LAUNCHER:
 	case WP_PLASMAGUN:
@@ -1998,6 +2007,7 @@ SHOTGUN TRACING
 CG_ShotgunPellet
 ================
 */
+// !TODO: Genericize this:
 static void CG_ShotgunPellet( vec3_t start, vec3_t end, int skipNum ) {
 	trace_t		tr;
 	int sourceContentType, destContentType;
@@ -2273,6 +2283,7 @@ void CG_Bullet( vec3_t end, int sourceEntityNum, vec3_t normal, qboolean flesh, 
 	if ( flesh ) {
 		CG_Bleed( end, fleshEntityNum );
 	} else {
+		// !TODO: Genericize this:
 		CG_MissileHitWall( WP_MACHINEGUN, 0, end, normal, IMPACTSOUND_DEFAULT );
 	}
 

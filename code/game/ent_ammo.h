@@ -13,7 +13,7 @@
 		IT_AMMO,
 		AM_SHELLS,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_bullets (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -27,9 +27,9 @@
 /* pickup */	"5mm Rounds",
 		50,
 		IT_AMMO,
-		AM_5MM,
+		AM_HEAVY,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_grenades (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -45,7 +45,7 @@
 		IT_AMMO,
 		AM_GRENADES,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_cells (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -61,7 +61,7 @@
 		IT_AMMO,
 		AM_CELLS,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_lightning (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -77,7 +77,7 @@
 		IT_AMMO,
 		AM_LIGHTNING,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_rockets (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -93,7 +93,7 @@
 		IT_AMMO,
 		AM_ROCKETS,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_slugs (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -109,7 +109,7 @@
 		IT_AMMO,
 		AM_SLUGS,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_bfg (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -125,7 +125,7 @@
 		IT_AMMO,
 		AM_CELLS,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_nails (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -141,7 +141,7 @@
 		IT_AMMO,
 		AM_NAILS,
 		/* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_mines (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -155,9 +155,9 @@
 		/* pickup */	"Proximity Mines",
 		10,
 		IT_AMMO,
-		AM_MINES_PROX,
+		AM_MINE_PROXIMITY,
 		/* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_belt (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -171,9 +171,9 @@
 		/* pickup */	"Chaingun Belt",
 		100,
 		IT_AMMO,
-		AM_5MM,
+		AM_HEAVY,
 		/* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED ammo_pistol (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -187,7 +187,7 @@
 			/* pickup */	"9mm Rounds",
 			20,
 			IT_AMMO,
-			AM_9MM,
+			AM_LIGHT,
 			/* sounds */ "",
-			0,
+			{0},
 	},

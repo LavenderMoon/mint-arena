@@ -1733,6 +1733,7 @@ void BotCheckItemPickup(bot_state_t *bs, int *oldinventory) {
 BotUpdateInventory
 ==================
 */
+// !TODO: Automate this:
 void BotUpdateInventory(bot_state_t *bs) {
 	int oldinventory[MAX_ITEMS];
 
@@ -1755,7 +1756,7 @@ void BotUpdateInventory(bot_state_t *bs) {
 	bs->inventory[INVENTORY_CHAINGUN] = Q_HasWeapon(bs->cur_ps.weapons, WP_CHAINGUN) != 0;
 	//ammo
 	bs->inventory[INVENTORY_SHELLS] = bs->cur_ps.ammo[AM_SHELLS];
-	bs->inventory[INVENTORY_BULLETS] = bs->cur_ps.ammo[AM_5MM];
+	bs->inventory[INVENTORY_BULLETS] = bs->cur_ps.ammo[AM_HEAVY];
 	bs->inventory[INVENTORY_GRENADES] = bs->cur_ps.ammo[AM_GRENADES];
 	bs->inventory[INVENTORY_CELLS] = bs->cur_ps.ammo[AM_CELLS];
 	bs->inventory[INVENTORY_LIGHTNINGAMMO] = bs->cur_ps.ammo[AM_LIGHTNING];
@@ -1763,8 +1764,8 @@ void BotUpdateInventory(bot_state_t *bs) {
 	bs->inventory[INVENTORY_SLUGS] = bs->cur_ps.ammo[AM_SLUGS];
 	bs->inventory[INVENTORY_BFGAMMO] = bs->cur_ps.ammo[AM_CELLS];
 	bs->inventory[INVENTORY_NAILS] = bs->cur_ps.ammo[AM_NAILS];
-	bs->inventory[INVENTORY_MINES] = bs->cur_ps.ammo[AM_MINES_PROX];
-	bs->inventory[INVENTORY_BELT] = bs->cur_ps.ammo[AM_5MM];
+	bs->inventory[INVENTORY_MINES] = bs->cur_ps.ammo[AM_MINE_PROXIMITY];
+	bs->inventory[INVENTORY_BELT] = bs->cur_ps.ammo[AM_HEAVY];
 	//powerups
 	bs->inventory[INVENTORY_HEALTH] = bs->cur_ps.stats[STAT_HEALTH];
 	bs->inventory[INVENTORY_TELEPORTER] = bs->cur_ps.stats[STAT_HOLDABLE_ITEM] == MODELINDEX_TELEPORTER;
@@ -2239,6 +2240,7 @@ float BotAggression(bot_state_t *bs) {
 	//if the bot has quad
 	if (bs->inventory[INVENTORY_QUAD]) {
 		//if the bot is not holding the gauntlet or the enemy is really nearby
+		// !TODO: Make this check for all melee weapons:
 		if (bs->weaponnum != WP_GAUNTLET ||
 			bs->inventory[ENEMY_HORIZONTAL_DIST] < 80) {
 			return 70;
@@ -2284,12 +2286,14 @@ BotFeelingBad
 ==================
 */
 float BotFeelingBad(bot_state_t *bs) {
+	// !TODO: Check for all melee weapons:
 	if (bs->weaponnum == WP_GAUNTLET) {
 		return 100;
 	}
 	if (bs->inventory[INVENTORY_HEALTH] < 40) {
 		return 100;
 	}
+	// !TODO: Check if the current weapon is a wimpy weapon:
 	if (bs->weaponnum == WP_MACHINEGUN) {
 		return 90;
 	}
@@ -2739,6 +2743,7 @@ bot_moveresult_t BotAttackMove(bot_state_t *bs, int tfl) {
 			bs->attackjump_time = FloatTime() + 1;
 		}
 	}
+	// !TODO: Make this check for all melee weapons:
 	if (bs->cur_ps.weapon == WP_GAUNTLET) {
 		attack_dist = 0;
 		attack_range = 0;
@@ -3419,6 +3424,7 @@ void BotAimAtEnemy(bot_state_t *bs) {
 	if (wi.number == WP_MACHINEGUN) {
 		aim_accuracy = Characteristic_BFloat(bs->character, CHARACTERISTIC_AIM_ACCURACY_MACHINEGUN, 0, 1);
 	}
+	// !TODO: Genericize this:
 	else if (wi.number == WP_SHOTGUN) {
 		aim_accuracy = Characteristic_BFloat(bs->character, CHARACTERISTIC_AIM_ACCURACY_SHOTGUN, 0, 1);
 	}
@@ -3595,6 +3601,7 @@ void BotAimAtEnemy(bot_state_t *bs) {
 		//if the bot is skilled enough
 		if (aim_skill > 0.5) {
 			//do prediction shots around corners
+			// !TODO: Genericize this:
 			if (wi.number == WP_BFG ||
 				wi.number == WP_ROCKET_LAUNCHER ||
 				wi.number == WP_GRENADE_LAUNCHER) {
@@ -3627,6 +3634,7 @@ void BotAimAtEnemy(bot_state_t *bs) {
 	//get aim direction
 	VectorSubtract(bestorigin, bs->eye, dir);
 	//
+	// !TODO: Make this check for hitscan weapons:
 	if (wi.number == WP_MACHINEGUN ||
 		wi.number == WP_SHOTGUN ||
 		wi.number == WP_LIGHTNING ||
@@ -3714,7 +3722,7 @@ void BotCheckAttack(bot_state_t *bs) {
 	//
 	//
 	VectorSubtract(bs->aimtarget, bs->eye, dir);
-	//
+	// !TODO: Check for all melee weapons:
 	if (bs->weaponnum == WP_GAUNTLET) {
 		if (VectorLengthSquared(dir) > Square(60)) {
 			return;
@@ -4976,6 +4984,7 @@ BotCheckEvents
 */
 void BotCheckForGrenades(bot_state_t *bs, entityState_t *state) {
 	// if this is not a grenade
+	// !TODO: Make this check for all grenades:
 	if (state->eType != ET_MISSILE || state->weapon != WP_GRENADE_LAUNCHER)
 		return;
 	// try to avoid the grenade
@@ -4989,6 +4998,7 @@ BotCheckForProxMines
 */
 void BotCheckForProxMines(bot_state_t *bs, entityState_t *state) {
 	// if this is not a prox mine
+	// !TODO: Make this check for all mines:
 	if (state->eType != ET_MISSILE || state->weapon != WP_PROX_LAUNCHER)
 		return;
 	// if this prox mine is from someone on our own team

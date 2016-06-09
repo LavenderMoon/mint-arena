@@ -63,7 +63,7 @@ gitem_t	bg_itemlist[] =
 		0,
 		0,
 /* sounds */ "",
-		0,
+		{0},
 	},	// leave index 0 alone
 
 	//
@@ -83,7 +83,7 @@ gitem_t	bg_itemlist[] =
 		IT_ARMOR,
 		0,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED item_armor_combat (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -99,7 +99,7 @@ gitem_t	bg_itemlist[] =
 		IT_ARMOR,
 		0,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED item_armor_body (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -115,7 +115,7 @@ gitem_t	bg_itemlist[] =
 		IT_ARMOR,
 		0,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 	//
@@ -135,7 +135,7 @@ gitem_t	bg_itemlist[] =
 		IT_HEALTH,
 		0,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED item_health (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -152,7 +152,7 @@ gitem_t	bg_itemlist[] =
 		IT_HEALTH,
 		0,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED item_health_large (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -169,7 +169,7 @@ gitem_t	bg_itemlist[] =
 		IT_HEALTH,
 		0,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED item_health_mega (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -186,7 +186,7 @@ gitem_t	bg_itemlist[] =
 		IT_HEALTH,
 		0,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 
@@ -210,7 +210,7 @@ gitem_t	bg_itemlist[] =
 		IT_HOLDABLE,
 		HI_TELEPORTER,
 /* sounds */ "",
-		0,
+		{0},
 	},
 /*QUAKED holdable_medkit (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
 */
@@ -226,7 +226,7 @@ gitem_t	bg_itemlist[] =
 		IT_HOLDABLE,
 		HI_MEDKIT,
 /* sounds */ "sound/items/use_medkit.wav",
-		0,
+		{0},
 	},
 
 	//
@@ -246,7 +246,7 @@ gitem_t	bg_itemlist[] =
 		IT_POWERUP,
 		PW_QUAD,
 /* sounds */ "sound/items/damage2.wav sound/items/damage3.wav",
-		0,
+		{0},
 	},
 
 /*QUAKED item_enviro (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -263,7 +263,7 @@ gitem_t	bg_itemlist[] =
 		IT_POWERUP,
 		PW_BATTLESUIT,
 /* sounds */ "sound/items/airout.wav sound/items/protect3.wav",
-		0,
+		{0},
 	},
 
 /*QUAKED item_haste (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -280,7 +280,7 @@ gitem_t	bg_itemlist[] =
 		IT_POWERUP,
 		PW_HASTE,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED item_invis (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -297,7 +297,7 @@ gitem_t	bg_itemlist[] =
 		IT_POWERUP,
 		PW_INVIS,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED item_regen (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -314,7 +314,7 @@ gitem_t	bg_itemlist[] =
 		IT_POWERUP,
 		PW_REGEN,
 /* sounds */ "sound/items/regen.wav",
-		0,
+		{0},
 	},
 
 /*QUAKED item_flight (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -331,7 +331,7 @@ gitem_t	bg_itemlist[] =
 		IT_POWERUP,
 		PW_FLIGHT,
 /* sounds */ "sound/items/flight.wav",
-		0,
+		{0},
 	},
 
 /*QUAKED team_CTF_redflag (1 0 0) (-16 -16 -16) (16 16 16)
@@ -348,7 +348,7 @@ Only in CTF games
 		IT_TEAM,
 		PW_REDFLAG,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED team_CTF_blueflag (0 0 1) (-16 -16 -16) (16 16 16)
@@ -365,7 +365,7 @@ Only in CTF games
 		IT_TEAM,
 		PW_BLUEFLAG,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED holdable_kamikaze (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -381,7 +381,7 @@ Only in CTF games
 		IT_HOLDABLE,
 		HI_KAMIKAZE,
 /* sounds */ "sound/items/kamikazerespawn.wav",
-		0,
+		{0},
 	},
 
 /*QUAKED holdable_portal (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -397,7 +397,7 @@ Only in CTF games
 		IT_HOLDABLE,
 		HI_PORTAL,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED holdable_invulnerability (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
@@ -413,7 +413,7 @@ Only in CTF games
 		IT_HOLDABLE,
 		HI_INVULNERABILITY,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 	//
@@ -432,7 +432,7 @@ Only in CTF games
 		IT_PERSISTANT_POWERUP,
 		PW_SCOUT,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED item_guard (.3 .3 1) (-16 -16 -16) (16 16 16) suspended redTeam blueTeam
@@ -448,7 +448,7 @@ Only in CTF games
 		IT_PERSISTANT_POWERUP,
 		PW_GUARD,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED item_doubler (.3 .3 1) (-16 -16 -16) (16 16 16) suspended redTeam blueTeam
@@ -464,7 +464,7 @@ Only in CTF games
 		IT_PERSISTANT_POWERUP,
 		PW_DOUBLER,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 /*QUAKED item_doubler (.3 .3 1) (-16 -16 -16) (16 16 16) suspended redTeam blueTeam
@@ -480,7 +480,7 @@ Only in CTF games
 		IT_PERSISTANT_POWERUP,
 		PW_AMMOREGEN,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 	/*QUAKED team_CTF_neutralflag (0 0 1) (-16 -16 -16) (16 16 16)
@@ -497,7 +497,7 @@ Only in One Flag CTF games
 		IT_TEAM,
 		PW_NEUTRALFLAG,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 	{
@@ -511,7 +511,7 @@ Only in One Flag CTF games
 		IT_TEAM,
 		0,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 	{
@@ -525,7 +525,7 @@ Only in One Flag CTF games
 		IT_TEAM,
 		0,
 /* sounds */ "",
-		0,
+		{0},
 	},
 
 	// end of list marker
@@ -840,11 +840,11 @@ BG_FindItemForAmmo
 
 ===============
 */
-gitem_t	*BG_FindItemForAmmo( weapon_t weapon ) {
+gitem_t	*BG_FindItemForAmmo( ammo_t ammo ) {
 	gitem_t	*it;
 	
 	for ( it = bg_itemlist + 1 ; it->classname ; it++) {
-		if ( it->giType == IT_AMMO && it->giTag == weapon ) {
+		if ( it->giType == IT_AMMO && it->giTag == ammo ) {
 			return it;
 		}
 	}
@@ -1978,7 +1978,7 @@ qboolean PC_ReadStructure(int source, structdef_t *def, void *structure)
 BG_FindAmmoForWeapon
 ==============
 */
-weapon_t BG_FindAmmoForWeapon(weapon_t weapon) {
+ammo_t BG_FindAmmoForWeapon(weapon_t weapon) {
 	gitem_t *it;
 	int i;
 	const int NUM_TABLE_ELEMENTS = WP_NUM_WEAPONS;
@@ -1990,7 +1990,7 @@ weapon_t BG_FindAmmoForWeapon(weapon_t weapon) {
 			lookupTable[i] = 0; // default value for no match found
 			for (it = bg_itemlist + 1; it->classname; it++) {
 				if (it->giType == IT_WEAPON && it->giTag == i) {
-					lookupTable[i] = it->giAmmoIndex;
+					lookupTable[i] = it->giWeaponData.ammoType;
 				}
 			}
 		}

@@ -93,27 +93,11 @@ void TossPlayerItems( gentity_t *self ) {
 	// drop the weapon if not a gauntlet or machinegun
 	weapon = self->s.weapon;
 
-	// make a special check to see if they are changing to a new
-	// weapon that isn't the mg or gauntlet.  Without this, a player
-	// can pick up a weapon, be killed, and not drop the weapon because
-	// their weapon change hasn't completed yet and they are still holding the MG.
-	if ( weapon == WP_MACHINEGUN || weapon == WP_GRAPPLING_HOOK ) {
-		if ( self->player->ps.weaponstate == WEAPON_DROPPING ) {
-			BG_DecomposeUserCmdValue( self->player->pers.cmd.stateValue, &weapon );
-		}
-		if ( !Q_HasWeapon(self->player->ps.weapons, weapon)) {
-			weapon = WP_NONE;
-		}
-	}
+	// find the item type for this weapon
+	item = BG_FindItemForWeapon( weapon );
 
-	if ( weapon > WP_MACHINEGUN && weapon != WP_GRAPPLING_HOOK && 
-		self->player->ps.ammo[ BG_FindAmmoForWeapon(weapon) ] ) {
-		// find the item type for this weapon
-		item = BG_FindItemForWeapon( weapon );
-
-		// spawn the item
-		Drop_Item( self, item, 0 );
-	}
+	// spawn the item
+	Drop_Item( self, item, 0 );
 
 	// drop all the powerups if not in teamplay
 	if ( g_gametype.integer != GT_TEAM ) {

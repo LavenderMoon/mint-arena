@@ -23,23 +23,26 @@ typedef enum {
 	WP_NUM_WEAPONS
 } weapon_t;
 
-
 typedef enum {
 	AM_NONE,
 
-	AM_5MM,
+	AM_LIGHT,
+	AM_HEAVY,
 	AM_SHELLS,
 	AM_GRENADES,
 	AM_ROCKETS,
-	AM_LIGHTNING,	// !TODO: Come up with something better for this.
-	AM_SLUGS,		// !TODO: Come up with something better for this.
+	AM_LIGHTNING,
+	AM_SLUGS,
 	AM_CELLS,
 	AM_NAILS,
-	AM_MINES_PROX,
-
-	AM_9MM,
+	AM_MINE_PROXIMITY,
 
 	AM_NUM_AMMOS
 } ammo_t;
+
+typedef struct dataWeapon_s {
+	ammo_t	ammoType;
+	int		timeBetweenShots;
+} dataWeapon_t;
 
 #endif

@@ -276,7 +276,7 @@ void Cmd_Give_f (gentity_t *ent)
 	{
 		for (i = 0; i < WP_NUM_WEAPONS; i++)
 		{
-			if (i != WP_NONE && i != WP_GRAPPLING_HOOK)
+			if (i != WP_NONE)
 			{
 				Q_AddWeapon(ent->player->ps.weapons, i);
 				Q_AddWeapon2x(ent->player->ps.weapons, i);

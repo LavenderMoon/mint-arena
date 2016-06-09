@@ -801,6 +801,7 @@ void FireWeapon( gentity_t *ent ) {
 		s_quadFactor *= 2;
 	}
 
+	// !TODO: Genericize this:
 	// track shots taken for accuracy tracking.  Grapple is not a weapon and gauntet is just not tracked
 	if( ent->s.weapon != WP_GRAPPLING_HOOK && ent->s.weapon != WP_GAUNTLET ) {
 		if( ent->s.weapon == WP_NAILGUN ) {
@@ -815,6 +816,7 @@ void FireWeapon( gentity_t *ent ) {
 
 	CalcMuzzlePointOrigin ( ent, ent->player->oldOrigin, forward, right, up, muzzle );
 
+	// !TODO: Genericize this:
 	// fire the specific weapon
 	switch( ent->s.weapon ) {
 	case WP_GAUNTLET:

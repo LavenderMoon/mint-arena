@@ -404,7 +404,7 @@ static void CG_TouchItem( centity_t *cent ) {
 		}*/
 
 		Q_AddWeapon(cg.cur_lc->predictedPlayerState.weapons, weapon);
-		if (!cg.cur_lc->predictedPlayerState.ammo[BG_FindAmmoForWeapon(weapon)]) {
+		if (cg.cur_lc->predictedPlayerState.ammo[BG_FindAmmoForWeapon(weapon)] <= 0 && BG_FindAmmoForWeapon(weapon) != AM_NONE) {
 			cg.cur_lc->predictedPlayerState.ammo[BG_FindAmmoForWeapon(weapon)] = 1;
 		}
 	}

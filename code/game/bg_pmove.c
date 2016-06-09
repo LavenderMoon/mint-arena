@@ -1526,6 +1526,7 @@ PM_TorsoAnimation
 */
 static void PM_TorsoAnimation( void ) {
 	if ( pm->ps->weaponstate == WEAPON_READY ) {
+		// !TODO: Check for all melee types:
 		if ( pm->ps->weapon == WP_GAUNTLET ) {
 			PM_ContinueTorsoAnim( TORSO_STAND2 );
 		} else {
@@ -1544,8 +1545,9 @@ Generates weapon events and modifes the weapon counter
 ==============
 */
 static void PM_Weapon( void ) {
-	int		addTime;
-	int		newWeapon;
+	int			addTime;
+	int			newWeapon;
+	gitem_t*	weaponData;
 
 	// don't allow attack until all buttons are up
 	if ( pm->ps->pm_flags & PMF_RESPAWNED ) {
@@ -1608,6 +1610,7 @@ static void PM_Weapon( void ) {
 
 	if ( pm->ps->weaponstate == WEAPON_RAISING ) {
 		pm->ps->weaponstate = WEAPON_READY;
+		// !TODO: Check for all melee weapons:
 		if ( pm->ps->weapon == WP_GAUNTLET ) {
 			PM_StartTorsoAnim( TORSO_STAND2 );
 		} else {
@@ -1624,7 +1627,9 @@ static void PM_Weapon( void ) {
 	}
 
 	// start the animation even if out of ammo
+	// !TODO: Check for all melee weapons:
 	if ( pm->ps->weapon == WP_GAUNTLET ) {
+		// !TODO: Genericize this:
 		// the guantlet only "fires" when it actually hits something
 		if ( !pm->gauntletHit ) {
 			pm->ps->weaponTime = 0;
@@ -1639,61 +1644,26 @@ static void PM_Weapon( void ) {
 	pm->ps->weaponstate = WEAPON_FIRING;
 
 	// check for out of ammo
-	if ( ! pm->ps->ammo[ BG_FindAmmoForWeapon(pm->ps->weapon) ] ) {
+	if ( pm->ps->ammo[ BG_FindAmmoForWeapon(pm->ps->weapon) ] <= 0 && BG_FindAmmoForWeapon(pm->ps->weapon) != AM_NONE ) {
 		PM_AddEvent( EV_NOAMMO );
 		pm->ps->weaponTime += 500;
 		return;
 	}
 
 	// take an ammo away if not infinite
-	if ( pm->ps->ammo[ BG_FindAmmoForWeapon(pm->ps->weapon) ] != -1 ) {
+	if ( BG_FindAmmoForWeapon(pm->ps->weapon) != AM_NONE ) {
 		pm->ps->ammo[ BG_FindAmmoForWeapon(pm->ps->weapon) ]--;
 	}
 
 	// fire weapon
 	PM_AddEvent( EV_FIRE_WEAPON );
 
-	switch( pm->ps->weapon ) {
-	default:
-	case WP_GAUNTLET:
-		addTime = 400;
-		break;
-	case WP_LIGHTNING:
-		addTime = 50;
-		break;
-	case WP_SHOTGUN:
-		addTime = 1000;
-		break;
-	case WP_MACHINEGUN:
+	weaponData = BG_FindItemForWeapon(pm->ps->weapon);
+	addTime = weaponData->giWeaponData.timeBetweenShots;
+
+	if (addTime == 0)
+	{
 		addTime = 100;
-		break;
-	case WP_GRENADE_LAUNCHER:
-		addTime = 800;
-		break;
-	case WP_ROCKET_LAUNCHER:
-		addTime = 800;
-		break;
-	case WP_PLASMAGUN:
-		addTime = 100;
-		break;
-	case WP_RAILGUN:
-		addTime = 1500;
-		break;
-	case WP_BFG:
-		addTime = 200;
-		break;
-	case WP_GRAPPLING_HOOK:
-		addTime = 400;
-		break;
-	case WP_NAILGUN:
-		addTime = 1000;
-		break;
-	case WP_PROX_LAUNCHER:
-		addTime = 800;
-		break;
-	case WP_CHAINGUN:
-		addTime = 30;
-		break;
 	}
 
 	if( BG_ItemForItemNum( pm->ps->stats[STAT_PERSISTANT_POWERUP] )->giTag == PW_SCOUT ) {

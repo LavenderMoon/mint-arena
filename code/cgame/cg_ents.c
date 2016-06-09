@@ -561,6 +561,7 @@ static void CG_Missile( centity_t *cent ) {
 	VectorCopy( cent->lerpOrigin, ent.origin);
 	VectorCopy( cent->lerpOrigin, ent.oldorigin);
 
+	// !TODO: Genericize this:
 	if ( cent->currentState.weapon == WP_PLASMAGUN ) {
 		ent.reType = RT_SPRITE;
 		ent.radius = 16;
@@ -575,6 +576,7 @@ static void CG_Missile( centity_t *cent ) {
 	ent.hModel = weapon->missileModel;
 	ent.renderfx = RF_NOSHADOW;
 
+	// !TODO: Genericize this:
 	if ( cent->currentState.weapon == WP_PROX_LAUNCHER ) {
 		if (s1->team == TEAM_BLUE) {
 			ent.hModel = cgs.media.blueProxMine;
@@ -590,6 +592,7 @@ static void CG_Missile( centity_t *cent ) {
 	if ( s1->pos.trType != TR_STATIONARY ) {
 		RotateAroundDirection( ent.axis, cg.time / 4 );
 	} else {
+		// !TODO: Genericize this:
 		if ( s1->weapon == WP_PROX_LAUNCHER ) {
 			AnglesToAxis( cent->lerpAngles, ent.axis );
 		}

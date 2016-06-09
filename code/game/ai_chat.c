@@ -265,6 +265,7 @@ char *BotWeaponNameForMeansOfDeath(int mod) {
 	gitem_t		*item;
 
 	switch(mod) {
+		// !TODO: Automate this:
 		case MOD_SHOTGUN:
 			weapon = WP_SHOTGUN;
 			break;

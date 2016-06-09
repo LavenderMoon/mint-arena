@@ -2509,6 +2509,7 @@ void CG_Ingame_Init( int serverMessageNum, int serverCommandSequence, int maxSpl
 	cgs.serverCommandSequence = serverCommandSequence;
 
 	for (i = 0; i < CG_MaxSplitView(); i++) {
+		// !TODO: Set this to the starting weapon:
 		cg.localPlayers[i].weaponSelect = WP_MACHINEGUN;
 	}
 

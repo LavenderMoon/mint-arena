@@ -49,6 +49,7 @@ void CG_CheckAmmo( void ) {
 
 	// see about how many seconds of ammo we have remaining
 	total = 0;
+	// !TODO: Genericize this:
 	for ( i = WP_MACHINEGUN ; i < WP_NUM_WEAPONS ; i++ ) {
 		if ( !Q_HasWeapon(cg.cur_ps->weapons, i) ) {
 			continue;

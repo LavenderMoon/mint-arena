@@ -289,6 +289,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 	}
 
 	if ( other->takedamage ) {
+		// !TODO: Genericize this:
 		if ( ent->s.weapon != WP_PROX_LAUNCHER ) {
 			if ( other->player && other->player->invulnerabilityTime > level.time ) {
 				//
@@ -327,6 +328,7 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 		}
 	}
 
+	// !TODO: Genericize this:
 	if( ent->s.weapon == WP_PROX_LAUNCHER ) {
 		if( ent->s.pos.trType != TR_GRAVITY ) {
 			return;
@@ -459,6 +461,7 @@ void G_RunMissile( gentity_t *ent ) {
 		passent = ent->target_ent->s.number;
 	}
 	// prox mines that left the owner bbox will attach to anything, even the owner
+	// !TODO: Genericize this:
 	else if (ent->s.weapon == WP_PROX_LAUNCHER && ent->count) {
 		passent = ENTITYNUM_NONE;
 	}
@@ -497,6 +500,7 @@ void G_RunMissile( gentity_t *ent ) {
 	}
 
 	// if the prox mine wasn't yet outside the player body
+	// !TODO: Genericize this:
 	if (ent->s.weapon == WP_PROX_LAUNCHER && !ent->count) {
 		// check if the prox mine is outside the owner bbox
 		trap_Trace( &tr, ent->r.currentOrigin, ent->s.mins, ent->s.maxs, ent->r.currentOrigin, ENTITYNUM_NONE, ent->clipmask );
@@ -529,6 +533,7 @@ gentity_t *fire_plasma (gentity_t *self, vec3_t start, vec3_t dir) {
 	bolt->think = G_ExplodeMissile;
 	bolt->s.eType = ET_MISSILE;
 	bolt->r.svFlags = SVF_USE_CURRENT_ORIGIN;
+	// !TODO: Genericize this:
 	bolt->s.weapon = WP_PLASMAGUN;
 	bolt->r.ownerNum = self->s.number;
 	bolt->parent = self;
@@ -576,6 +581,7 @@ gentity_t *fire_grenade (gentity_t *self, vec3_t start, vec3_t dir) {
 	bolt->think = G_ExplodeMissile;
 	bolt->s.eType = ET_MISSILE;
 	bolt->r.svFlags = SVF_USE_CURRENT_ORIGIN;
+	// !TODO: Genericize this:
 	bolt->s.weapon = WP_GRENADE_LAUNCHER;
 	bolt->s.eFlags = EF_BOUNCE_HALF;
 	bolt->r.ownerNum = self->s.number;
@@ -624,6 +630,7 @@ gentity_t *fire_bfg (gentity_t *self, vec3_t start, vec3_t dir) {
 	bolt->think = G_ExplodeMissile;
 	bolt->s.eType = ET_MISSILE;
 	bolt->r.svFlags = SVF_USE_CURRENT_ORIGIN;
+	// !TODO: Genericize this:
 	bolt->s.weapon = WP_BFG;
 	bolt->r.ownerNum = self->s.number;
 	bolt->parent = self;
@@ -670,6 +677,7 @@ gentity_t *fire_rocket (gentity_t *self, vec3_t start, vec3_t dir) {
 	bolt->think = G_ExplodeMissile;
 	bolt->s.eType = ET_MISSILE;
 	bolt->r.svFlags = SVF_USE_CURRENT_ORIGIN;
+	// !TODO: Genericize this:
 	bolt->s.weapon = WP_ROCKET_LAUNCHER;
 	bolt->r.ownerNum = self->s.number;
 	bolt->parent = self;
@@ -713,6 +721,7 @@ gentity_t *fire_grapple (gentity_t *self, vec3_t start, vec3_t dir) {
 	hook->think = Weapon_HookFree;
 	hook->s.eType = ET_MISSILE;
 	hook->r.svFlags = SVF_USE_CURRENT_ORIGIN;
+	// !TODO: Genericize this:
 	hook->s.weapon = WP_GRAPPLING_HOOK;
 	hook->r.ownerNum = self->s.number;
 	hook->methodOfDeath = MOD_GRAPPLE;
@@ -746,6 +755,7 @@ gentity_t *fire_grapple (gentity_t *self, vec3_t start, vec3_t dir) {
 fire_nail
 =================
 */
+// !TODO: Genericize this:
 #define NAILGUN_SPREAD	500
 
 gentity_t *fire_nail( gentity_t *self, vec3_t start, vec3_t forward, vec3_t right, vec3_t up ) {
@@ -760,6 +770,7 @@ gentity_t *fire_nail( gentity_t *self, vec3_t start, vec3_t forward, vec3_t righ
 	bolt->think = G_ExplodeMissile;
 	bolt->s.eType = ET_MISSILE;
 	bolt->r.svFlags = SVF_USE_CURRENT_ORIGIN;
+	// !TODO: Genericize this:
 	bolt->s.weapon = WP_NAILGUN;
 	bolt->r.ownerNum = self->s.number;
 	bolt->parent = self;
@@ -813,6 +824,7 @@ gentity_t *fire_prox( gentity_t *self, vec3_t start, vec3_t dir ) {
 	bolt->think = G_ExplodeMissile;
 	bolt->s.eType = ET_MISSILE;
 	bolt->r.svFlags = SVF_USE_CURRENT_ORIGIN;
+	// !TODO: Genericize this:
 	bolt->s.weapon = WP_PROX_LAUNCHER;
 	bolt->s.eFlags = 0;
 	bolt->r.ownerNum = self->s.number;

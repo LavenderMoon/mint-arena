@@ -228,11 +228,11 @@ int Pickup_Weapon (gentity_t *ent, gentity_t *other) {
 	// add the weapon
 	Q_AddWeapon(other->player->ps.weapons, ent->item->giTag);
 
-	Add_Ammo( other, ent->item->giAmmoIndex, quantity ); // LM: Give the ammo this uses.
+	Add_Ammo( other, ent->item->giWeaponData.ammoType, quantity ); // LM: Give the ammo this uses.
 
 	// !TODO: Make weapons with infinite ammo use AM_NONE for ammo, then remove this:
-	if (ent->item->giAmmoIndex == AM_NONE)
-		other->player->ps.ammo[ ent->item->giAmmoIndex ] = -1; // unlimited ammo
+	if (ent->item->giWeaponData.ammoType == AM_NONE)
+		other->player->ps.ammo[ ent->item->giWeaponData.ammoType ] = -1; // unlimited ammo
 
 	// team deathmatch has slow weapon respawns
 	if ( g_gametype.integer == GT_TEAM ) {
@@ -762,6 +762,7 @@ ClearRegisteredItems
 void ClearRegisteredItems( void ) {
 	memset( itemRegistered, 0, sizeof( itemRegistered ) );
 
+	// !TODO: Have map determine the base weapons:
 	// players always start with the base weapon
 	RegisterItem( BG_FindItemForWeapon( WP_MACHINEGUN ) );
 	RegisterItem( BG_FindItemForWeapon( WP_GAUNTLET ) );

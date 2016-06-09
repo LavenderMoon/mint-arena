@@ -964,6 +964,7 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_RAILTRAIL:
 		DEBUGNAME("EV_RAILTRAIL");
+		// !TODO: Genericize this:
 		cent->currentState.weapon = WP_RAILGUN;
 
 		if ( es->playerNum >= 0 && es->playerNum < MAX_CLIENTS ) {

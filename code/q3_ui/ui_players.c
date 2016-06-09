@@ -96,6 +96,7 @@ tryagain:
 	pi->flashModel = trap_R_RegisterModel( path );
 
 	switch( weaponNum ) {
+	// !TODO: Genericize this:
 	case WP_GAUNTLET:
 		MAKERGB( pi->flashDlightColor, 0.6f, 0.6f, 1 );
 		break;
@@ -1377,6 +1378,7 @@ void UI_PlayerInfo_SetInfo( uiPlayerInfo_t *pi, int legsAnim, int torsoAnim, vec
 
 	// torso animation
 	if ( torsoAnim == TORSO_STAND || torsoAnim == TORSO_STAND2 ) {
+		// !TODO: Check for all melee weapons:
 		if ( weaponNum == WP_NONE || weaponNum == WP_GAUNTLET ) {
 			torsoAnim = TORSO_STAND2;
 		}
@@ -1386,6 +1388,7 @@ void UI_PlayerInfo_SetInfo( uiPlayerInfo_t *pi, int legsAnim, int torsoAnim, vec
 	}
 
 	if ( torsoAnim == TORSO_ATTACK || torsoAnim == TORSO_ATTACK2 ) {
+		// !TODO: Check for all melee weapons:
 		if ( weaponNum == WP_NONE || weaponNum == WP_GAUNTLET ) {
 			torsoAnim = TORSO_ATTACK2;
 		}
